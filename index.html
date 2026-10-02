@@ -13,18 +13,53 @@
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
+<!-- Iconos propios (SVG en línea, monolínea 24×24). Se usan con <svg class="ic"><use href="#i-nombre"/></svg> -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+ <defs>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-lp12" viewBox="0 0 24 24"><path d="M2 12h4l2-5 3 10 3-8 2 3h6"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M3 14c3-8 6-8 9 0s6 8 9 0M3 19h18"/></symbol>
+  <symbol id="i-int" viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></symbol>
+  <symbol id="i-casos" viewBox="0 0 24 24"><path d="M3 8h18v12H3zM9 8V5h6v3M12 11v6M9 14h6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 12l3 3 5-6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M3 5h6a3 3 0 0 1 3 2 3 3 0 0 1 3-2h6v14h-6a3 3 0 0 0-3 2 3 3 0 0 0-3-2H3zM12 7v14"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="M3 7h12v10H3zM15 10l6-3v10l-6-3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M8 10.5h5M10.5 8v5"/></symbol>
+  <symbol id="i-zoomout" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M8 10.5h5"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M8.5 14.5A6 6 0 1 1 15.5 14.5c-.7.7-1 1.5-1 2.5h-5c0-1-.3-1.8-1-2.5z"/></symbol>
+  <symbol id="i-forward" viewBox="0 0 24 24"><path d="M3 5l8 7-8 7zM13 5l8 7-8 7z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M3 10v4h3l8 5V5L6 10zM17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></symbol>
+  <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5M5 8h14a2 2 0 0 1 2 2v7h-4v4H7v-4H3v-7a2 2 0 0 1 2-2zM7 14h10v7"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M19 14v6H4V5h6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2zM12 10v5M12 18v.5"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.5M3 12h.5M3 18h.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+ </defs>
+</svg>
 <header class="top"><div class="in">
   <a class="brand" href="#/"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1D4F91"/><path d="M3 18h7l2-6 4 12 3-16 3 10h7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>LP12 · SAVe II+</span></a>
   <nav class="nav" aria-label="Principal">
-    <a href="#/" data-r="home">Inicio</a>
-    <a href="#/m/lp12" data-r="lp12">1 · LIFEPAK 12</a>
-    <a href="#/m/save" data-r="save">2 · SAVe II+</a>
-    <a href="#/m/int" data-r="int">3 · Integración</a>
-    <a href="#/casos" data-r="casos">Casos</a>
-    <a href="#/checklist" data-r="checklist">Checklist</a>
-    <a href="#/acerca" data-r="acerca">Fuentes</a>
+    <a href="#/" data-r="home"><svg class="ic"><use href="#i-home"/></svg><span class="full">Inicio</span><span class="short" aria-hidden="true">Inicio</span></a>
+    <a href="#/m/lp12" data-r="lp12"><svg class="ic"><use href="#i-lp12"/></svg><span class="full">1 · LIFEPAK 12</span><span class="short" aria-hidden="true">LIFEPAK</span></a>
+    <a href="#/m/save" data-r="save"><svg class="ic"><use href="#i-save"/></svg><span class="full">2 · SAVe II+</span><span class="short" aria-hidden="true">SAVe</span></a>
+    <a href="#/m/int" data-r="int"><svg class="ic"><use href="#i-int"/></svg><span class="full">3 · Integración</span><span class="short" aria-hidden="true">Integración</span></a>
+    <a href="#/casos" data-r="casos"><svg class="ic"><use href="#i-casos"/></svg><span class="full">Casos</span><span class="short" aria-hidden="true">Casos</span></a>
+    <a href="#/checklist" data-r="checklist"><svg class="ic"><use href="#i-check"/></svg><span class="full">Checklist</span><span class="short" aria-hidden="true">Checklist</span></a>
+    <a href="#/acerca" data-r="acerca"><svg class="ic"><use href="#i-book"/></svg><span class="full">Fuentes</span><span class="short" aria-hidden="true">Fuentes</span></a>
   </nav>
-  <button class="theme" id="themeBtn" type="button" aria-label="Cambiar tema">◐</button>
+  <button class="theme" id="themeBtn" type="button" aria-label="Cambiar tema"><svg class="ic"><use href="#i-auto"/></svg></button>
 </div></header>
 <main id="app" tabindex="-1"><noscript>Esta web necesita JavaScript.</noscript></main>
 <footer><div class="in">Material docente de elaboración propia · H. García, médico de Urgencias y Emergencias · v3, octubre de 2026. No sustituye a los manuales oficiales ni a la formación práctica. Manda el protocolo de su dirección médica.</div></footer>

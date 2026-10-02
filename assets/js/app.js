@@ -6,7 +6,7 @@ let simInst=null;const cache={};
 
 /* ---------- Tema ---------- */
 const root=document.documentElement;
-function setTheme(t){if(t==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);try{localStorage.setItem('theme',t)}catch(e){}const b=document.getElementById('themeBtn');if(b)b.textContent=t==='dark'?'☾':t==='light'?'☀':'◐';}
+function setTheme(t){if(t==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);try{localStorage.setItem('theme',t)}catch(e){}const b=document.getElementById('themeBtn');if(b){b.innerHTML=`<svg class="ic"><use href="#i-${t==='dark'?'moon':t==='light'?'sun':'auto'}"/></svg>`;b.setAttribute('aria-label',`Tema: ${t==='dark'?'oscuro':t==='light'?'claro':'automático'}. Cambiar`);}}
 try{setTheme(localStorage.getItem('theme')||'auto')}catch(e){setTheme('auto')}
 document.getElementById('themeBtn').addEventListener('click',()=>{const c=root.getAttribute('data-theme')||'auto';setTheme(c==='auto'?'dark':c==='dark'?'light':'auto');});
 
@@ -35,7 +35,7 @@ function home(){
   document.title='Formación LIFEPAK 12 y SAVe II+ · Bomberos UCV';
   app.innerHTML=`
   <section class="hero">
-    <div class="kick">Web formativa</div>
+    <div class="kick">Bomberos UCV · Formación</div>
     <h1>LIFEPAK 12 y SAVe II+ en la ambulancia</h1>
     <p>Plan formativo en 3 módulos con manuales de bolsillo, esquemas interactivos de los equipos, infografías, vídeos y casos clínicos en los que manejan los equipos virtuales.</p>
     <div class="row"><a class="btn orange" href="#/m/lp12">Empezar por el módulo 1</a><a class="btn alt" href="#/casos">Ir a los casos clínicos</a></div>
@@ -44,7 +44,7 @@ function home(){
   <div class="section"><h2>Plan formativo</h2>
   <p class="lead">Se recomienda seguir el orden. Cada módulo termina con una autoevaluación y casos prácticos.</p>
   <ol class="plan">
-   ${MODS.map(m=>`<li><b>Módulo ${m.n} · ${m.title}</b> <span class="pill">${m.sub}</span><br>${m.intro}<br><small>${planSeq(m)}</small><br><a href="#/m/${m.id}">Abrir el módulo ${m.n} →</a></li>`).join('')}
+   ${MODS.map(m=>`<li><b>Módulo ${m.n} · ${m.title}</b> <span class="pill">${m.sub}</span><br>${m.intro}<span class="seq">${planSeq(m)}</span><a class="btn sm" href="#/m/${m.id}">Abrir el módulo ${m.n}<svg class="ic"><use href="#i-arrow"/></svg></a></li>`).join('')}
   </ol></div>
   <div class="section"><div class="card key"><b>Aviso importante.</b> Material docente de elaboración propia, basado en los manuales de los fabricantes. Las energías, quién usa las terapias manuales, los fármacos y la vía aérea los decide <b>su dirección médica</b>. Comprueben la configuración y las opciones de sus equipos. <b>Esta web no sustituye la formación práctica ni la acreditación.</b> <a href="#/acerca">Fuentes y límites</a>.</div></div>`;
 }
