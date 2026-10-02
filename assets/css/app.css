@@ -130,7 +130,11 @@ kbd{font-family:var(--head);font-weight:700;font-size:.9em;background:var(--navy
 @media (max-width:860px){.panelwrap{grid-template-columns:1fr}}
 .panelsvg{width:100%;height:auto;display:block;background:transparent}
 .panelsvg .hot{cursor:pointer}
-.panelsvg .hot:hover rect,.panelsvg .hot:hover circle,.panelsvg .hot.sel rect,.panelsvg .hot.sel circle{stroke:#F08A24;stroke-width:4}
+.panelsvg{color:var(--muted)}
+.panelsvg .hot:hover .hs,.panelsvg .hot.sel .hs,.panelsvg .hot:focus-visible .hs{stroke:#F08A24;stroke-width:5}
+.panelsvg .hot:focus{outline:none}
+.pscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pscroll.zoom .panelsvg{width:220%;max-width:none}
 .info{position:sticky;top:76px}
 .info h3{color:var(--teal)}
 

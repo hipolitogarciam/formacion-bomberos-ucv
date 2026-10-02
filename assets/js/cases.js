@@ -104,14 +104,14 @@ window.CASES=[
  devices:['save','lp12'],acc:['saveConn','occlude','co2','spo2','ecg','chest','tube','bvm','suction','newcirc','o2save'],
  start:{pt:{rhythm:'sinus',hr:96,pulse:true,spo2:97,etco2:null,sbp:132,dbp:80,pipBase:17},lp:{on:true},acc:{ecg:true,spo2:true,bvm:true}},
  steps:[
- {text:'<p>Varón de 30 años, accidente de moto, TCE grave, Glasgow 6. El equipo de vía aérea lo ha intubado según el protocolo y lo ventilan con bolsa. Mide unos 175 cm. Traslado de 40 minutos.</p><p>¿Pueden pasarlo al SAVe II+?</p>',
+ {text:'<p>Varón de 30 años, accidente de moto, TCE grave, Glasgow 6. El equipo de vía aérea lo ha intubado según el protocolo y lo ventilan con bolsa. Mide unos 1,75 m (5\'9"). Traslado de 40 minutos.</p><p>¿Pueden pasarlo al SAVe II+?</p>',
   options:[
    {t:'Sí: adulto de más de 45 kg con vía aérea asegurada, siempre que la capnografía funcione y la bolsa quede a mano',ok:true,fb:'Correcto. Son las condiciones del fabricante.'},
    {t:'Sí, aunque no tengamos capnografía: el SAVe ya mide las presiones',fb:'No. El fabricante exige capnografía o volumen espirado. Sin ella, bolsa.'},
    {t:'No: el SAVe solo se usa en la parada',fb:'No. Está pensado para ventilar durante el traslado a adultos de 45 kg o más.'}]},
- {text:'<p>Circuito nuevo conectado al equipo con sus 3 tubos y todavía sin conectar al paciente. Siguen con la bolsa.</p>',goal:'Enciendan el SAVe, elijan 175 cm y confirmen.',
-  hints:['POWER → botón 175 cm → CONFIRM. Nada cambia hasta pulsar CONFIRM.'],
-  check:S=>S.sv.running&&S.sv.preset===175&&S.sv.rr===15,success:'Ventilando con FR 15 y VT 420. Como el circuito está abierto, aparece DISCONNECT.'},
+ {text:'<p>Circuito nuevo conectado al equipo con sus 3 tubos y todavía sin conectar al paciente. Siguen con la bolsa.</p>',goal:'Enciendan el SAVe, elijan 1,75 m (5\'9") y confirmen.',
+  hints:['POWER → botón 5\'9" (1,75 m) → CONFIRM. Nada cambia hasta pulsar CONFIRM.'],
+  check:S=>S.sv.running&&S.sv.preset==='5-9'&&S.sv.rr===15,success:'Ventilando con FR 15 y VT 420. Como el circuito está abierto, aparece DISCONNECT.'},
  {text:'<p>Con el circuito abierto ha saltado <span class="msg">DISCONNECT</span>: la prueba de desconexión es correcta.</p>',goal:'Hagan ahora la prueba de PIP: tapen la salida del circuito hasta que salte la alarma y luego destápenla.',
   hints:['Activen "Tapar la salida del circuito". Cuando salte PIP REACHED, desactívenla.'],
   react:(ev,S)=>{if(S.sv.alarms.has('PIP REACHED')&&S.acc.occlude)S.f.pipT=1;},tickCheck:true,
@@ -144,9 +144,9 @@ window.CASES=[
  summary:'Mujer de 40 años con crisis asmática grave, intubada y ventilada. HIGH PEEP: el ventilador se detiene.',
  devices:['save','lp12'],acc:['chest','tube','disc','bvm','newcirc','saveConn','co2','spo2'],
  start:{pt:{rhythm:'sinus',hr:128,pulse:true,spo2:90,etco2:58,sbp:96,dbp:60},lp:{on:true},acc:{ecg:true,spo2:true,co2:true,saveConn:true},
-   sv:{on:true,preset:160,rr:18,vt:310,pip:35,peep:0,running:true}},
+   sv:{on:true,preset:'5-3',rr:18,vt:310,pip:35,peep:0,running:true}},
  steps:[
- {text:'<p>Mujer de 40 años, crisis asmática grave, intubada por el equipo médico y conectada al SAVe (160 cm, FR 18, VT ajustado a mano a 310 por ser mujer). Al poco, suena una alarma.</p>',
+ {text:'<p>Mujer de 40 años, crisis asmática grave, intubada por el equipo médico y conectada al SAVe (1,60 m · 5\'3", FR 18, VT ajustado a mano a 310 por ser mujer). Al poco, suena una alarma.</p>',
   onEnter:(S,c)=>{S.pt.trap=true;S.pt.findings.chest='Tórax hinchado que apenas baja entre respiraciones';c.log('Atrapamiento aéreo');},
   options:[
    {t:'HIGH PEEP: el ventilador se ha detenido. Hay que ventilar ya con bolsa, porque esta alarma para la ventilación',ok:true,fb:'Correcto. DEVICE, HIGH PEEP y la batería en reserva detienen la ventilación.'},
@@ -166,9 +166,9 @@ window.CASES=[
  summary:'Paciente intubado y conectado al SAVe que pierde el pulso durante el traslado. Los dos equipos a la vez.',
  devices:['lp12','save'],acc:['cpr','moving','clear','pulse','adv2','pads','bvm','chest','saveConn','co2'],
  start:{pt:{rhythm:'sinus',hr:110,pulse:true,spo2:95,etco2:36,sbp:100,dbp:62},lp:{on:true},acc:{ecg:true,spo2:true,co2:true,saveConn:true,moving:true,pads:true},
-   sv:{on:true,preset:175,rr:15,vt:420,pip:30,peep:0,running:true}},
+   sv:{on:true,preset:'5-9',rr:15,vt:420,pip:30,peep:0,running:true}},
  steps:[
- {text:'<p>Traslado de un varón de 64 años intubado tras un IAM, conectado al SAVe (175 cm). La ambulancia va en marcha.</p><p>De repente, el monitor cambia y la EtCO2 cae a 8.</p>',
+ {text:'<p>Traslado de un varón de 64 años intubado tras un IAM, conectado al SAVe (1,75 m · 5\'9"). La ambulancia va en marcha.</p><p>De repente, el monitor cambia y la EtCO2 cae a 8.</p>',
   onEnter:(S,c)=>{c.setPt({rhythm:'vf',pulse:false,hr:0,etco2:8,spo2:null});c.log('FV, EtCO2 8');},
   goal:'Primeras acciones: empiecen las compresiones y ordenen parar la ambulancia.',hints:['"Compresiones torácicas" y desactiven "Ambulancia en marcha".'],
   check:S=>S.acc.cpr&&!S.acc.moving,success:'Compresiones en marcha y vehículo detenido.'},
@@ -188,7 +188,7 @@ window.CASES=[
    {t:'Sigo comprimiendo y compruebo el pulso en la siguiente pausa para analizar',ok:true,fb:'Correcto. La subida brusca sugiere RCE, pero el pulso se comprueba en la pausa, sin parar antes de tiempo.'},
    {t:'Paro ya las compresiones y busco el pulso durante 30 s',fb:'No. Pausa corta y en el momento del análisis.'}]},
  {text:'<p>En la pausa: ritmo organizado con <b>pulso</b>. Paran las compresiones.</p>',goal:'Hagan que el SAVe vuelva a ventilar solo y comprueben que el tórax sube.',
-  onEnter:(S)=>{S.acc.cpr=false;},hints:['Fuera del modo RCP: botón 175 cm → CONFIRM.','En FR 0 el SAVe NO ventila solo.'],
+  onEnter:(S)=>{S.acc.cpr=false;},hints:['Fuera del modo RCP: botón 5\'9" (1,75 m) → CONFIRM.','En FR 0 el SAVe NO ventila solo.'],
   react:(ev,S)=>{if(ev.type==='acc'&&ev.id==='chest'&&S.sv.rr>0)S.f.c=1;},
   check:S=>S.sv.rr>0&&!S.sv.pend&&S.f.c,success:'Ventilación automática: FR 15 y VT 420. El tórax sube.'}
  ],
@@ -199,7 +199,7 @@ window.CASES=[
  summary:'Al pasar al paciente ventilado de la camilla a la ambulancia, salta DISCONNECT y la capnografía desaparece.',
  devices:['save','lp12'],acc:['chest','tube','pulse','airway','bvm','saveConn','co2'],
  start:{pt:{rhythm:'sinus',hr:104,pulse:true,spo2:96,etco2:35,sbp:118,dbp:70},lp:{on:true},acc:{ecg:true,spo2:true,co2:true,saveConn:true},
-   sv:{on:true,preset:168,rr:16,vt:380,pip:30,peep:0,running:true}},
+   sv:{on:true,preset:'5-6',rr:16,vt:380,pip:30,peep:0,running:true}},
  steps:[
  {text:'<p>Paciente intubado tras una intoxicación, ventilado con el SAVe. Al pasarlo de la camilla a la ambulancia salta <span class="msg">DISCONNECT</span>. La curva de EtCO2 desaparece y la SpO2 empieza a bajar.</p>',
   onEnter:(S,c)=>{S.pt.leak=true;S.pt.etco2=null;S.pt.spo2=89;S.pt.findings.chest='El tórax NO sube; se oye una fuga por la boca';S.pt.findings.tube='El tubo está 6 cm más fuera que la marca: desplazado';c.log('DISCONNECT, EtCO2 sin curva');},
@@ -241,7 +241,7 @@ window.CASES=[
  {text:'<p>Niño de 6 años (unos 20 kg) sacado de una piscina en parada. Hacen RCP con ventilaciones de rescate.</p><p>¿Usan el SAVe II+?</p>',
   options:[
    {t:'No: pesa menos de 45 kg. Bolsa-mascarilla del tamaño adecuado',ok:true,fb:'Correcto. Por debajo de 45 kg, nunca el SAVe.'},
-   {t:'Sí, eligiendo el preset más bajo (129 cm)',fb:'No. El SAVe es solo para pacientes de 45 kg o más.'}]},
+   {t:'Sí, eligiendo el preset más bajo (4\'3", 1,30 m)',fb:'No. El SAVe es solo para pacientes de 45 kg o más.'}]},
  {text:'<p>Monitor en FV. ¿Cómo desfibrilan con el LIFEPAK 12?</p>',
   options:[
    {t:'Según el protocolo pediátrico de la dirección médica: modo manual si alguien está acreditado (ERC: 4 J/kg); si nadie lo está, la dirección médica debe haber decidido antes si se usa el LP12 en DEA con parches de adulto, porque es preferible a no desfibrilar',ok:true,fb:'Correcto. El modo DEA del LP12 no está diseñado para menores de 8 años. La decisión debe estar tomada de antemano.'},

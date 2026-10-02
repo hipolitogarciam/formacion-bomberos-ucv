@@ -70,7 +70,7 @@ class ECG{
 
 /* ---------- Utilidades ---------- */
 const ENERGIES=[2,3,4,5,6,7,8,9,10,15,20,30,50,70,100,125,150,175,200,225,250,275,300,325,360];
-const HEIGHTS=[[129,20,250],[137,21,250],[145,21,260],[152,20,300],[160,18,340],[168,16,380],[175,15,420],[183,14,470],[191,13,510]];
+const HEIGHTS=window.SAVE_HEIGHTS; // etiquetas del propio equipo (pies y metros), en content.js
 const ACC={
   pads:{l:'Colocar parches QUIK-COMBO',t:true},
   ecg:{l:'Cable de ECG (3/5 hilos)',t:true},
@@ -240,7 +240,7 @@ function create(root,CASE,opts={}){
     const seg=(k,lab)=>h('div',{class:sv.sel===k&&sv.on?'sel':'',onclick:()=>{sv.sel=k;drawSV();}},h('small',{},lab),h('b',{class:sv.pend&&k in sv.pend?'fl':''},String(show(k))));
     const batt=h('span',{class:'batt'});for(let i=0;i<4;i++)batt.append(h('i',{class:i<sv.batt&&sv.on?'f':''}));
     const sk=(label,key,cls)=>h('button',{class:'k '+(cls||''),type:'button',onclick:()=>svKey(key)},label);
-    const presets=h('div',{class:'keys',style:'grid-template-columns:repeat(auto-fill,minmax(64px,1fr))'},...HEIGHTS.map(x=>{const b=sk(x[0]+' cm','H'+x[0]);if(sv.preset===x[0])b.classList.add('lit');return b;}));
+    const presets=h('div',{class:'keys',style:'grid-template-columns:repeat(auto-fill,minmax(64px,1fr))'},...HEIGHTS.map(x=>{const b=sk(x.ft,'H'+x.id);b.append(h('small',{},x.m));if(sv.preset===x.id)b.classList.add('lit');return b;}));
     svBox.append(h('h4',{},'SAVe II+ (virtual)',h('span',{},batt,sv.cprBlink&&sv.on&&sv.rr===0?h('span',{style:'color:#FF6B6B;margin-left:8px',class:'alarm'},' ♥ 100/min'):null)),
       h('div',{class:'alarms'},...al.map(a=>h('span',{class:sv.alarms.has(a)&&sv.on?'a':''},a))),
       h('div',{class:'seg'},seg('rr','FR rpm'),seg('vt','VT mL'),seg('pip',sv.showMeas?'PIP med.':'PIP cmH2O'),seg('peep',sv.showMeas?'PEEP med.':'PEEP')),
@@ -251,7 +251,7 @@ function create(root,CASE,opts={}){
     const sv=S.sv;
     if(k!=='POWER'&&!sv.on){feedback('tip','El SAVe está apagado: pulsen POWER.');return;}
     if(k==='POWER'){if(!sv.on){sv.on=true;sv.preset=null;sv.rr=0;sv.vt=0;sv.pip=30;sv.peep=0;sv.running=false;sv.alarms.clear();L('SAVe encendido: elijan la altura y CONFIRM');}else{sv.on=false;sv.running=false;L('SAVe apagado (POWER 3 s)');}}
-    else if(k[0]==='H'){const x=HEIGHTS.find(y=>y[0]===+k.slice(1));sv.preset=x[0];sv.pend={rr:x[1],vt:x[2],pip:30,peep:0};L(`Preset ${x[0]} cm: FR ${x[1]}, VT ${x[2]} (pendiente de CONFIRM)`);}
+    else if(k[0]==='H'){const x=HEIGHTS.find(y=>y.id===k.slice(1));sv.preset=x.id;sv.pend={rr:x.rr,vt:x.vt,pip:30,peep:0};L(`Preset ${heightLabel(x)}: FR ${x.rr}, VT ${x.vt} (pendiente de CONFIRM)`);}
     else if(k==='UP'||k==='DN'){const d=k==='UP'?1:-1;const base=Object.assign({rr:sv.rr,vt:sv.vt,pip:sv.pip,peep:sv.peep},sv.pend||{});
       const lim={rr:[8,30],vt:[200,800],pip:[10,60],peep:[0,20]},st={rr:1,vt:10,pip:5,peep:1};let v=base[sv.sel]+d*st[sv.sel];
       if(sv.sel==='rr'&&base.rr===8&&d<0)v=0;else if(sv.sel==='rr'&&base.rr===0&&d>0)v=8;else v=Math.min(lim[sv.sel][1],Math.max(lim[sv.sel][0],v));

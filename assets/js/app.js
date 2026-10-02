@@ -90,20 +90,12 @@ function photos(T){ // si existe la foto real, sustituye el hueco
 }
 function tPanel(m,T){
   const P=PANELS[m.panel];
-  const [bx,by,bw,bh]=P.body;
-  let svg=`<svg class="panelsvg" viewBox="${P.vb}" role="group" aria-label="${esc(P.title)}"><rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="28" fill="#2A3140" stroke="#11161F" stroke-width="6"/>`;
-  for(const d of P.deco){if(d.t==='rect')svg+=`<rect x="${d.x}" y="${d.y}" width="${d.w}" height="${d.h}" rx="${d.r||8}" fill="${d.fill}"/>`;else svg+=`<text x="${d.x}" y="${d.y}" fill="${d.fill}" font-family="Barlow Semi Condensed,Barlow,sans-serif" font-weight="700" font-size="${d.sz||28}" text-anchor="middle">${d.s}</text>`;}
-  for(const h of P.hot){
-    const fill=h.fill||'#3B4558',tc=h.tc||'#FFFFFF';
-    if(h.c)svg+=`<g class="hot" tabindex="0" role="button" data-id="${h.id}" aria-label="${esc(h.l)}"><circle cx="${h.x}" cy="${h.y}" r="${h.r}" fill="${fill}" stroke="#11161F" stroke-width="3"/><text x="${h.x}" y="${h.y+6}" fill="${tc}" font-family="Barlow Semi Condensed,Barlow,sans-serif" font-weight="700" font-size="${h.sz||18}" text-anchor="middle">${h.l}</text></g>`;
-    else svg+=`<g class="hot" tabindex="0" role="button" data-id="${h.id}" aria-label="${esc(h.l||h.id)}"><rect x="${h.x}" y="${h.y}" width="${h.w}" height="${h.h}" rx="10" fill="${h.id==='screen'?'transparent':fill}" stroke="${h.id==='screen'?'transparent':'#11161F'}" stroke-width="2"/>${h.l?`<text x="${h.x+h.w/2}" y="${h.y+h.h/2+6}" fill="${tc}" font-family="Barlow Semi Condensed,Barlow,sans-serif" font-weight="700" font-size="${h.sz||19}" text-anchor="middle">${h.l}</text>`:''}</g>`;
-  }
-  svg+='</svg>';
-  T.innerHTML=`<p>Toquen cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala; la disposición real puede variar según el modelo y las opciones.</small></p>
-   <div class="panelwrap"><div class="card" style="padding:10px">${svg}<div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}">📷 Aquí aparecerá la foto real de su equipo cuando la añadan.</div></div>
+  T.innerHTML=`<p>Toquen cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala, con la disposición del equipo real.${m.id==='lp12'?' Los botones con borde discontinuo dependen de las opciones del equipo.':''}</small></p>
+   <div class="panelwrap"><div class="card" style="padding:10px"><div class="row" style="justify-content:flex-end;margin-bottom:6px"><button class="btn alt sm" type="button" id="pzoom" aria-pressed="false">🔍 Ampliar</button></div><div class="pscroll" id="pscroll">${drawPanel(P)}</div><div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}">📷 Aquí aparecerá la foto real de su equipo cuando la añadan.</div></div>
    <div class="card info" id="pinfo" aria-live="polite"><h3>${esc(P.title)}</h3><p>Seleccionen un elemento del panel.</p></div></div>`;
-  const info=document.getElementById('pinfo');
-  const show=(g)=>{T.querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const h=P.hot.find(x=>x.id===g.dataset.id);info.innerHTML=`<h3>${h.l||'Pantalla'}</h3><p>${h.i}</p><p class="src">Manual oficial, pág. ${h.p}</p>`;if(innerWidth<860)info.scrollIntoView({behavior:'smooth',block:'nearest'});};
+  const info=document.getElementById('pinfo'),zb=document.getElementById('pzoom'),ps=document.getElementById('pscroll');
+  zb.addEventListener('click',()=>{const on=ps.classList.toggle('zoom');zb.setAttribute('aria-pressed',on);zb.textContent=on?'🔍 Reducir':'🔍 Ampliar';});
+  const show=(g)=>{T.querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const h=P.hot.find(x=>x.id===g.dataset.id);info.innerHTML=`<h3>${esc(h.n||h.l||'')}</h3><p>${h.i}</p><p class="src">${h.src?esc(h.src):'Manual oficial, pág. '+h.p}</p>`;if(innerWidth<860)info.scrollIntoView({behavior:'smooth',block:'nearest'});};
   T.querySelectorAll('.hot').forEach(g=>{g.addEventListener('click',()=>show(g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(g);}});});
   photos(T);
 }
