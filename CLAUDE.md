@@ -45,6 +45,7 @@ content/manual-*.html        Manuales de bolsillo (fragmentos HTML que se cargan
 assets/docs/                 Infografías A4 imprimibles: infografia-lp12.html e infografia-save.html (usan PANELS) e infografia-int.html (HTML propio)
 assets/js/infografia.js      Genera las infografías A4 (panel en el centro y flechas a los cuadros)
 assets/img/fotos/            Fotos REALES de los equipos (ver LEEME.md); se activan en window.PHOTOS
+herramientas/recorrido_casos.js  Comprobación automática: juega los 9 casos y mide el scroll horizontal de las 33 rutas (ver su cabecera)
 sw.js                        Service worker (caché sin conexión)
 manifest.webmanifest         PWA
 ```
