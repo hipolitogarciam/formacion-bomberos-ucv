@@ -53,21 +53,26 @@ function mod(id,tab){
   const m=MODS.find(x=>x.id===id);if(!m)return home();
   document.title=`Módulo ${m.n} · ${m.title}`;
   const tabs=TABS.filter(t=>t[0]!=='panel'||m.panel);
+  if(!tabs.some(t=>t[0]===tab))tab='inicio';
   app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › Módulo ${m.n}</div>
    <div class="mod-n">Módulo ${m.n} · ${m.sub}</div><h1>${m.title}</h1>
    <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" class="${t[0]===tab?'on':''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
-   <div id="tab"></div>`;
+   <div id="tab"></div><div class="next" id="tabnext"></div>`;
   app.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{location.hash=`#/m/${id}/${b.dataset.t}`;}));
+  {const bar=app.querySelector('.tabs'),on=bar.querySelector('.on');if(on)bar.scrollLeft=on.offsetLeft-bar.offsetLeft-(bar.clientWidth-on.offsetWidth)/2;} // pestaña activa visible en el celular
   const T=document.getElementById('tab');
-  ({inicio:tInicio,manual:tManual,panel:tPanel,infografia:tInfo,videos:tVideos,casos:tCasos,test:tTest}[tab]||tInicio)(m,T);
+  ({inicio:tInicio,manual:tManual,panel:tPanel,infografia:tInfo,videos:tVideos,casos:tCasos,test:tTest}[tab])(m,T);
+  // Botón "Siguiente": Inicio → Manual → Panel → Infografía → Vídeos → Casos → Autoevaluación → siguiente módulo
+  const k=tabs.findIndex(t=>t[0]===tab),nt=tabs[k+1],nm=MODS[MODS.indexOf(m)+1];
+  document.getElementById('tabnext').innerHTML=nt?`<a class="btn" href="#/m/${id}/${nt[0]}">Siguiente: ${nt[1]} →</a>`
+    :nm?`<a class="btn" href="#/m/${nm.id}">Siguiente: módulo ${nm.n} · ${nm.title} →</a>`
+    :`<a class="btn" href="#/">Plan formativo completado: volver al inicio →</a>`;
 }
 function tInicio(m,T){
-  const i=MODS.indexOf(m),nx=MODS[i+1];
-  T.innerHTML=`<div class="grid g2">
-   <div class="card"><h3>Vídeo de la sesión</h3>${loom(m.loom)}</div>
-   <div class="card"><h3>Al terminar este módulo sabrás…</h3><ul>${m.goals.map(g=>`<li>${g}</li>`).join('')}</ul>
-    <h4>Cómo seguirlo</h4><ol><li>Mira el vídeo.</li><li>Lee el <a href="#/m/${m.id}/manual">manual de bolsillo</a>.</li>${m.panel?`<li>Explora el <a href="#/m/${m.id}/panel">panel interactivo</a>.</li>`:''}<li>Descarga la <a href="#/m/${m.id}/infografia">infografía</a>.</li><li>Haz los <a href="#/m/${m.id}/casos">casos</a> y la <a href="#/m/${m.id}/test">autoevaluación</a>.</li></ol>
-    ${nx?`<a class="btn sm" href="#/m/${nx.id}">Siguiente: módulo ${nx.n} →</a>`:''}</div></div>`;
+  T.innerHTML=`<div class="card"><h3>Al terminar este módulo sabrán…</h3><ul>${m.goals.map(g=>`<li>${g}</li>`).join('')}</ul>
+    <h3>Cómo seguirlo</h3><ol><li>Vean el vídeo de la sesión, aquí debajo.</li><li>Lean el <a href="#/m/${m.id}/manual">manual de bolsillo</a>.</li>${m.panel?`<li>Exploren el <a href="#/m/${m.id}/panel">panel interactivo</a>.</li>`:''}<li>Descarguen la <a href="#/m/${m.id}/infografia">infografía</a>.</li><li>Consulten los <a href="#/m/${m.id}/videos">vídeos complementarios</a>.</li><li>Hagan los <a href="#/m/${m.id}/casos">casos</a> y la <a href="#/m/${m.id}/test">autoevaluación</a>.</li></ol>
+    <p class="muted">Al final de cada pestaña, el botón «Siguiente» les lleva a la próxima.</p></div>
+   <div class="card" style="margin-top:14px"><h3>Vídeo de la sesión</h3>${loom(m.loom)}</div>`;
 }
 function loom(l){
   if(l&&l.url){const id=(l.url.match(/loom\.com\/(?:share|embed)\/([a-z0-9]+)/i)||[])[1];if(id)return `<div class="embed"><iframe src="https://www.loom.com/embed/${id}" allowfullscreen title="${esc(l.title)}"></iframe></div><p><small>${esc(l.title)}</small></p>`;return `<p><a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">▶ ${esc(l.title)}</a></p>`;}
@@ -78,7 +83,7 @@ async function tManual(m,T){
   try{if(!cache[m.manual]){const r=await fetch(m.manual);if(!r.ok)throw 0;cache[m.manual]=await r.text();}
     const canPrint=/github\.io$|^localhost$/.test(location.hostname);T.innerHTML=(canPrint?`<div class="row" style="justify-content:flex-end;margin-bottom:8px"><button class="btn alt sm" onclick="window.print()">Imprimir o guardar en PDF</button></div>`:'')+cache[m.manual];
     photos(T);
-  }catch(e){T.innerHTML='<p>No se pudo cargar el manual. Comprueba la conexión.</p>';}
+  }catch(e){T.innerHTML='<p>No se pudo cargar el manual. Comprueben la conexión.</p>';}
 }
 function photos(T){ // si existe la foto real, sustituye el hueco
   T.querySelectorAll('[data-photo]').forEach(f=>{if(!(window.PHOTOS||[]).includes(f.dataset.photo))return;const src=`assets/img/fotos/${f.dataset.photo}.jpg`;const im=new Image();im.onload=()=>{f.className='';f.innerHTML='';f.append(im);im.alt='Foto del equipo';im.style.borderRadius='12px';};im.src=src;});
@@ -94,9 +99,9 @@ function tPanel(m,T){
     else svg+=`<g class="hot" tabindex="0" role="button" data-id="${h.id}" aria-label="${esc(h.l||h.id)}"><rect x="${h.x}" y="${h.y}" width="${h.w}" height="${h.h}" rx="10" fill="${h.id==='screen'?'transparent':fill}" stroke="${h.id==='screen'?'transparent':'#11161F'}" stroke-width="2"/>${h.l?`<text x="${h.x+h.w/2}" y="${h.y+h.h/2+6}" fill="${tc}" font-family="Barlow Semi Condensed,Barlow,sans-serif" font-weight="700" font-size="${h.sz||19}" text-anchor="middle">${h.l}</text>`:''}</g>`;
   }
   svg+='</svg>';
-  T.innerHTML=`<p>Toca cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala; la disposición real puede variar según el modelo y las opciones.</small></p>
+  T.innerHTML=`<p>Toquen cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala; la disposición real puede variar según el modelo y las opciones.</small></p>
    <div class="panelwrap"><div class="card" style="padding:10px">${svg}<div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}">📷 Aquí aparecerá la foto real de su equipo cuando la añadan.</div></div>
-   <div class="card info" id="pinfo" aria-live="polite"><h3>${esc(P.title)}</h3><p>Selecciona un elemento del panel.</p></div></div>`;
+   <div class="card info" id="pinfo" aria-live="polite"><h3>${esc(P.title)}</h3><p>Seleccionen un elemento del panel.</p></div></div>`;
   const info=document.getElementById('pinfo');
   const show=(g)=>{T.querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const h=P.hot.find(x=>x.id===g.dataset.id);info.innerHTML=`<h3>${h.l||'Pantalla'}</h3><p>${h.i}</p><p class="src">Manual oficial, pág. ${h.p}</p>`;if(innerWidth<860)info.scrollIntoView({behavior:'smooth',block:'nearest'});};
   T.querySelectorAll('.hot').forEach(g=>{g.addEventListener('click',()=>show(g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(g);}});});
@@ -126,7 +131,7 @@ function tTest(m,T){
   const qs=document.getElementById('qs');
   Q.forEach((q,i)=>{const d=document.createElement('div');d.className='q card';const ord=q.o.map((_,j)=>j).sort(()=>Math.random()-.5);d.innerHTML=`<b>${i+1}. ${q.q}</b><div class="opts">${ord.map(j=>`<label data-j="${j}"><input type="radio" name="q${i}" value="${j}"> <span>${q.o[j]}</span></label>`).join('')}</div><div class="why">${q.w}</div>`;qs.append(d);
     d.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{if(d.classList.contains('done'))return;d.classList.add('done');ans++;const j=+inp.value;const lab=k=>d.querySelector(`label[data-j="${k}"]`);lab(q.a).classList.add('good');if(j===q.a)ok++;else lab(j).classList.add('bad');d.querySelectorAll('input').forEach(x=>x.disabled=true);
-      if(ans===Q.length){const r=document.getElementById('qres');r.style.display='block';r.innerHTML=`<div class="score">${ok} / ${Q.length}</div><p>${ok===Q.length?'¡Perfecto!':ok>=Q.length*.8?'Muy bien. Repasa las que has fallado.':'Repasa el manual y vuelve a intentarlo.'}</p><button class="btn sm" id="again">Repetir</button>`;document.getElementById('again').onclick=()=>tTest(m,T);}}));});
+      if(ans===Q.length){const r=document.getElementById('qres');r.style.display='block';r.innerHTML=`<div class="score">${ok} / ${Q.length}</div><p>${ok===Q.length?'¡Perfecto!':ok>=Q.length*.8?'Muy bien. Repasen las que han fallado.':'Repasen el manual y vuelvan a intentarlo.'}</p><button class="btn sm" id="again">Repetir</button>`;document.getElementById('again').onclick=()=>tTest(m,T);}}));});
 }
 
 /* ---------- Casos ---------- */
@@ -141,9 +146,9 @@ function caso(id){
   const m=MODS.find(x=>x.id===c.mod);
   app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › <a href="#/casos">Casos</a> › ${esc(c.title)}</div><div id="simroot"></div>
    <details class="card" style="margin-top:14px"><summary><b>Cómo funciona el simulador</b></summary><ul>
-   <li>Lee el caso a la izquierda. Si hay opciones, elige una; si hay un 🎯 objetivo, hazlo con los botones de los equipos y las acciones.</li>
+   <li>Lean el caso a la izquierda. Si hay opciones, elijan una; si hay un 🎯 objetivo, cúmplanlo con los botones de los equipos y las acciones.</li>
    <li><b>Acciones</b>: lo que hacen con las manos (parches, compresiones, "¡fuera todos!", mirar el tórax…). Las que tienen ○/✔ se activan y desactivan.</li>
-   <li><b>SAVe:</b> toca un display (FR, VT, PIP o PEEP) para elegirlo y usa ▲▼. Nada se aplica sin CONFIRM.</li>
+   <li><b>SAVe:</b> toquen un display (FR, VT, PIP o PEEP) para elegirlo y usen ▲▼. Nada se aplica sin CONFIRM.</li>
    <li>Los tiempos van acelerados: el análisis, la carga y la PNI duran unos segundos, y el botón ⏩ adelanta 2 min de RCP.</li></ul></details>`;
   simInst=SIM.create(document.getElementById('simroot'),c,{back:'#/casos'});
 }

@@ -165,7 +165,7 @@ function create(root,CASE,opts={}){
   }
   function lpKey(k){
     const lp=S.lp,p=S.pt;
-    if(k!=='ON'&&!lp.on){feedback('tip','El LIFEPAK está apagado: pulsa ON.');return;}
+    if(k!=='ON'&&!lp.on){feedback('tip','El LIFEPAK está apagado: pulsen ON.');return;}
     switch(k){
       case 'ON': lp.on=!lp.on;if(lp.on){lp.mode='MANUAL';lp.msg='';L('LP12 encendido (modo manual, derivación II)');}else{Object.assign(lp,{charged:false,charging:false,sync:false,pacer:false,mA:0,mode:'MANUAL',over:null,msg:''});L('LP12 apagado');}break;
       case 'ANALYZE':
@@ -199,20 +199,20 @@ function create(root,CASE,opts={}){
         break;
       case 'SHOCK':
         if(!lp.charged){lp.msg='Equipo no cargado';break;}
-        if(S.acc.cpr){feedback('no','¡Hay alguien haciendo compresiones! Ordena parar y di "¡fuera todos!" antes de descargar. (El simulador bloquea esta descarga.)');return;}
-        if(S.t-lp.clearAt>20){feedback('tip','Antes de descargar, avisa en voz alta: "¡fuera todos!" (botón de acciones). Descarga realizada, pero acostúmbrate a hacerlo.');}
-        if(lp.sync&&!RH[p.rhythm].beat){feedback('no','En SYNC no descargará: no hay QRS que sincronizar. En FV, apaga SYNC y desfibrila.');return;}
+        if(S.acc.cpr){feedback('no','¡Hay alguien haciendo compresiones! Ordenen parar y digan "¡fuera todos!" antes de descargar. (El simulador bloquea esta descarga.)');return;}
+        if(S.t-lp.clearAt>20){feedback('tip','Antes de descargar, avisen en voz alta: "¡fuera todos!" (botón de acciones). Descarga realizada, pero acostúmbrense a hacerlo.');}
+        if(lp.sync&&!RH[p.rhythm].beat){feedback('no','En SYNC no descargará: no hay QRS que sincronizar. En FV, apaguen SYNC y desfibrilen.');return;}
         clearTimeout(disarmT);lp.charged=false;lp.shocks++;lp.msg='ENERGY DELIVERED';L(`DESCARGA ${lp.shocks}: ${lp.energy} J${lp.sync?' sincronizada':''}`);
         {const ev={type:'shock',energy:lp.energy,sync:lp.sync,mode:lp.mode};emit(ev);}
         if(lp.mode==='AED')later(1500,()=>{lp.msg='START CPR';L('START CPR');sync();});
         break;
       case 'SYNC': lp.sync=!lp.sync;if(lp.mode==='AED')lp.mode='MANUAL';lp.msg=lp.sync?'SYNC ON':'SYNC OFF';L(lp.msg);break;
       case 'PACER':
-        if(!lp.pacer&&!(S.acc.ecg||S.acc.ecg12)){lp.msg='<span class="alarm">CONNECT ECG LEADS</span>';feedback('tip','Para el marcapasos a demanda, coloca también el cable de ECG.');L('PACER: falta el cable de ECG');break;}
+        if(!lp.pacer&&!(S.acc.ecg||S.acc.ecg12)){lp.msg='<span class="alarm">CONNECT ECG LEADS</span>';feedback('tip','Para el marcapasos a demanda, coloquen también el cable de ECG.');L('PACER: falta el cable de ECG');break;}
         if(!lp.pacer&&!S.acc.pads){lp.msg='<span class="alarm">CONNECT ELECTRODES</span>';break;}
         lp.pacer=!lp.pacer;if(!lp.pacer)lp.mA=0;lp.mode='MANUAL';lp.msg=lp.pacer?'PACER ON – DEMAND':'PACER OFF';L(lp.msg);lastAdj='rate';break;
-      case 'RATE': if(!lp.pacer){lp.msg='Pulsa PACER primero';break;}lp.rate=Math.min(170,lp.rate+10);if(lp.rate>170)lp.rate=40;lastAdj='rate';lp.msg=`PACER RATE ${lp.rate} ppm`;L(lp.msg);break;
-      case 'CURRENT': if(!lp.pacer){lp.msg='Pulsa PACER primero';break;}lastAdj='mA';setmA(lp.mA+10);break;
+      case 'RATE': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}lp.rate=Math.min(170,lp.rate+10);if(lp.rate>170)lp.rate=40;lastAdj='rate';lp.msg=`PACER RATE ${lp.rate} ppm`;L(lp.msg);break;
+      case 'CURRENT': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}lastAdj='mA';setmA(lp.mA+10);break;
       case 'PAUSE': if(lp.pacer){lp.msg='PAUSED (25 % de la frecuencia)';L('PAUSE: se ve el ritmo propio');}break;
       case 'NIBP':
         if(!S.acc.cuff){lp.msg='<span class="alarm">NIBP CHECK CUFF</span>';break;}
@@ -221,7 +221,7 @@ function create(root,CASE,opts={}){
       case 'LEAD': lp.lead=lp.lead==='II'?'III':lp.lead==='III'?'PADDLES':'II';lp.msg='Derivación '+lp.lead;break;
       case '12LEAD':
         if(!S.acc.ecg12){lp.msg='<span class="alarm">CONNECT CHEST LEADS</span>';feedback('tip','Para el 12 derivaciones hay que colocar el cable de 12 derivaciones (V1-V6 y miembros).');break;}
-        if(S.acc.moving){lp.msg='<span class="alarm">NOISY DATA! PRESS 12-LEAD TO ACCEPT</span>';feedback('tip','Con la ambulancia en marcha hay ruido: para el vehículo para adquirir el 12 derivaciones.');L('12D con ruido (vehículo en marcha)');emit({type:'12lead',ok:false});break;}
+        if(S.acc.moving){lp.msg='<span class="alarm">NOISY DATA! PRESS 12-LEAD TO ACCEPT</span>';feedback('tip','Con la ambulancia en marcha hay ruido: paren el vehículo para adquirir el 12 derivaciones.');L('12D con ruido (vehículo en marcha)');emit({type:'12lead',ok:false});break;}
         lp.msg='ACQUIRING 12-LEAD…';L('Adquiriendo 12 derivaciones');later(2500,()=>{const res=p.rhythm==='stemi'?'***ACUTE MI SUSPECTED*** (ST ↑ II, III, aVF)':'Sin criterios de IAM';lp.msg='12-LEAD: '+res;lp.printed.push('12D');L('12D impreso: '+res);sync();emit({type:'12lead',ok:true,res});});break;
       case 'CODE': lp.printed.push('CODE');lp.msg='Imprimiendo CODE SUMMARY';L('CODE SUMMARY impreso');emit({type:'code'});break;
       case 'PRINT': lp.msg='Imprimiendo ECG';L('Tira de ECG impresa');break;
@@ -244,13 +244,13 @@ function create(root,CASE,opts={}){
     svBox.append(h('h4',{},'SAVe II+ (virtual)',h('span',{},batt,sv.cprBlink&&sv.on&&sv.rr===0?h('span',{style:'color:#FF6B6B;margin-left:8px',class:'alarm'},' ♥ 100/min'):null)),
       h('div',{class:'alarms'},...al.map(a=>h('span',{class:sv.alarms.has(a)&&sv.on?'a':''},a))),
       h('div',{class:'seg'},seg('rr','FR rpm'),seg('vt','VT mL'),seg('pip',sv.showMeas?'PIP med.':'PIP cmH2O'),seg('peep',sv.showMeas?'PEEP med.':'PEEP')),
-      h('div',{class:'grp'},h('span',{},'Parámetro seleccionado: '+({rr:'FR',vt:'VT',pip:'PIP',peep:'PEEP'})[sv.sel]+' (toca un display para cambiar)'),h('div',{class:'keys'},sk('▲','UP'),sk('▼','DN'),sk('CONFIRM','CONFIRM',sv.pend?'charge':''),sk('MANUAL TRIGGER','TRIG','analyze'),sk('MUTE','MUTE'),sk('POWER','POWER','on-btn'))),
+      h('div',{class:'grp'},h('span',{},'Parámetro seleccionado: '+({rr:'FR',vt:'VT',pip:'PIP',peep:'PEEP'})[sv.sel]+' (toquen un display para cambiar)'),h('div',{class:'keys'},sk('▲','UP'),sk('▼','DN'),sk('CONFIRM','CONFIRM',sv.pend?'charge':''),sk('MANUAL TRIGGER','TRIG','analyze'),sk('MUTE','MUTE'),sk('POWER','POWER','on-btn'))),
       h('div',{class:'grp'},h('span',{},'Adult height presets'),presets));
   }
   function svKey(k){
     const sv=S.sv;
-    if(k!=='POWER'&&!sv.on){feedback('tip','El SAVe está apagado: pulsa POWER.');return;}
-    if(k==='POWER'){if(!sv.on){sv.on=true;sv.preset=null;sv.rr=0;sv.vt=0;sv.pip=30;sv.peep=0;sv.running=false;sv.alarms.clear();L('SAVe encendido: elige la altura y CONFIRM');}else{sv.on=false;sv.running=false;L('SAVe apagado (POWER 3 s)');}}
+    if(k!=='POWER'&&!sv.on){feedback('tip','El SAVe está apagado: pulsen POWER.');return;}
+    if(k==='POWER'){if(!sv.on){sv.on=true;sv.preset=null;sv.rr=0;sv.vt=0;sv.pip=30;sv.peep=0;sv.running=false;sv.alarms.clear();L('SAVe encendido: elijan la altura y CONFIRM');}else{sv.on=false;sv.running=false;L('SAVe apagado (POWER 3 s)');}}
     else if(k[0]==='H'){const x=HEIGHTS.find(y=>y[0]===+k.slice(1));sv.preset=x[0];sv.pend={rr:x[1],vt:x[2],pip:30,peep:0};L(`Preset ${x[0]} cm: FR ${x[1]}, VT ${x[2]} (pendiente de CONFIRM)`);}
     else if(k==='UP'||k==='DN'){const d=k==='UP'?1:-1;const base=Object.assign({rr:sv.rr,vt:sv.vt,pip:sv.pip,peep:sv.peep},sv.pend||{});
       const lim={rr:[8,30],vt:[200,800],pip:[10,60],peep:[0,20]},st={rr:1,vt:10,pip:5,peep:1};let v=base[sv.sel]+d*st[sv.sel];
@@ -258,11 +258,11 @@ function create(root,CASE,opts={}){
       base[sv.sel]=v;if(base.rr===0){base.pip=20;base.peep=0;}sv.pend=base;
       if(base.rr*base.vt>12500){sv.alarms.add('HIGH MV');}else sv.alarms.delete('HIGH MV');}
     else if(k==='CONFIRM'){
-      if(sv.pend){if(sv.pend.rr*sv.pend.vt>12500){feedback('tip','HIGH MV: la combinación supera unos 12,5 L/min y no se acepta. Ajusta primero el parámetro que vas a bajar.');return;}
+      if(sv.pend){if(sv.pend.rr*sv.pend.vt>12500){feedback('tip','HIGH MV: la combinación supera unos 12,5 L/min y no se acepta. Ajusten primero el parámetro que van a bajar.');return;}
         Object.assign(sv,sv.pend);sv.pend=null;sv.running=true;sv.lastBreath=S.t;if(sv.rr>0)sv.alarms.delete('BREATH');L(sv.rr===0?'SAVe en MODO RCP (FR 0): solo ventila con MANUAL TRIGGER':`SAVe ventilando: FR ${sv.rr}, VT ${sv.vt}, PIP ${sv.pip}, PEEP ${sv.peep}`);sv.cprBlink=sv.rr===0;emit({type:'save',what:'confirm'});}
       else{measure();sv.showMeas=1;L(`CONFIRM sin cambios: PIP medida ${sv.measPip}, PEEP medida ${sv.measPeep}`);later(3000,()=>{sv.showMeas=0;drawSV();});emit({type:'save',what:'measure'});}
     }
-    else if(k==='TRIG'){if(!sv.running){feedback('tip','Primero confirma unos ajustes (altura o FR 0).');return;}sv.trig++;sv.lastBreath=S.t;sv.alarms.delete('BREATH');L('MANUAL TRIGGER: 1 respiración');emit({type:'trigger'});}
+    else if(k==='TRIG'){if(!sv.running){feedback('tip','Primero confirmen unos ajustes (altura o FR 0).');return;}sv.trig++;sv.lastBreath=S.t;sv.alarms.delete('BREATH');L('MANUAL TRIGGER: 1 respiración');emit({type:'trigger'});}
     else if(k==='MUTE'){sv.muted=S.t+120;L('SAVe silenciado 120 s');}
     drawSV();emit({type:'key',dev:'sv',key:k});
   }
@@ -296,7 +296,7 @@ function create(root,CASE,opts={}){
       if(id==='moving'&&!S.acc.moving)L('Vehículo detenido');}
     else{
       if(id==='clear'){S.lp.clearAt=S.t;S.acc.cpr=false;L('"¡Fuera todos!": nadie toca al paciente');}
-      if(id==='pulse'){const r=S.pt.pulse?(S.pt.pulseText||`Pulso presente (${S.lp.pacer&&S.lp.mA>=S.pt.capAt?S.lp.rate:S.pt.hr} lpm)`):'Sin pulso';if(S.acc.cpr)feedback('tip','Para palpar el pulso hay que parar las compresiones: hazlo solo en la pausa del análisis.');L('Pulso: '+r);feedback('tip','Pulso: '+r);}
+      if(id==='pulse'){const r=S.pt.pulse?(S.pt.pulseText||`Pulso presente (${S.lp.pacer&&S.lp.mA>=S.pt.capAt?S.lp.rate:S.pt.hr} lpm)`):'Sin pulso';if(S.acc.cpr)feedback('tip','Para palpar el pulso hay que parar las compresiones: háganlo solo en la pausa del análisis.');L('Pulso: '+r);feedback('tip','Pulso: '+r);}
       if(id==='chest'){const r=S.pt.findings.chest||(S.acc.bvm||(S.sv.running&&S.acc.saveConn&&!S.pt.leak&&!S.pt.obstruct&&!S.pt.trap)?'El tórax sube de forma simétrica':'El tórax no se mueve con ventilación');L('Tórax: '+r);feedback('tip','Tórax: '+r);}
       if(id==='tube'){const r=S.pt.findings.tube||'Tubo a la misma marca, circuito bien conectado';L('Tubo/circuito: '+r);feedback('tip',r);}
       if(id==='disc'){L('Tubo desconectado unos segundos: sale el aire atrapado');}
