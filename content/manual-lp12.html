@@ -1,6 +1,6 @@
 <div class="manual">
 <p class="lead">Manual de bolsillo del LIFEPAK 12 para la dotación. Es corto y está pensado para leerlo en el celular. Todos los datos salen del manual oficial del fabricante (<i>Operating Instructions</i>, MIN 3207254-033, ed. 2008-2015). Entre corchetes va la página; [pref.] es el prefacio.</p>
-<div class="key"><b>Antes de nada:</b> las energías, quién usa las terapias manuales y los fármacos los decide <b>su dirección médica</b>. Comprueben también qué opciones lleva su equipo y cómo está configurado: impriman la configuración.</div>
+<div class="key"><b>Antes de nada:</b> las energías, quién usa las terapias manuales y los fármacos los decide <b>su dirección médica</b>. Comprueben también qué opciones lleva su equipo y cómo está configurado: impriman la configuración.<br>Comprueben en la etiqueta si su LP12 es <b>bifásico o monofásico</b> [2-2]. Las energías de esta web, y las de las guías ERC 2025, son para bifásico. Si es monofásico, las energías las decide su dirección médica.</div>
 <nav class="toc" aria-label="Índice">
 <a href="#lp-que">Qué es</a><a href="#lp-pan">Panel</a><a href="#lp-ener">Baterías</a><a href="#lp-check">Checklist</a><a href="#lp-parches">Parches</a><a href="#lp-dea">DEA</a><a href="#lp-man">Manual</a><a href="#lp-sync">Cardioversión</a><a href="#lp-mp">Marcapasos</a><a href="#lp-mon">Monitorizar</a><a href="#lp-alar">Alarmas</a><a href="#lp-fin">Después</a><a href="#lp-msg">Mensajes</a><a href="#lp-spec">Datos</a>
 </nav>
@@ -18,7 +18,7 @@
 <ul>
 <li><b>De fábrica arranca como desfibrilador manual y monitor</b>, con la derivación II. Para usarlo como DEA se pulsa <kbd>ANALYZE</kbd> [4-13].</li>
 <li>El paso de DEA a manual se hace con <kbd>ENERGY SELECT</kbd>, <kbd>CHARGE</kbd>, <kbd>PACER</kbd> o <kbd>ADVISORY</kbd>. Según la configuración, el acceso al modo manual puede ser directo, pedir confirmación, pedir contraseña o estar bloqueado (<span class="msg">MANUAL MODE DISABLED</span>) [4-13, 9-4].</li>
-<li>De la configuración depende también la secuencia del DEA: RCP inicial, número de descargas y energías del DEA, entre 100 y 360 J. Impriman la configuración y compruébenla [9-5].</li>
+<li>La secuencia del DEA depende de la configuración [9-6]. <b>De fábrica:</b> 200, 300 y 360 J; una descarga y 2 min de RCP; sin RCP inicial y sin pedir que se compruebe el pulso [9-6, G-1]. Así coincide con las guías ERC 2025 (soporte vital avanzado). En DEA, la energía se puede fijar entre 150 y 360 J [9-6]. Impriman su configuración: si pone STACKED SHOCKS ON o INITIAL CPR, avisen a su dirección médica.</li>
 <li><b>Es un equipo antiguo.</b>
   <ul>
   <li>Dejó de fabricarse en 2007.</li>
@@ -98,7 +98,7 @@
   <ul>
   <li>seca y sin exceso de vello;</li>
   <li>sin bolsas de aire;</li>
-  <li>lejos de marcapasos implantados y de parches de medicación.</li>
+  <li>a más de 8 cm de un marcapasos o DAI implantado (guías ERC 2025, soporte vital avanzado), y lejos de parches de medicación.</li>
   </ul></li>
 <li><b>Guardar a 15-35 °C.</b> No usarlos si están caducados, secos o llevan <b>más de 24 h fuera de la bolsa</b> [5-2, 4-2].</li>
 <li><b>Son de un solo uso: un juego por paciente.</b> En el mismo paciente pueden quedarse hasta 24 h o 50 descargas; nunca se reutilizan en otro paciente [5-5, 5-6].</li>
@@ -124,7 +124,7 @@
 <figure class="photo" data-photo="lp12-parches">📷 Hueco para la foto de los parches colocados en un maniquí: <code>assets/img/fotos/lp12-parches.jpg</code></figure>
 
 <h2 id="lp-dea">6. Modo DEA</h2>
-<p>El modo DEA es para quien no está acreditado en la lectura de ritmos: el equipo analiza el ritmo por ustedes y decide si hay que descargar. Ustedes solo siguen sus mensajes y pulsan <kbd>SHOCK</kbd> cuando lo pide. Se usa en la parada cardiaca: paciente que no responde, no respira con normalidad y no tiene pulso [pref.]. En <b>menores de 8 años</b> el fabricante no diseñó el modo DEA para ellos: sigan el protocolo pediátrico de su dirección médica (ver <a href="#/m/int/manual">módulo 3</a>).</p>
+<p>El modo DEA es para quien no está acreditado en la lectura de ritmos: el equipo analiza el ritmo por ustedes y decide si hay que descargar. Ustedes solo siguen sus mensajes y pulsan <kbd>SHOCK</kbd> cuando lo pide. Se usa en la parada cardiaca: paciente que no responde, no respira con normalidad y no tiene pulso [pref.]. Para reconocer la parada basta con que no responda y no respire con normalidad (guías ERC 2025, soporte vital básico). En <b>menores de 8 años</b> el fabricante no diseñó el modo DEA para ellos [pref.], pero las guías ERC 2025 (soporte vital pediátrico) recomiendan usar el DEA a cualquier edad: sigan el protocolo pediátrico de su dirección médica (ver <a href="#/m/int/manual">módulo 3</a>).</p>
 <ol>
 <li><kbd>ON</kbd> y parches colocados. Mientras falten, sale <span class="msg">CONNECT ELECTRODES</span>.</li>
 <li><b>Parar el vehículo.</b> Nadie toca al paciente: se paran las compresiones.</li>
@@ -139,20 +139,21 @@
 <li>Si sale <span class="msg">MOTION DETECTED</span>, el análisis se detiene: detengan el movimiento [4-4].</li>
 <li>No pulsen la radio una y otra vez junto al equipo: las interferencias pueden falsear el análisis [1-2].</li>
 </ul>
-<p>Si su equipo no sigue exactamente esta secuencia, puede deberse a su configuración: consulten con su responsable.</p>
+<p>Si su equipo no sigue exactamente esta secuencia, puede deberse a su configuración: consulten con su responsable. <b>Si su equipo pide varias descargas seguidas sin RCP, RCP antes de analizar o comprobar el pulso tras cada descarga, está configurado con guías antiguas</b> [9-6, G-1]. Las guías ERC 2025 (soporte vital avanzado) piden una descarga y 2 min de RCP. Mientras no se cambie, sigan las indicaciones del equipo y avisen a su responsable.</p>
 
 <h2 id="lp-man">7. Desfibrilación manual</h2>
 <p class="pill r">Solo personal acreditado en ritmos, con orden médica y según protocolo</p>
 <ol>
 <li><kbd>ENERGY SELECT</kbd>: elegir la energía (hasta 360 J).</li>
-<li><kbd>CHARGE</kbd> → tono de carga completa [4-15].</li>
-<li>"¡Fuera todos!" → <kbd>SHOCK</kbd>.</li>
+<li><kbd>CHARGE</kbd> <b>sin parar las compresiones</b> → tono de carga completa [4-15].</li>
+<li>Con el equipo cargado: se paran las compresiones, ritmo, "¡fuera todos!" y <kbd>SHOCK</kbd>, en menos de 5 s; compresiones al momento (guías ERC 2025, soporte vital avanzado).</li>
 </ol>
 <ul>
 <li><b>Si no descargan en 60 s, la energía se elimina dentro del equipo.</b> También se elimina si cambian la energía mientras carga: hay que volver a cargar [4-15].</li>
 <li>Para desarmar a mano, pulsar el SELECTOR (<span class="msg">PUSH SELECTOR KNOB TO DISARM</span>) [B-4].</li>
-<li>Nunca en asistolia ni en AESP (guías ERC).</li>
-<li>Con O2 libre (mascarilla o bolsa desconectada), apartarlo a más de 1 m del tórax durante la descarga [1-2].</li>
+<li>No se descarga en asistolia ni en AESP. Si dudan entre FV fina y asistolia, se descarga. Si no reconocen el ritmo en 5 s, modo DEA (guías ERC 2025, soporte vital avanzado).</li>
+<li>Con O2 libre (mascarilla o bolsa desconectada), apartarlo durante la descarga [1-2], a 1 m del tórax como mínimo (guías ERC 2025, soporte vital avanzado).</li>
+<li>Tras 3 descargas sin éxito, el médico puede pedir pasar a la posición anteroposterior (guías ERC 2025, soporte vital avanzado).</li>
 </ul>
 
 <h2 id="lp-sync">8. Cardioversión sincronizada</h2>
@@ -165,10 +166,12 @@
 <ul>
 <li>Después de la descarga, que SYNC siga activo o no depende de la configuración (<b>SYNC AFTER SHOCK</b>). <b>Antes de repetir, comprueben que sigue en SYNC.</b></li>
 <li><b>Si el paciente pasa a FV:</b> apaguen SYNC y desfibrilen. En sincronizado no descargaría.</li>
+<li>Energías iniciales según las guías ERC 2025 (soporte vital avanzado), en bifásico: TSV y flúter, 70-120 J; FA, la máxima; TV con pulso, 120-150 J. Las decide su dirección médica.</li>
 </ul>
 
 <h2 id="lp-mp">9. Marcapasos transcutáneo</h2>
 <p class="pill r">Bradicardia con pulso e inestable · personal acreditado · orden médica · analgesia</p>
+<p>Bradicardia inestable que no responde a los fármacos; es un puente hasta el marcapasos definitivo o transvenoso (guías ERC 2025, soporte vital avanzado).</p>
 <ol>
 <li>Parches colocados (vale la posición anteroposterior) y <b>cable de ECG también colocado</b>.</li>
 <li><kbd>PACER</kbd>: comprueben que la marca de detección cae sobre cada QRS propio y no sobre la T. Si no, ajusten <kbd>SIZE</kbd> o la derivación: si no detecta bien, no estimula cuando toca [4-19].</li>
@@ -209,6 +212,7 @@
 <ul>
 <li><b>Con monóxido de carbono (humo) puede marcar normal aunque haya hipoxia.</b></li>
 <li>Falla con mala perfusión, movimiento o esmalte de uñas, y en el brazo del manguito.</li>
+<li>Puede sobrestimar la saturación en pieles oscuras (guías ERC 2025, cuidados posresucitación).</li>
 <li>No sirve para vigilar la apnea [3-16, 3-17].</li>
 </ul></td></tr>
 <tr><td><b>PNI</b></td><td>Tensión arterial</td><td>
@@ -311,5 +315,5 @@
 <li><b>Peso:</b> 6,6-8,0 kg sin baterías [A-2].</li>
 <li><b>No usar en resonancia magnética</b> ni con gases inflamables.</li>
 </ul>
-<p class="src">Fuente: LIFEPAK 12 Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (2008-2015). Material docente de elaboración propia (H. García, médico de Urgencias y Emergencias), v3 · 10/2026. No sustituye al manual oficial ni a la formación práctica acreditada.</p>
+<p class="src">Fuente: LIFEPAK 12 Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (2008-2015), y guías ERC 2025 donde se indica. Material docente de elaboración propia (H. García, médico de Urgencias y Emergencias), v3 · 10/2026. No sustituye al manual oficial ni a la formación práctica acreditada.</p>
 </div>

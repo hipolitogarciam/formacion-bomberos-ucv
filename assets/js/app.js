@@ -224,7 +224,7 @@ function acerca(){
   <h3>Fuentes</h3><ul>
    <li><b>LIFEPAK 12</b> Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (ed. 2008-2015). Todo el material del LIFEPAK 12 se ha cotejado con esta edición.</li>
    <li><b>SAVe II+</b> Operator's Manual – Instructions for Use, M42110 Rev 5.3 (AutoMedx, 2021), a partir de un extracto documentado; ficha de producto Safeguard Medical SGM-MKT-SV2P-01 Rev 001; FDA 510(k) K131877. <b>No hemos podido conseguir el manual completo para cotejarlo</b>: comprueben la etiqueta (M50016) y el firmware de su equipo.</li>
-   <li>Guías del European Resuscitation Council (ERC) para los aspectos clínicos. Comprueben la versión vigente.</li></ul>
+   <li>Guías del European Resuscitation Council (ERC) 2025 (<i>Resuscitation</i> 2025;215 supl. 1) para los aspectos clínicos: soporte vital básico y avanzado del adulto, soporte vital pediátrico, circunstancias especiales y cuidados posresucitación (ERC-ESICM). Revisión de la web frente a ellas: 10-2026. Lo que no viene ni del fabricante ni de la ERC va marcado como «criterio del autor».</li></ul>
   <h3>Límites</h3><ul>
    <li>Material docente; no sustituye a los manuales oficiales, a la práctica presencial ni a la acreditación.</li>
    <li>Las energías, la indicación de las terapias manuales, los fármacos, la sedoanalgesia y la vía aérea los decide la dirección médica.</li>

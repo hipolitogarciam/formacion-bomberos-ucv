@@ -35,7 +35,7 @@
 
 <h2 id="in-roles">2. Reparto de papeles (3 personas)</h2>
 <ul>
-<li><b>Líder:</b> no toca. Mira al paciente y los dos monitores, decide y habla con el hospital. En la RCP con mascarilla y SAVe, <b>pulsa MANUAL TRIGGER</b> (criterio del autor: quien sella tiene las dos manos ocupadas).</li>
+<li><b>Líder:</b> no toca. Mira al paciente y los dos monitores, decide y habla con el hospital. En la RCP con mascarilla y SAVe, <b>pulsa MANUAL TRIGGER</b> (criterio del autor: quien sella tiene las dos manos ocupadas; las guías ERC 2025, soporte vital avanzado, aconsejan sellar la mascarilla entre dos).</li>
 <li><b>Vía aérea:</b> bolsa o ventilador, capnografía y aspiración.</li>
 <li><b>Circulación:</b> compresiones, parches, desfibrilador y tensión.</li>
 <li><b>Si son 2:</b> mejor bolsa en lugar del SAVe, y el líder asume la circulación. Quien comprime podría pulsar el botón en la pausa de las 2 ventilaciones, pero solo si lo han ensayado. Digan el reparto en voz alta al llegar.</li>
@@ -68,7 +68,7 @@
 <ol>
 <li>Vía aérea colocada y comprobada.</li>
 <li>SAVe: altura → <kbd>CONFIRM</kbd>. Probar las alarmas y ver que el tórax sube.</li>
-<li><b>EtCO2</b> en la conexión del tubo. Una curva cuadrada que se repite confirma que el aire llega a los pulmones.</li>
+<li><b>EtCO2</b> en la conexión del tubo. Una curva cuadrada <b>mantenida</b> (al menos 7 respiraciones) confirma el tubo y que el aire llega a los pulmones (guías ERC 2025, soporte vital avanzado).</li>
 <li>ECG, SpO2 y PNI cada 5 min. La ventilación con presión positiva puede bajar la tensión.</li>
 </ol>
 
@@ -98,7 +98,8 @@
 <li><b>En RCP:</b>
   <ul>
   <li>un valor muy bajo sugiere compresiones poco eficaces;</li>
-  <li>una subida brusca puede ser recuperación de la circulación: comprueben el pulso en la siguiente pausa, sin parar antes las compresiones.</li>
+  <li>una subida brusca puede ser recuperación de la circulación: comprueben el pulso en la siguiente pausa, sin parar antes las compresiones;</li>
+  <li>un valor bajo por sí solo no sirve para decidir que se para la RCP (guías ERC 2025, soporte vital avanzado).</li>
   </ul></li>
 <li>El LP12 no reconoce respiraciones por debajo de 8 mmHg. En RCP puede saltar APNEA aunque estén ventilando.</li>
 </ul>
@@ -107,13 +108,13 @@
 <ol>
 <li><b>Compresiones YA</b> y, a la vez, orden al conductor de parar.</li>
 <li>SAVe con FR 0 (modo RCP): <kbd>MANUAL TRIGGER</kbd> cada 6 s sin parar las compresiones.</li>
-<li>Comprobar que el tórax sube. Si sale PIP REACHED una y otra vez → bolsa al tubo, 10/min.</li>
+<li>Comprobar que el tórax sube. Si sale PIP REACHED una y otra vez → bolsa al tubo, 10/min. SAVe en modo RCP o bolsa: lo decide su dirección médica (ver <a href="#/m/save/manual">módulo 2</a>).</li>
 <li>Con el vehículo detenido: LIFEPAK en DEA o en manual, según protocolo.</li>
 <li><b>Durante la descarga:</b>
   <ul>
   <li>nadie toca al paciente ni la camilla;</li>
-  <li>O2 libre a más de 1 m del tórax: cierren el O2 del reservorio del SAVe o aparten su extremo [LP12 1-2];</li>
-  <li>el SAVe puede quedarse conectado al tubo si su dirección médica lo acepta (criterio del autor);</li>
+  <li>el SAVe se queda conectado al tubo y su salida, apartada del tórax (guías ERC 2025, soporte vital avanzado). El manual del SAVe no lo trata en lo que hemos podido consultar: confírmenlo con su dirección médica;</li>
+  <li>el O2 libre del reservorio, cerrado o apartado [LP12 1-2], a 1 m del tórax como mínimo (guías ERC 2025, soporte vital avanzado);</li>
   <li>el equipo fijado para que no tire del tubo.</li>
   </ul></li>
 <li><b>Si recupera el pulso, salgan del modo RCP:</b> suban la FR por encima de 0 (por ejemplo, con el botón de altura) → <kbd>CONFIRM</kbd>, y hagan un 12 derivaciones antes de salir. <i>Comprueben en su equipo que el botón de altura sale del modo RCP.</i></li>
@@ -121,12 +122,13 @@
 
 <h2 id="in-nino">9. ¿Y si es un niño?</h2>
 <ul>
-<li><b>Menor de 8 años:</b> el modo DEA del LP12 no está diseñado para él. Se aplica el protocolo pediátrico de su dirección médica:
+<li><b>Menor de 8 años:</b> el fabricante no diseñó el modo DEA del LP12 para menores de 8 años [LP12 pref.]. Las guías ERC 2025 (soporte vital pediátrico) recomiendan usar el DEA a cualquier edad y, si no tiene modo pediátrico, en modo adulto. El LP12 no tiene modo pediátrico en el DEA. Su dirección médica debe decidir de antemano:
   <ul>
-  <li>si hay alguien acreditado en ritmos, modo manual con la energía del protocolo (ERC: 4 J/kg);</li>
-  <li>si no, las guías aceptan un desfibrilador de adulto antes que no desfibrilar.</li>
+  <li>modo manual a 4 J/kg si hay alguien acreditado; si hacen falta más de 5 descargas, subir poco a poco hasta 8 J/kg (máximo 360 J) (guías ERC 2025, soporte vital pediátrico). Solo personal acreditado, con orden médica y según protocolo;</li>
+  <li>si no, el LP12 en modo DEA.</li>
   </ul></li>
-<li><b>Parches pediátricos</b> por debajo de 15 kg.</li>
+<li><b>Ahogamiento:</b> lo primero es ventilar: 5 ventilaciones de rescate con O2 al 100 % y después 15:2 (30:2 si no tienen formación pediátrica). La FV es rara (menos del 10 %); sequen el tórax antes de los parches (guías ERC 2025, soporte vital pediátrico y circunstancias especiales).</li>
+<li><b>Parches pediátricos</b> por debajo de 15 kg [LP12 5-3]. Las guías ERC 2025 (soporte vital pediátrico) prefieren la posición anteroposterior por debajo de 25 kg, pero el fabricante no la admite en modo DEA [LP12 4-3]: en manual, anteroposterior; en DEA, lo que diga su protocolo.</li>
 <li><b>Menos de 45 kg: nunca el SAVe.</b> Bolsa-mascarilla del tamaño adecuado.</li>
 </ul>
 
@@ -150,5 +152,5 @@
 <li><b>Palabras:</b> quién es, qué le pasó, qué le han hecho y cómo está ahora.</li>
 <li><b>Después:</b> reponer y cargar los dos equipos.</li>
 </ul>
-<p class="src">Basado en los manuales de los fabricantes (LP12 MIN 3207254-033, ed. 2008-2015; SAVe II+ M42110 Rev 5.3) y en las guías ERC. El criterio clínico es del autor y debe validarlo su dirección médica. H. García, v3 · 10/2026.</p>
+<p class="src">Basado en los manuales de los fabricantes (LP12 MIN 3207254-033, ed. 2008-2015; SAVe II+ M42110 Rev 5.3) y en las guías ERC 2025. El criterio clínico es del autor y debe validarlo su dirección médica. H. García, v3 · 10/2026.</p>
 </div>

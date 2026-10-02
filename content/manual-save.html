@@ -54,7 +54,7 @@
 <li>Pulsado sin cambios, muestra 3 s la <b>PIP y la PEEP medidas</b> [32].</li>
 </ul></td></tr>
 <tr><td><kbd>MANUAL TRIGGER</kbd></td><td>Da una respiración con el VT fijado. Es el botón del modo RCP</td></tr>
-<tr><td>♥ COMPRESSION RATE</td><td>Parpadea a 100/min en modo RCP como guía para las compresiones</td></tr>
+<tr><td>♥ COMPRESSION RATE</td><td>Parpadea a 100/min en modo RCP [pág. pendiente de cotejar]; las compresiones van a 100-120/min y de 5 a 6 cm (guías ERC 2025, soporte vital básico)</td></tr>
 <tr><td><kbd>MUTE</kbd></td><td>Silencia 120 s. Una alarma nueva anula el silencio</td></tr>
 <tr><td>4 LED de batería · enchufe</td><td>Carga: 4 LED > 75 %, 3 > 50 %, 2 > 25 %, 1 > 10 %; 1 LED parpadeando < 10 %</td></tr>
 <tr><td>Panel de alarmas</td><td>DEVICE · DISCONNECT · PIP REACHED · BATTERY · HIGH PEEP · LOW PEEP · HIGH MV · BREATH · BREATH ASSIST</td></tr>
@@ -74,7 +74,7 @@
 <figure class="photo" data-photo="save-circuito">📷 Hueco para la foto del circuito montado (3 tubos, HMEF y tubo reservorio): <code>assets/img/fotos/save-circuito.jpg</code></figure>
 
 <h2 id="sv-pre">5. Presets por altura</h2>
-<p>Los botones llevan la altura en pies y en metros, como en el equipo, en un óvalo alrededor de <kbd>CONFIRM</kbd>. Equivalen a unos 6 mL/kg de peso ideal. La PIP empieza en 30 y la PEEP en 0 [14, 24].</p>
+<p>Los botones llevan la altura en pies y en metros, como en el equipo, en un óvalo alrededor de <kbd>CONFIRM</kbd>. Equivalen a unos 6 mL/kg de peso ideal (en el rango de 6-8 mL/kg de las guías ERC 2025, cuidados posresucitación). La PIP empieza en 30 y la PEEP en 0 [14, 24].</p>
 <div class="tbl"><table>
 <tr><th>Altura</th><th>FR</th><th>VT (mL)</th><th>Altura</th><th>FR</th><th>VT (mL)</th></tr>
 <tr><td><b>4'3"</b> · 1,30 m</td><td>20</td><td>250</td><td><b>5'6"</b> · 1,67 m</td><td>16</td><td>380</td></tr>
@@ -91,7 +91,7 @@
 <h2 id="sv-aj">6. Cambiar ajustes</h2>
 <ul>
 <li>Botones <kbd>−</kbd> <kbd>+</kbd> del parámetro → <kbd>CONFIRM</kbd>. Se enciende el indicador <i>User defined</i>.</li>
-<li><b>La PEEP y los cambios de PIP, solo por orden médica.</b> No pasar nunca de una PIP de 35 cmH2O.</li>
+<li><b>La PEEP y los cambios de PIP, solo por orden médica.</b> Fuera de la RCP, no pasar de una PIP de 35 cmH2O. En la RCP, el límite lo fija su dirección médica (guías ERC 2025, soporte vital avanzado: alarma a 60-70 cmH2O).</li>
 <li><span class="msg">HIGH MV</span>: la FR × VT supera la capacidad del equipo y la combinación no se acepta. Al cambiar dos parámetros, <b>ajusten primero el que van a bajar</b>.</li>
 </ul>
 
@@ -109,9 +109,11 @@
 <h2 id="sv-rcp">8. Parada cardiaca: modo RCP</h2>
 <ul>
 <li><b>Pongan la FR a 0</b> → <kbd>CONFIRM</kbd>. Ya no ventila solo: <b>solo da una respiración cuando se pulsa <kbd>MANUAL TRIGGER</kbd></b>.</li>
-<li>La PIP baja a 20 y la PEEP se desactiva. El ♥ parpadea a 100/min.</li>
+<li>La PIP baja a 20 y la PEEP se desactiva. El ♥ parpadea a 100/min [pág. pendiente de cotejar]; las compresiones van a 100-120/min (guías ERC 2025, soporte vital básico).</li>
+<li><b>Oxígeno:</b> con FR 0, calculen el flujo con 10 respiraciones/min: 10 × VT (por ejemplo, 10 × 0,42 = 4,2 → 5 L/min) (criterio del autor; las guías ERC 2025, soporte vital avanzado, piden el máximo O2 posible).</li>
 <li><b>Con mascarilla:</b> 30:2. Quien sella usa las dos manos, así que <b>el líder pulsa MANUAL TRIGGER</b>.</li>
-<li><b>Con vía aérea avanzada:</b> las guías ERC indican 10 ventilaciones/min (1 cada 6 s) sin parar las compresiones. Pero el fabricante pensó el modo RCP <b>sobre todo para el 30:2 con mascarilla</b> [33]: con compresiones continuas y PIP 20 puede saltar <span class="msg">PIP REACHED</span> y recortarse el volumen. Si pasa una y otra vez o el tórax no sube → <b>bolsa conectada al tubo</b>, 10/min. Subir la PIP solo por orden médica y sin pasar de 35.</li>
+<li><b>Con vía aérea avanzada:</b> 10 ventilaciones/min (1 cada 6 s) sin parar las compresiones (guías ERC 2025, soporte vital avanzado). Si se usa un ventilador, la ERC sugiere FR 10, VT 6-8 mL/kg, PEEP 0-5, alarma de presión a 60-70 cmH2O y sin disparo por el paciente; si no ventila bien, bolsa. El modo RCP del SAVe no es exactamente eso: ventila solo cuando se pulsa <kbd>MANUAL TRIGGER</kbd> y limita la PIP a 20, así que con las compresiones puede saltar <span class="msg">PIP REACHED</span> y recortarse el volumen. El fabricante lo pensó <b>sobre todo para el 30:2 con mascarilla</b> [33]. <b>Su dirección médica decide si usan el SAVe en modo RCP o la bolsa, y cuál es la PIP máxima.</b> Si PIP REACHED se repite o el tórax no sube → <b>bolsa conectada al tubo</b>, 10/min.</li>
+<li><b>Con supraglótico:</b> si la fuga impide ventilar, se vuelve al 30:2 (guías ERC 2025, soporte vital avanzado).</li>
 <li>Alarma <span class="msg">BREATH</span>: han pasado 30 s sin una respiración.</li>
 <li><b>Si recupera el pulso, salgan del modo RCP:</b> suban la FR por encima de 0 (por ejemplo, con el botón de altura) → <kbd>CONFIRM</kbd>. En modo RCP no ventila solo. <i>Comprueben en su equipo que el botón de altura sale del modo RCP.</i></li>
 </ul>
@@ -128,7 +130,7 @@
 <li><b>E</b>quipo.</li>
 </ul>Si salta al final de la inspiración (pulmón rígido): bajar el VT y subir la FR, por orden médica. Si persiste o no hay causa clara → desconectar y bolsa [38-43]</td></tr>
 <tr><td><span class="msg">LOW PEEP</span></td><td>No se alcanza la PEEP fijada</td><td>Sí</td><td>Busquen una fuga</td></tr>
-<tr><td><span class="msg">BREATH ASSIST</span></td><td>El paciente dispara la respiración</td><td>Sí</td><td>Durante compresiones → modo RCP (FR 0)</td></tr>
+<tr><td><span class="msg">BREATH ASSIST</span></td><td>El paciente dispara la respiración</td><td>Sí</td><td>Durante compresiones → modo RCP (FR 0) (guías ERC 2025, soporte vital avanzado: sin disparo por el paciente en la RCP)</td></tr>
 <tr><td><span class="msg">HIGH MV</span></td><td>Combinación de FR y VT demasiado alta</td><td>Sí, pero bloquea esa combinación</td><td>Ajusten primero el parámetro que baja</td></tr>
 <tr><td><span class="msg">BREATH</span></td><td>Modo RCP con 30 s sin respiración</td><td>—</td><td><kbd>MANUAL TRIGGER</kbd></td></tr>
 <tr><td><span class="msg">HIGH PEEP</span></td><td>Aire atrapado o salida tapada</td><td><b>NO</b></td><td>
@@ -177,5 +179,5 @@
 <li>Poner a cargar.</li>
 <li>Si está guardado, revisar y cargar la batería cada 6 meses. Revisión técnica anual. No abrirlo.</li>
 </ul>
-<p class="src">Fuentes: SAVe II+ Operator's Manual – Instructions for Use, M42110 Rev 5.3 (AutoMedx, 2021), según un extracto documentado; ficha de producto Safeguard Medical SGM-MKT-SV2P-01 Rev 001; FDA 510(k) K131877; guías ERC. Material docente de elaboración propia (H. García), v3 · 10/2026. No sustituye al manual oficial.</p>
+<p class="src">Fuentes: SAVe II+ Operator's Manual – Instructions for Use, M42110 Rev 5.3 (AutoMedx, 2021), según un extracto documentado; ficha de producto Safeguard Medical SGM-MKT-SV2P-01 Rev 001; FDA 510(k) K131877; guías ERC 2025. Material docente de elaboración propia (H. García), v3 · 10/2026. No sustituye al manual oficial.</p>
 </div>

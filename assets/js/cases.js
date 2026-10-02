@@ -10,7 +10,7 @@ window.CASES=[
  {text:'<p>Un estudiante les avisa: un hombre de unos 58 años se ha desplomado en la plaza del campus. Un testigo hace compresiones. Llegan a los 3 minutos.</p><p>No responde y hace <i>gasping</i>.</p>',
   options:[
    {t:'Confirmo la parada, sigo con compresiones de calidad, enciendo el LIFEPAK y coloco los parches',ok:true,fb:'Correcto: respiración agónica = parada. Compresiones sin interrupciones mientras otro prepara el desfibrilador.'},
-   {t:'Busco el pulso carotídeo durante 30 s antes de hacer nada',fb:'No. Si no responde y no respira con normalidad, es una parada. Comprobar el pulso no debe pasar de 10 s ni retrasar la RCP.'},
+   {t:'Busco el pulso carotídeo durante 30 s antes de hacer nada',fb:'No. Si no responde y no respira con normalidad (el gasping cuenta), es una parada: no hay que buscar el pulso para empezar la RCP (guías ERC 2025, soporte vital básico).'},
    {t:'Lo meto primero en la ambulancia para trabajar más cómodos',fb:'No. La desfibrilación precoz en el lugar es lo que salva. El traslado viene después.'}]},
  {text:'<p>Su compañero sigue con las compresiones. Preparen el LIFEPAK en modo DEA.</p>',
   hl:['lp:ON','acc:pads','lp:ANALYZE'],goal:'Enciendan el equipo, coloquen los parches y pidan que se analice el ritmo con nadie tocando al paciente.',
@@ -36,10 +36,10 @@ window.CASES=[
  {text:'<p>12 derivaciones: <b>elevación del ST en la cara inferior</b>. Constantes: TA 108/64, SpO2 93 %.</p><p>¿Qué es lo más importante ahora?</p>',
   options:[
    {t:'Imprimir el CODE SUMMARY, trasladar a un hospital con hemodinámica y preavisar con el ECG',ok:true,fb:'Correcto. El papel viaja con el paciente: 12 derivaciones y CODE SUMMARY.'},
-   {t:'Quitar los parches para que esté más cómodo durante el traslado',fb:'No. Tras una parada, los parches se quedan puestos: puede volver a fibrilar.'},
+   {t:'Quitar los parches para que esté más cómodo durante el traslado',fb:'No. Tras una parada, los parches se quedan puestos (criterio del autor): puede volver a fibrilar.'},
    {t:'Ir al hospital más cercano aunque no tenga hemodinámica, sin avisar',fb:'Con un IAM con elevación del ST tras una parada, lo indicado es un centro con capacidad de reperfusión y preaviso, según su red.'}]}
  ],
- debrief:['Gasping = parada: compresiones y desfibrilador sin perder tiempo.','En el análisis, nadie toca al paciente: ni compresiones ni ambulancia en marcha.','Tras la descarga, compresiones inmediatas durante 2 min. El pulso se comprueba después.','Tras la RCE: los parches se quedan, 12 derivaciones con el vehículo parado y CODE SUMMARY impreso.']},
+ debrief:['Gasping = parada: compresiones y desfibrilador sin perder tiempo.','En el análisis, nadie toca al paciente: ni compresiones ni ambulancia en marcha.','Tras la descarga, compresiones inmediatas durante 2 min. El pulso se comprueba después.','Tras la RCE: los parches se quedan (criterio del autor), 12 derivaciones con el vehículo parado y CODE SUMMARY impreso.','Tras la RCE: O2 para una SpO2 de 94-98 % y PAS > 100 mmHg (guías ERC 2025, soporte vital avanzado y cuidados posresucitación).']},
 
 /* ===================== 2 · Marcapasos ===================== */
 {id:'marcapasos',title:'Bradicardia que no espera',tag:'LIFEPAK 12',mod:'lp12',level:'Avanzado · personal acreditado',min:8,
@@ -50,7 +50,7 @@ window.CASES=[
  {text:'<p>Mujer de 79 años, mareada, sudorosa y casi inconsciente. Piel fría.</p>',hl:['lp:ON','acc:ecg','acc:spo2','acc:cuff','lp:NIBP'],goal:'Enciendan el LIFEPAK y monitoricen: ECG, SpO2 y tensión arterial.',
   hints:['ON, y coloquen el cable de ECG, el sensor de SpO2 y el manguito.','Pulsen NIBP para medir la tensión.'],
   react:(ev,S)=>{if(ev.type==='nibp')S.f.bp=1;},check:S=>S.lp.on&&S.acc.ecg&&S.acc.spo2&&S.f.bp,success:'FC 32, TA 72/40. Bloqueo AV completo con QRS ancho.'},
- {text:'<p>FC 32 lpm, TA 72/40 y nivel de conciencia bajo. Según su protocolo, el médico regulador ordena marcapasos transcutáneo tras los fármacos indicados, que no han funcionado.</p><p>¿Qué necesitan antes de empezar?</p>',
+ {text:'<p>FC 32 lpm, TA 72/40 y nivel de conciencia bajo. Según su protocolo, el médico regulador ordena marcapasos transcutáneo porque los fármacos que ha indicado no han funcionado.</p><p>¿Qué necesitan antes de empezar?</p>',
   options:[
    {t:'Parches colocados y también el cable de ECG, y avisar a la paciente porque va a doler (analgesia por orden médica)',ok:true,fb:'Correcto. Con el cable de ECG puesto, el marcapasos funciona a demanda. Duele: analgesia según la orden médica.'},
    {t:'Solo los parches: el cable de ECG sobra cuando hay marcapasos',fb:'No. Sin el ECG, o si se suelta un electrodo, estimula a frecuencia fija, a ciegas, sin tener en cuenta el ritmo propio.'},
@@ -81,15 +81,15 @@ window.CASES=[
    {t:'Parches puestos, SYNC activado y comprobar que aparece una marca sobre cada QRS',ok:true,fb:'Correcto. Sin marcas sobre los QRS no se cardiovierte: cambien de derivación o suban el tamaño.'},
    {t:'Descargar en modo DEA, que es más rápido',fb:'No. El modo DEA es para la parada. Este paciente tiene pulso: necesita una descarga sincronizada en modo manual.'},
    {t:'Descargar sin SYNC a 360 J',fb:'No. Una descarga no sincronizada en un paciente con pulso puede provocar una FV.'}]},
- {text:'<p>Parches y cable de ECG colocados.</p>',onEnter:(S)=>{S.acc.pads=true;S.acc.ecg=true;},hl:['lp:ON','lp:SYNC','lp:ENERGY-','lp:CHARGE'],goal:'Preparen la cardioversión: SYNC, energía inicial según el protocolo (ERC: 70-120 J en taquicardia regular de QRS estrecho; en este equipo, 100 J) y carga.',
+ {text:'<p>Parches y cable de ECG colocados.</p>',onEnter:(S)=>{S.acc.pads=true;S.acc.ecg=true;},hl:['lp:ON','lp:SYNC','lp:ENERGY-','lp:CHARGE'],goal:'Preparen la cardioversión: SYNC, energía inicial según el protocolo (guías ERC 2025, soporte vital avanzado: 70-120 J en taquicardia regular de QRS estrecho; en este equipo, 100 J) y carga.',
   hints:['SYNC → ENERGY SELECT ▼ hasta 100 J → CHARGE.','Comprueben que los triángulos blancos caen sobre cada QRS y no sobre la T.'],
   check:S=>S.lp.sync&&S.lp.charged&&S.lp.energy>=70&&S.lp.energy<=125,success:'Cargado y en SYNC, con marcas sobre los QRS.'},
  {text:'<p>Equipo cargado en SYNC.</p>',hl:['acc:clear','lp:SHOCK'],goal:'Descarguen.',hints:['"¡Fuera todos!" y SHOCK. En el equipo real hay que mantener pulsado SHOCK hasta que descargue con el siguiente QRS.'],
   react:(ev,S,c)=>{if(ev.type==='shock'&&ev.sync){S.f.cv=1;c.after(1200,()=>{c.setPt({rhythm:'vf',pulse:false,hr:0,spo2:null});c.log('El paciente pasa a FV');});}if(ev.type==='shock'&&!ev.sync)return['no','Esa descarga no estaba sincronizada.'];},
   check:S=>S.f.cv,success:'Descarga sincronizada administrada.'},
  {text:'<p>Tras la descarga, el ritmo cambia: <b>fibrilación ventricular</b>. Ya no tiene pulso.</p>',hl:['lp:SYNC','lp:ENERGY+','lp:CHARGE','acc:clear','lp:SHOCK'],goal:'Desfibrilen: es una FV.',
-  hints:['En SYNC no descargará: no hay QRS. Desactiven SYNC.','Comprueben si su equipo deja SYNC activo tras la descarga (opción SYNC AFTER SHOCK).','SYNC desactivado → ENERGY SELECT ▲ hasta la energía de desfibrilación del protocolo (guías ERC: al menos 150 J en bifásico) → CHARGE → "¡fuera todos!" → SHOCK.'],
-  react:(ev,S,c)=>{if(ev.type==='shock'&&!ev.sync&&ev.energy<150)return['no','Esa energía es la de la cardioversión. Para una FV, la de desfibrilación del protocolo: las guías ERC indican al menos 150 J en bifásico. Sigue en FV: suban la energía con ENERGY SELECT ▲ y vuelvan a cargar.'];if(ev.type==='shock'&&!ev.sync){c.setPt({rhythm:'sinus',hr:92,pulse:true,sbp:110,dbp:70,spo2:96});S.f.df=1;}},
+  hints:['En SYNC no descargará: no hay QRS. Desactiven SYNC.','Comprueben si su equipo deja SYNC activo tras la descarga (opción SYNC AFTER SHOCK).','SYNC desactivado → ENERGY SELECT ▲ hasta la energía de desfibrilación del protocolo (guías ERC 2025, soporte vital avanzado: al menos 150 J en bifásico) → CHARGE → "¡fuera todos!" → SHOCK.'],
+  react:(ev,S,c)=>{if(ev.type==='shock'&&!ev.sync&&ev.energy<150)return['no','Esa energía es la de la cardioversión. Para una FV, la de desfibrilación del protocolo: las guías ERC 2025 (soporte vital avanzado) indican al menos 150 J en bifásico. Sigue en FV: suban la energía con ENERGY SELECT ▲ y vuelvan a cargar.'];if(ev.type==='shock'&&!ev.sync){c.setPt({rhythm:'sinus',hr:92,pulse:true,sbp:110,dbp:70,spo2:96});S.f.df=1;}},
   check:S=>S.f.df,success:'Desfibrilación administrada → ritmo sinusal con pulso.'},
  {text:'<p>Ritmo sinusal a 92, TA 110/70.</p><p>¿Qué deben recordar para la próxima cardioversión?</p>',
   options:[
@@ -176,7 +176,7 @@ window.CASES=[
   hints:['Pulsen − debajo de FR hasta 0 (de 8 pasa a 0) → CONFIRM.','Después, MANUAL TRIGGER cada 6 s.'],
   check:S=>S.sv.rr===0&&!S.sv.pend&&S.sv.trig>0,success:'Modo RCP: PIP 20, sin PEEP, ♥ a 100/min. Una respiración cada 6 s.'},
  {text:'<p>Vehículo parado y parches ya colocados.</p>',hl:['acc:clear','lp:ANALYZE','lp:SHOCK'],goal:'Analicen el ritmo y descarguen de forma segura.',
-  hints:['Paren las compresiones ("¡Fuera todos!") y pulsen ANALYZE.','Cuando cargue: "¡Fuera todos!" y SHOCK. Cierren o aparten el O2 libre del reservorio; el SAVe puede quedar conectado al tubo si su dirección médica lo acepta.'],
+  hints:['Paren las compresiones ("¡Fuera todos!") y pulsen ANALYZE.','Cuando cargue: "¡Fuera todos!" y SHOCK. Cierren o aparten el O2 libre del reservorio; el SAVe se queda conectado al tubo, con su salida apartada del tórax (guías ERC 2025, soporte vital avanzado; confírmenlo con su dirección médica).'],
   react:(ev,S,c)=>{if(ev.type==='analysis'&&ev.result==='motion')return['no','Hay movimiento: compresiones paradas y vehículo detenido durante el análisis.'];if(ev.type==='shock'){S.f.sh=1;c.setPt({rhythm:'sinus',hr:100});}},
   check:S=>S.f.sh,success:'Descarga administrada.'},
  {text:'<p><span class="msg">START CPR</span>.</p>',hl:['acc:cpr','acc:adv2'],goal:'Reanuden las compresiones y completen 2 minutos con ventilación cada 6 s.',
@@ -224,33 +224,33 @@ window.CASES=[
   react:(ev,S)=>{if(ev.type==='nibp')S.f.bp=1;},check:S=>S.acc.spo2&&S.acc.ecg&&S.f.bp,success:'SpO2 98 %, FC 118 y TA 104/66.'},
  {text:'<p>El LIFEPAK marca una <b>SpO2 de 98 %</b>.</p>',
   options:[
-   {t:'No me fío: con monóxido de carbono la SpO2 puede salir normal aunque haya hipoxia. O2 al máximo con mascarilla reservorio',ok:true,fb:'Correcto. El pulsioxímetro no distingue la carboxihemoglobina.',effect:(S)=>{S.acc.o2=true;}},
+   {t:'No me fío: con monóxido de carbono la SpO2 puede salir normal aunque haya hipoxia. O2 al máximo con mascarilla reservorio',ok:true,fb:'Correcto. El pulsioxímetro no distingue la carboxihemoglobina [LP12 3-17]. O2 al máximo con mascarilla reservorio (criterio del autor).',effect:(S)=>{S.acc.o2=true;}},
    {t:'98 % es normal: no necesita oxígeno',fb:'Error peligroso. Con CO, la SpO2 engaña. Hay que dar O2 al máximo.'}]},
  {text:'<p>Empeora y el equipo médico decide asegurar la vía aérea y ventilar.</p><p>¿Dónde y cómo?</p>',
   options:[
    {t:'Fuera de la zona de humo. Si se usa el SAVe, con el O2 al tubo reservorio (flujo = volumen minuto)',ok:true,fb:'Correcto. El SAVe ventila el aire que lo rodea, y su filtro no retiene humo ni gases.'},
    {t:'Dentro del apartamento, cuanto antes, con el SAVe sin O2',fb:'No. En una zona con humo, el SAVe metería humo en los pulmones.'}]}
  ],
- debrief:['Con humo o CO, la SpO2 puede ser falsamente normal: O2 al máximo y traslado precoz.','Nunca ventilar con el SAVe dentro de una zona con humo o gases.','Vigilen el ECG: el CO también afecta al corazón.']},
+ debrief:['Con humo o CO, la SpO2 puede ser falsamente normal [LP12 3-17]: O2 al máximo con mascarilla reservorio y traslado precoz (criterio del autor).','Nunca ventilar con el SAVe dentro de una zona con humo o gases.','Vigilen el ECG: el CO también afecta al corazón.']},
 
 /* ===================== 9 · Pediátrico ===================== */
 {id:'nino',title:'Niño ahogado en una piscina',tag:'Integración',mod:'int',level:'Decisión',min:3,
  summary:'Niño de 6 años en parada tras un ahogamiento. ¿Modo DEA? ¿SAVe?',
  devices:['lp12'],acc:[],start:{pt:{rhythm:'vf',hr:0,pulse:false,spo2:null,etco2:null,sbp:0,dbp:0},lp:{on:true},acc:{pads:true}},
  steps:[
- {text:'<p>Niño de 6 años (unos 20 kg) sacado de una piscina en parada. Hacen RCP con ventilaciones de rescate.</p><p>¿Usan el SAVe II+?</p>',
+ {text:'<p>Niño de 6 años (unos 20 kg) sacado de una piscina en parada. Hacen RCP: 5 ventilaciones de rescate con O2 al 100 % y después 15:2 (30:2 si no tienen formación pediátrica) (guías ERC 2025, soporte vital pediátrico).</p><p>¿Usan el SAVe II+?</p>',
   options:[
    {t:'No: pesa menos de 45 kg. Bolsa-mascarilla del tamaño adecuado',ok:true,fb:'Correcto. Por debajo de 45 kg, nunca el SAVe.'},
    {t:'Sí, eligiendo el preset más bajo (4\'3", 1,30 m)',fb:'No. El SAVe es solo para pacientes de 45 kg o más.'}]},
  {text:'<p>Monitor en FV. ¿Cómo desfibrilan con el LIFEPAK 12?</p>',
   options:[
-   {t:'Según el protocolo pediátrico de la dirección médica: modo manual si alguien está acreditado (ERC: 4 J/kg); si nadie lo está, la dirección médica debe haber decidido antes si se usa el LP12 en DEA con parches de adulto, porque es preferible a no desfibrilar',ok:true,fb:'Correcto. El modo DEA del LP12 no está diseñado para menores de 8 años. La decisión debe estar tomada de antemano.'},
+   {t:'Según el protocolo pediátrico de la dirección médica: modo manual si alguien está acreditado (4 J/kg); si nadie lo está, el LP12 en DEA con parches de adulto, si así lo ha decidido antes la dirección médica',ok:true,fb:'Correcto. El fabricante no diseñó el modo DEA del LP12 para menores de 8 años [pref.], pero las guías ERC 2025 (soporte vital pediátrico) recomiendan el DEA a cualquier edad, en modo adulto si no tiene modo pediátrico. La decisión debe estar tomada de antemano.'},
    {t:'No se puede desfibrilar a un niño con este equipo',fb:'No. Hay que desfibrilar: lo que cambia es cómo, según su protocolo pediátrico.'},
    {t:'Modo DEA con parches pediátricos',fb:'Con 20 kg, los parches pediátricos (para menos de 15 kg) no valen: van los de adulto. Y el uso del DEA en menores de 8 años debe estar decidido por su dirección médica.'}]},
  {text:'<p>Pesa unos 20 kg. ¿Qué parches QUIK-COMBO?</p>',
   options:[
-   {t:'Los de adulto: los pediátricos son para menos de 15 kg',ok:true,fb:'Correcto, según el manual del LP12. Asegúrense de que no se toquen entre sí; si el tórax es pequeño, posición anteroposterior en modo manual.'},
+   {t:'Los de adulto: los pediátricos son para menos de 15 kg',ok:true,fb:'Correcto, según el manual del LP12 [5-3]. Que no se toquen entre sí. Las guías ERC 2025 (soporte vital pediátrico) prefieren la posición anteroposterior por debajo de 25 kg, pero el fabricante no la admite en modo DEA [4-3]: en manual, anteroposterior; en DEA, lo que diga su protocolo.'},
    {t:'Los pediátricos, porque es un niño',fb:'El manual fija los pediátricos para menos de 15 kg. Con 20 kg, los de adulto.'}]}
  ],
- debrief:['Menos de 45 kg: nunca el SAVe. Bolsa del tamaño adecuado.','Menor de 8 años: el modo DEA del LP12 no está diseñado para él. Hay que tener el protocolo pediátrico decidido de antemano.','Parches pediátricos por debajo de 15 kg.']}
+ debrief:['Menos de 45 kg: nunca el SAVe. Bolsa del tamaño adecuado.','Menor de 8 años: el fabricante no diseñó el modo DEA del LP12 para él, pero las guías ERC 2025 recomiendan el DEA a cualquier edad. Hay que tener el protocolo pediátrico decidido de antemano.','Parches pediátricos por debajo de 15 kg [LP12 5-3].','En el ahogamiento lo primero es ventilar. La FV es rara (menos del 10 %); secar el tórax antes de los parches (guías ERC 2025, soporte vital pediátrico y circunstancias especiales).']}
 ];

@@ -80,7 +80,7 @@ Probar en local: `python3 -m http.server 8765` y abrir `http://localhost:8765`. 
 
 - **LIFEPAK 12** Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (ed. 2008-2015). Material cotejado con esta edición (01-10-2026). En la auditoría v3 (02-10-2026) se revisaron 27 citas con el PDF y se corrigieron las páginas desfasadas; el resto de citas no se ha vuelto a cotejar una por una.
 - **SAVe II+** Operator's Manual M42110 Rev 5.3 (2021), a partir de un extracto documentado, más la ficha de Safeguard SGM-MKT-SV2P-01 y la FDA 510(k) K131877. **No hay manual completo:** las páginas citadas del SAVe están pendientes de cotejar.
-- Guías ERC, para el criterio clínico.
+- **Guías ERC 2025** (*Resuscitation* 2025;215 supl. 1), para el criterio clínico. En la web se citan como «guías ERC 2025, <capítulo>». Revisión de la web frente a ellas en `REVISION_ERC2025.md` (03-10-2026, aplicada entera).
 
 ## Paneles: corregir con las fotos de referencia (02-10-2026)
 
@@ -102,11 +102,12 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
   - indicadores ADULT PRESETS y USER DEFINED;
   - abajo, 4 displays (FR, VT, PIP, PEEP), cada uno con sus botones **− +** debajo.
 
-## Estado (02-10-2026)
+## Estado (03-10-2026)
 
 - v3 publicada en GitHub Pages (https://hipolitogarciam.github.io/formacion-bomberos-ucv/):
   - tratamiento de "ustedes", navegación con «Siguiente», paneles y simulador con la disposición real, infografías A4 en HTML, checklist de inicio de guardia, paleta B;
   - auditoría independiente (`AUDITORIA_v3.md`) con todos sus hallazgos corregidos;
+  - contenido de reanimación revisado frente a las guías ERC 2025 (`REVISION_ERC2025.md`, 33 temas, todo aplicado; v3.14). Corregido también un dato del LP12: energías del DEA 150-360 J [9-6], no 100-360 J;
   - los 9 casos se completan de principio a fin; consola limpia; sin scroll horizontal a 390 px.
 - **Pendiente técnico:**
   - fotos reales;
@@ -115,10 +116,13 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
   - comprobar el service worker por https (caché sin conexión y espera máxima de 4 s a la red);
   - cotejar con el PDF las citas del LP12 que no se revisaron en la auditoría.
 - **Pendiente de la dirección médica o del equipo físico:**
-  - política de DEA en menores de 8 años;
+  - política de DEA en menores de 8 años (la ERC 2025 lo recomienda a cualquier edad, el fabricante del LP12 no; y la anteroposterior por debajo de 25 kg, que el LP12 no admite en DEA);
   - acreditación para las terapias manuales;
   - SAVe o bolsa en la RCP con tubo;
-  - si el SAVe sigue conectado al tubo durante la descarga;
+  - SAVe conectado al tubo durante la descarga: la ERC 2025 (SVA) lo recomienda; falta confirmar que el fabricante del SAVe no lo contraindica;
+  - SAVe en modo RCP o bolsa con tubo, y PIP máxima en la RCP (la ERC 2025 sugiere alarma a 60-70 cmH2O; la web dice 35 fuera de la RCP);
+  - flujo de O2 en modo RCP = 10 × VT (criterio del autor, pendiente de confirmar);
+  - LP12 bifásico o monofásico (etiqueta) y versión de software;
   - si el LP12 lleva la opción de EtCO2;
   - imprimir la configuración del LP12 (secuencia del DEA, MANUAL ACCESS, SYNC AFTER SHOCK);
   - etiqueta y firmware del SAVe;
