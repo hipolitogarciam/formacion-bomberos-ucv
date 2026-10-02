@@ -1,0 +1,29 @@
+/* Infografías A4 imprimibles (página clara: es un documento para imprimir) */
+@font-face{font-family:Barlow;font-weight:400;font-display:swap;src:url(../fonts/barlow-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Barlow;font-weight:700;font-display:swap;src:url(../fonts/barlow-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Barlow Semi Condensed';font-weight:600;font-display:swap;src:url(../fonts/barlow-semi-condensed-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Barlow Semi Condensed';font-weight:700;font-display:swap;src:url(../fonts/barlow-semi-condensed-latin-700-normal.woff2) format('woff2')}
+:root{--ink:#0E1A2B;--muted:#4A5868;--teal:#0E7C86;--line:#C9D3DC}
+*{box-sizing:border-box}
+html,body{margin:0;background:#D9DEE3;color:var(--ink);font-family:Barlow,system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.bar{display:flex;gap:10px;justify-content:center;padding:10px}
+.bar button,.bar a{font:700 15px Barlow,sans-serif;border:0;border-radius:10px;padding:9px 16px;background:var(--teal);color:#fff;text-decoration:none;cursor:pointer}
+.bar a{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.wrap{max-width:calc(100% - 12px);width:210mm;margin:0 auto 16px;overflow:hidden}
+.page{position:relative;width:210mm;height:297mm;margin:0;background:#fff;padding:8mm 7mm 7mm;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,.18);overflow:hidden}
+header h1{font:700 21pt/1 'Barlow Semi Condensed',Barlow,sans-serif;margin:0 0 1.5mm;color:var(--teal)}
+header p{margin:0 0 3mm;font-size:8.6pt;color:var(--muted)}
+.stage{flex:1;display:grid;grid-template-columns:49mm 1fr 49mm;gap:5mm;min-height:0}
+.col{display:flex;flex-direction:column;justify-content:space-around;gap:1.6mm}
+.mid{display:flex;align-items:center}
+.mid .panelsvg{width:100%;height:auto;color:#555}
+.call{border:.35mm solid var(--teal);border-radius:2mm;padding:1.1mm 1.6mm;font-size:6.9pt;line-height:1.22;background:#fff;position:relative;z-index:2}
+.call b{font:700 7.6pt 'Barlow Semi Condensed',Barlow,sans-serif;color:var(--teal)}
+.call small{color:var(--muted);font-size:6.2pt;white-space:nowrap}
+.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+footer{margin-top:3mm;border-top:.3mm solid var(--line);padding-top:1.6mm;font-size:6.6pt;color:var(--muted)}
+footer p{margin:0 0 .6mm}
+@page{size:A4;margin:0}
+@media print{html,body{background:#fff}.bar{display:none}.page{box-shadow:none}}
+.embed html,.embed{background:#fff}.embed .bar{display:none}.embed .page{margin:0;box-shadow:none}.embed .wrap{max-width:none;margin:0}
+@media print{.page{transform:none!important;margin:0!important}.wrap{height:auto!important;max-width:none;margin:0;overflow:visible}}

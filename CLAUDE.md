@@ -42,7 +42,8 @@ assets/js/cases.js           CASES: los 9 casos (texto, opciones, check(S), reac
 assets/js/sim.js             Simulador: ECG en canvas, LP12 virtual, SAVe virtual, motor de casos
 assets/js/app.js             Router por hash (#/, #/m/lp12/manual, #/casos, #/caso/<id>, #/acerca)
 content/manual-*.html        Manuales de bolsillo (fragmentos HTML que se cargan con fetch)
-assets/docs/                 Infografías (PDF para descargar, JPG para ver)
+assets/docs/                 Infografías: infografia-lp12.html e infografia-save.html (A4 imprimibles, usan PANELS); la de integración en PDF y JPG
+assets/js/infografia.js      Genera las infografías A4 (panel en el centro y flechas a los cuadros)
 assets/img/fotos/            Fotos REALES de los equipos (ver LEEME.md); se activan en window.PHOTOS
 sw.js                        Service worker (caché sin conexión)
 manifest.webmanifest         PWA

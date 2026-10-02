@@ -24,6 +24,7 @@ function route(){
   if(parts[0]==='casos')return casos();
   if(parts[0]==='caso')return caso(parts[1]);
   if(parts[0]==='acerca')return acerca();
+  if(parts[0]==='checklist')return checklist();
   home();
 }
 addEventListener('hashchange',route);
@@ -54,7 +55,7 @@ function mod(id,tab){
   document.title=`Módulo ${m.n} · ${m.title}`;
   const tabs=TABS.filter(t=>t[0]!=='panel'||m.panel);
   if(!tabs.some(t=>t[0]===tab))tab='inicio';
-  app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › Módulo ${m.n}</div>
+  app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › Módulo ${m.n}<a class="cklink" href="#/checklist">📋 Checklist de inicio de guardia</a></div>
    <div class="mod-n">Módulo ${m.n} · ${m.sub}</div><h1>${m.title}</h1>
    <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" class="${t[0]===tab?'on':''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
    <div id="tab"></div><div class="next" id="tabnext"></div>`;
@@ -99,7 +100,17 @@ function tPanel(m,T){
   T.querySelectorAll('.hot').forEach(g=>{g.addEventListener('click',()=>show(g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(g);}});});
   photos(T);
 }
+function fitA4(a){const f=a.querySelector('iframe');if(f)f.style.transform=`scale(${a.clientWidth/794})`;}
+addEventListener('resize',()=>{const a=document.getElementById('a4');if(a)fitA4(a);});
 function tInfo(m,T){
+  if(m.infoHtml){
+    T.innerHTML=`<p>Infografía A4 de consulta rápida: el panel del ${m.title} con lo que hace cada botón. Imprímanla o guárdenla en PDF y llévenla en la ambulancia.</p>
+     <div class="row" style="margin-bottom:12px"><button class="btn" type="button" id="iprint">Imprimir o guardar en PDF</button><a class="btn alt" href="${m.infoHtml}" target="_blank" rel="noopener">Abrir en pantalla completa</a></div>
+     <div class="card" style="padding:8px"><div class="a4" id="a4"><iframe src="${m.infoHtml}?embed" title="Infografía ${esc(m.title)}"></iframe></div></div>`;
+    const a=document.getElementById('a4'),f=a.querySelector('iframe');fitA4(a);
+    document.getElementById('iprint').onclick=()=>{try{f.contentWindow.print();}catch(e){open(m.infoHtml,'_blank');}};
+    return;
+  }
   T.innerHTML=`<p>Infografía A4 de consulta rápida. Imprímanla y llévenla en la ambulancia.</p>
    <div class="row" style="margin-bottom:12px"><a class="btn" href="${m.info}.pdf" download>Descargar PDF</a><a class="btn alt" href="${m.info}.jpg" target="_blank" rel="noopener">Ver en grande</a></div>
    <div class="card" style="padding:8px"><img src="${m.info}.jpg" alt="Infografía ${esc(m.title)}" loading="lazy" style="width:100%;border-radius:8px"></div>`;
@@ -143,6 +154,69 @@ function caso(id){
    <li><b>Equipos:</b> los botones tienen la misma disposición que el equipo real. En el LIFEPAK, ENERGY SELECT, RATE y CURRENT tienen su ▼ y su ▲. En el SAVe, cada display (FR, VT, PIP y PEEP) tiene sus − + debajo, y nada se aplica sin CONFIRM.</li><li><b>Pista:</b> además del consejo, resalta con un borde naranja los botones y acciones que tocan.</li><li><b>En el celular</b>, el monitor queda fijo arriba y solo se abre el equipo que se usa en cada paso; el otro se puede abrir tocando su nombre.</li>
    <li>Los tiempos van acelerados: el análisis, la carga y la PNI duran unos segundos, y el botón ⏩ adelanta 2 min de RCP.</li></ul></details>`;
   simInst=SIM.create(document.getElementById('simroot'),c,{back:'#/casos'});
+}
+
+/* ---------- Checklist de inicio de guardia (imprimible en A4) ---------- */
+const CK={
+ lp12:[ // Adaptación del "Operator's Checklist", Apéndice C del manual del LIFEPAK 12 (MIN 3207254-033)
+  ['1','<b>Aspecto:</b> sin suciedad ni sustancias extrañas.','Limpiar el equipo.'],
+  ['','Sin golpes ni grietas.','Avisar al servicio técnico.'],
+  ['2','<b>Baterías:</b> contactos (pines) sin roturas, holguras ni desgaste.','Avisar al servicio técnico.'],
+  ['','Ninguna batería dañada ni con fugas.','Retirarla y desecharla o reciclarla.'],
+  ['3','<b>Cable de ECG:</b> sin grietas, daños ni piezas o pines rotos o doblados.','Cambiar el cable de ECG.'],
+  ['4','<b>Parches y electrodos</b> (de ECG y de terapia) dentro de fecha.','Cambiar los caducados.'],
+  ['','Parches y electrodos de recambio disponibles.','Conseguir recambio.'],
+  ['5','<b>Encendido:</b> con la batería puesta, desconectar de la red (si está conectado), <b>esperar al menos 2 s</b> y pulsar <kbd>ON</kbd>. Se encienden un momento los LED y salen los mensajes de autotest.','Si no aparecen: avisar al servicio técnico.'],
+  ['','No sale <span class="msg">LOW BATTERY</span> ni <span class="msg">REPLACE BATTERY</span>.','Cambiar la batería en ese momento.'],
+  ['','Hay <b>2 baterías cargadas</b>.','Cambiar la batería baja.'],
+  ['','La luz <b>SERVICE</b> está apagada (en el equipo y en el adaptador de red).','Avisar al servicio técnico.'],
+  ['6','<b>Cable de terapia QUIK-COMBO</b> (modo manual): sin grietas, daños ni pines rotos o doblados.','Cambiar el cable QUIK-COMBO.'],
+  ['','Conectar el cable al equipo y a la <b>carga de prueba</b> (<i>Test Load</i>) → <b>200 J</b> → <kbd>CHARGE</kbd> → <kbd>SHOCK</kbd> → debe salir <span class="msg">ENERGY DELIVERED</span>. Al terminar, retirar la carga de prueba.','Si sale CONNECT ELECTRODES, PADDLES LEADS OFF o CONNECT CABLE, o no sale ENERGY DELIVERED: cambiar el cable y repetir. Si sigue: fuera de servicio y avisar.'],
+  ['','<b>Palas rígidas</b> (solo si se usan): cable y superficie de las palas sin daños, picaduras ni gel; derivación PADDLES; 10 J en las palas → CHARGE en las palas. Con <b>un solo</b> botón de descarga no debe descargar (probar cada uno). Con los dos: <span class="msg">ABNORMAL ENERGY DELIVERED</span> (bifásico) o <span class="msg">ENERGY NOT DELIVERED</span> (monofásico). Fuera de los soportes, artefacto en pantalla; palas juntas, línea plana.','Si falla: cambiar las palas o el cable y repetir. Si sigue: fuera de servicio y avisar.'],
+  ['7','<b>User Test</b> (<kbd>OPTIONS</kbd>): se imprime el resultado.','Si falla: fuera de servicio y avisar al servicio técnico.'],
+  ['8','Volver a conectar a la red (si procede): cables del adaptador sin roturas ni desgaste.','Cambiar las piezas dañadas.'],
+  ['','LED del adaptador de red y luz <b>Batt Chg</b> del equipo encendidos.','Avisar al servicio técnico.'],
+  ['9','<b>Impresora:</b> papel suficiente.','Poner papel nuevo.'],
+  ['','La impresora imprime.','Si no: avisar al servicio técnico.'],
+  ['10','Apagar el equipo.','']
+ ],
+ save:[ // Criterio del autor, basado en el manual de bolsillo del SAVe II+
+  ['<b>Batería:</b> 4 LED encendidos (más del 75 %).','Cargarlo antes de salir: solo tiene cargador de red.'],
+  ['<b>Circuito</b> de recambio precintado y dentro de fecha.','Conseguir un circuito nuevo.'],
+  ['<b>Filtros</b> puestos y en buen estado.','Cambiarlos.'],
+  ['<b>Tubo reservorio</b> de O2.','Conseguirlo.'],
+  ['<b>HMEF</b> de recambio.','Conseguirlo.'],
+  ['<b>Cargador</b> de red disponible.','Conseguirlo.']
+ ],
+ comun:[ // Criterio del autor
+  ['<b>Bolsa-mascarilla con reservorio</b>, de adulto y pediátrica.','Reponer antes de salir: sin bolsa no se sale.'],
+  ['<b>Bombona de O2</b> con presión suficiente.','Cambiar la bombona.'],
+  ['<b>Caudalímetro</b>.','Conseguirlo.'],
+  ['<b>Aspirador</b> funcionando.','Cargarlo o cambiarlo.']
+ ]
+};
+function checklist(){
+  document.title='Checklist de inicio de guardia';
+  const row=(r,lp)=>{const [n,q,a]=lp?r:['',r[0],r[1]];return `<tr><td class="cb"><label><input type="checkbox"><span class="vh">Hecho</span></label></td>${lp?`<td class="n">${n}</td>`:''}<td>${q}</td><td class="fx">${a}</td></tr>`;};
+  const tbl=(rows,lp)=>`<table class="ckt"><tr><th class="cb">✔</th>${lp?'<th class="n">Paso</th>':''}<th>Comprobar</th><th class="fx">Si falla</th></tr>${rows.map(r=>row(r,lp)).join('')}</table>`;
+  app.innerHTML=`<div class="crumbs noprint"><a href="#/">Inicio</a> › Checklist de inicio de guardia</div>
+  <div class="row noprint" style="justify-content:space-between;align-items:center;margin-bottom:10px"><p class="lead" style="margin:0">Para revisar los equipos al empezar la guardia. Las casillas no se guardan: impriman la hoja o guárdenla en PDF.</p><button class="btn" type="button" onclick="window.print()">Imprimir o guardar en PDF</button></div>
+  <div class="cksheet">
+   <h1>Checklist de inicio de guardia</h1>
+   <div class="ckf"><span>Fecha: <i></i></span><span>Unidad: <i></i></span><span>Responsable: <i></i></span><span>N.º de serie del LP12: <i></i></span></div>
+   <h2>LIFEPAK 12</h2>
+   <p class="src">Adaptación al castellano del <i>Operator's Checklist</i> (Apéndice C) de las LIFEPAK 12 Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033. El fabricante permite reproducirlo y recomienda hacerlo a diario.</p>
+   ${tbl(CK.lp12,true)}
+   <div class="key red"><b>Si algo falla: equipo fuera de servicio y avisar.</b></div>
+   <div class="ck2"><div><h2>SAVe II+</h2>
+   <p class="src">Criterio del autor, basado en el manual de bolsillo del SAVe II+ (no hay checklist del fabricante en las fuentes disponibles).</p>
+   ${tbl(CK.save,false)}</div>
+   <div><h2>Material común</h2>
+   <p class="src">Criterio del autor.</p>
+   ${tbl(CK.comun,false)}</div></div>
+   <div class="ckf obs"><span>Observaciones: <i></i></span></div>
+   <p class="src">Material docente de elaboración propia (H. García). Manda el protocolo de su dirección médica.</p>
+  </div>`;
 }
 
 /* ---------- Acerca ---------- */
