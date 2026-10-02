@@ -33,22 +33,18 @@ function home(){
   document.title='Formación LIFEPAK 12 y SAVe II+ · Bomberos UCV';
   app.innerHTML=`
   <section class="hero">
-    <div class="kick">Formación asíncrona · Bomberos UCV</div>
+    <div class="kick">Web formativa</div>
     <h1>LIFEPAK 12 y SAVe II+ en la ambulancia</h1>
-    <p>Plan formativo en 3 módulos con manuales de bolsillo, esquemas interactivos de los equipos, infografías, vídeos y casos clínicos en los que manejáis los equipos virtuales.</p>
+    <p>Plan formativo en 3 módulos con manuales de bolsillo, esquemas interactivos de los equipos, infografías, vídeos y casos clínicos en los que manejan los equipos virtuales.</p>
     <div class="row"><a class="btn orange" href="#/m/lp12">Empezar por el módulo 1</a><a class="btn alt" href="#/casos">Ir a los casos clínicos</a></div>
     <svg class="deco" viewBox="0 0 200 100" fill="none" stroke="#3CC6D2" stroke-width="4"><path d="M0 60h50l10-30 15 60 15-80 12 50h98"/></svg>
   </section>
   <div class="section"><h2>Plan formativo</h2>
-  <p class="lead">Unas 3 horas en total, a vuestro ritmo. Se recomienda seguir el orden. Cada módulo termina con una autoevaluación y casos prácticos.</p>
+  <p class="lead">Se recomienda seguir el orden. Cada módulo termina con una autoevaluación y casos prácticos.</p>
   <ol class="plan">
    ${MODS.map(m=>`<li><b>Módulo ${m.n} · ${m.title}</b> <span class="pill">${m.sub}</span><br>${m.intro}<br><small>Vídeo (≈ 10-13 min) → manual de bolsillo → panel interactivo → infografía → casos → autoevaluación</small><br><a href="#/m/${m.id}">Abrir el módulo ${m.n} →</a></li>`).join('')}
-   <li><b>Práctica presencial con los equipos reales</b><br>Con vuestro instructor: checklist real, colocación de parches, puesta en marcha del SAVe con el circuito y prueba de alarmas. <b>Esta web no sustituye a la práctica ni a la acreditación.</b></li>
   </ol></div>
-  <div class="section"><h2>Módulos</h2><div class="grid g3">
-   ${MODS.map(m=>`<a class="card" href="#/m/${m.id}" style="border-top:5px solid ${m.color}"><div class="mod-n">Módulo ${m.n}</div><h3>${m.title}</h3><p>${m.intro}</p><span class="pill">${CASES.filter(c=>c.mod===m.id).length} casos · ${(QUIZ[m.id]||[]).length} preguntas</span></a>`).join('')}
-  </div></div>
-  <div class="section"><div class="card key"><b>Aviso importante.</b> Material docente de elaboración propia, basado en los manuales de los fabricantes. Las energías, quién usa las terapias manuales, los fármacos y la vía aérea los decide <b>vuestra dirección médica</b>. Comprobad la configuración y las opciones de vuestros equipos. <a href="#/acerca">Fuentes y límites</a>.</div></div>`;
+  <div class="section"><div class="card key"><b>Aviso importante.</b> Material docente de elaboración propia, basado en los manuales de los fabricantes. Las energías, quién usa las terapias manuales, los fármacos y la vía aérea los decide <b>su dirección médica</b>. Comprueben la configuración y las opciones de sus equipos. <b>Esta web no sustituye la formación práctica ni la acreditación.</b> <a href="#/acerca">Fuentes y límites</a>.</div></div>`;
 }
 
 /* ---------- Módulo ---------- */
@@ -99,7 +95,7 @@ function tPanel(m,T){
   }
   svg+='</svg>';
   T.innerHTML=`<p>Toca cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala; la disposición real puede variar según el modelo y las opciones.</small></p>
-   <div class="panelwrap"><div class="card" style="padding:10px">${svg}<div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}">📷 Aquí aparecerá la foto real de vuestro equipo cuando la añadáis.</div></div>
+   <div class="panelwrap"><div class="card" style="padding:10px">${svg}<div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}">📷 Aquí aparecerá la foto real de su equipo cuando la añadan.</div></div>
    <div class="card info" id="pinfo" aria-live="polite"><h3>${esc(P.title)}</h3><p>Selecciona un elemento del panel.</p></div></div>`;
   const info=document.getElementById('pinfo');
   const show=(g)=>{T.querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const h=P.hot.find(x=>x.id===g.dataset.id);info.innerHTML=`<h3>${h.l||'Pantalla'}</h3><p>${h.i}</p><p class="src">Manual oficial, pág. ${h.p}</p>`;if(innerWidth<860)info.scrollIntoView({behavior:'smooth',block:'nearest'});};
@@ -107,7 +103,7 @@ function tPanel(m,T){
   photos(T);
 }
 function tInfo(m,T){
-  T.innerHTML=`<p>Infografía A4 de consulta rápida. Imprimidla y llevadla en la ambulancia.</p>
+  T.innerHTML=`<p>Infografía A4 de consulta rápida. Imprímanla y llévenla en la ambulancia.</p>
    <div class="row" style="margin-bottom:12px"><a class="btn" href="${m.info}.pdf" download>Descargar PDF</a><a class="btn alt" href="${m.info}.jpg" target="_blank" rel="noopener">Ver en grande</a></div>
    <div class="card" style="padding:8px"><img src="${m.info}.jpg" alt="Infografía ${esc(m.title)}" loading="lazy" style="width:100%;border-radius:8px"></div>`;
 }
@@ -115,7 +111,7 @@ function tVideos(m,T){
   const list=VIDEOS[m.id]||[];
   T.innerHTML=`<div class="card" style="margin-bottom:14px"><h3>Vídeo de la sesión</h3>${loom(m.loom)}</div>
   <h3>Vídeos complementarios</h3>
-  <p class="muted">Material externo de consulta. Si no hay un vídeo concreto revisado, el enlace abre una búsqueda en YouTube: elegid vídeos de fuentes fiables (fabricante, sociedades científicas) y recordad que <b>manda vuestro protocolo</b>.</p>
+  <p class="muted">Material externo de consulta. Si no hay un vídeo concreto revisado, el enlace abre una búsqueda en YouTube: elijan vídeos de fuentes fiables (fabricante, sociedades científicas) y recuerden que <b>manda su protocolo</b>.</p>
   <div class="grid g2">${list.map(v=>{let link,body='';
     if(v.yt){body=`<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/${esc(v.yt)}" allowfullscreen loading="lazy" title="${esc(v.t)}"></iframe></div>`;link='';}
     else if(v.url)link=`<a href="${esc(v.url)}" target="_blank" rel="noopener">Abrir →</a>`;
@@ -123,7 +119,7 @@ function tVideos(m,T){
     return `<div class="card"><div class="vid"><div class="play">▶</div><div><b>${esc(v.t)}</b><br><small>${esc(v.fuente||(v.yt?'YouTube':'Búsqueda en YouTube'))}</small><br>${link}</div></div>${body}</div>`;}).join('')}</div>`;
 }
 function caseCard(c){return `<a class="card" href="#/caso/${c.id}"><div class="row" style="justify-content:space-between"><span class="pill ${c.mod==='save'?'o':''}">${c.tag}</span><small>${c.level} · ≈ ${c.min} min</small></div><h3 style="margin-top:8px">${esc(c.title)}</h3><p>${esc(c.summary)}</p><small>Equipos: ${c.devices.map(d=>d==='lp12'?'LIFEPAK 12':'SAVe II+').join(' + ')}</small></a>`;}
-function tCasos(m,T){const l=CASES.filter(c=>c.mod===m.id);T.innerHTML=`<p>En los casos manejáis los equipos virtuales: botones del LIFEPAK 12, del SAVe II+ y acciones sobre el paciente. Si os atascáis, pulsad <b>Pista</b>.</p><div class="grid g2">${l.map(caseCard).join('')}</div>`;}
+function tCasos(m,T){const l=CASES.filter(c=>c.mod===m.id);T.innerHTML=`<p>En los casos manejan los equipos virtuales: botones del LIFEPAK 12, del SAVe II+ y acciones sobre el paciente. Si se atascan, pulsen <b>Pista</b>.</p><div class="grid g2">${l.map(caseCard).join('')}</div>`;}
 function tTest(m,T){
   const Q=QUIZ[m.id]||[];let ok=0,ans=0;
   T.innerHTML=`<p>Autoevaluación: ${Q.length} preguntas. Las respuestas no se guardan ni se envían.</p><div id="qs"></div><div class="card" id="qres" style="display:none"></div>`;
@@ -136,7 +132,7 @@ function tTest(m,T){
 /* ---------- Casos ---------- */
 function casos(){
   document.title='Casos clínicos interactivos';
-  app.innerHTML=`<h1>Casos clínicos interactivos</h1><p class="lead">Situaciones realistas de ambulancia. Tomáis decisiones y manejáis el LIFEPAK 12 y el SAVe II+ virtuales. Son casos ficticios y el simulador está simplificado: no reproduce todo el comportamiento real de los equipos.</p>
+  app.innerHTML=`<h1>Casos clínicos interactivos</h1><p class="lead">Situaciones realistas de ambulancia. Toman decisiones y manejan el LIFEPAK 12 y el SAVe II+ virtuales. Son casos ficticios y el simulador está simplificado: no reproduce todo el comportamiento real de los equipos.</p>
   ${MODS.map(m=>`<div class="section"><h2>Módulo ${m.n} · ${m.title}</h2><div class="grid g2">${CASES.filter(c=>c.mod===m.id).map(caseCard).join('')}</div></div>`).join('')}`;
 }
 function caso(id){
@@ -146,7 +142,7 @@ function caso(id){
   app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › <a href="#/casos">Casos</a> › ${esc(c.title)}</div><div id="simroot"></div>
    <details class="card" style="margin-top:14px"><summary><b>Cómo funciona el simulador</b></summary><ul>
    <li>Lee el caso a la izquierda. Si hay opciones, elige una; si hay un 🎯 objetivo, hazlo con los botones de los equipos y las acciones.</li>
-   <li><b>Acciones</b>: lo que hacéis con las manos (parches, compresiones, "¡fuera todos!", mirar el tórax…). Las que tienen ○/✔ se activan y desactivan.</li>
+   <li><b>Acciones</b>: lo que hacen con las manos (parches, compresiones, "¡fuera todos!", mirar el tórax…). Las que tienen ○/✔ se activan y desactivan.</li>
    <li><b>SAVe:</b> toca un display (FR, VT, PIP o PEEP) para elegirlo y usa ▲▼. Nada se aplica sin CONFIRM.</li>
    <li>Los tiempos van acelerados: el análisis, la carga y la PNI duran unos segundos, y el botón ⏩ adelanta 2 min de RCP.</li></ul></details>`;
   simInst=SIM.create(document.getElementById('simroot'),c,{back:'#/casos'});
@@ -158,15 +154,15 @@ function acerca(){
   app.innerHTML=`<h1>Fuentes, límites y créditos</h1><div class="manual card">
   <h3>Fuentes</h3><ul>
    <li><b>LIFEPAK 12</b> Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (ed. 2008-2015). Todo el material del LIFEPAK 12 se ha cotejado con esta edición.</li>
-   <li><b>SAVe II+</b> Operator's Manual – Instructions for Use, M42110 Rev 5.3 (AutoMedx, 2021), a partir de un extracto documentado; ficha de producto Safeguard Medical SGM-MKT-SV2P-01 Rev 001; FDA 510(k) K131877. <b>No hemos podido conseguir el manual completo para cotejarlo</b>: comprobad la etiqueta (M50016) y el firmware de vuestro equipo.</li>
-   <li>Guías del European Resuscitation Council (ERC) para los aspectos clínicos. Comprobad la versión vigente.</li></ul>
+   <li><b>SAVe II+</b> Operator's Manual – Instructions for Use, M42110 Rev 5.3 (AutoMedx, 2021), a partir de un extracto documentado; ficha de producto Safeguard Medical SGM-MKT-SV2P-01 Rev 001; FDA 510(k) K131877. <b>No hemos podido conseguir el manual completo para cotejarlo</b>: comprueben la etiqueta (M50016) y el firmware de su equipo.</li>
+   <li>Guías del European Resuscitation Council (ERC) para los aspectos clínicos. Comprueben la versión vigente.</li></ul>
   <h3>Límites</h3><ul>
    <li>Material docente; no sustituye a los manuales oficiales, a la práctica presencial ni a la acreditación.</li>
    <li>Las energías, la indicación de las terapias manuales, los fármacos, la sedoanalgesia y la vía aérea los decide la dirección médica.</li>
-   <li>El LIFEPAK 12 es configurable: imprimid su configuración y revisad la secuencia del DEA, el acceso al modo manual, SYNC AFTER SHOCK y las alarmas.</li>
+   <li>El LIFEPAK 12 es configurable: impriman su configuración y revisen la secuencia del DEA, el acceso al modo manual, SYNC AFTER SHOCK y las alarmas.</li>
    <li>Los paneles son esquemas de elaboración propia, no a escala. Los casos son ficticios y el simulador está simplificado.</li></ul>
   <h3>Autoría</h3><p>Hipólito García, médico de Urgencias y Emergencias. Versión 2 · octubre de 2026. LIFEPAK, QUIK-COMBO y CODE SUMMARY son marcas de Physio-Control/Stryker; SAVe es una marca de AutoMedx/Safeguard Medical. Esta web no está afiliada a los fabricantes.</p>
-  <h3>Funciona sin conexión</h3><p>Tras la primera visita, la web queda guardada en el dispositivo y se puede consultar sin internet (salvo los vídeos). En el móvil, "Añadir a pantalla de inicio".</p>
+  <h3>Funciona sin conexión</h3><p>Tras la primera visita, la web queda guardada en el dispositivo y se puede consultar sin internet (salvo los vídeos). En el celular, "Añadir a pantalla de inicio".</p>
   <p class="src">Tipografía Barlow (SIL Open Font License).</p></div>`;
 }
 

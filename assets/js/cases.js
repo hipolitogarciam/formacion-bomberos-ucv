@@ -7,7 +7,7 @@ window.CASES=[
  devices:['lp12'],acc:['pads','cpr','clear','pulse','adv2','ecg12','spo2','cuff','moving'],
  start:{pt:{rhythm:'vf',hr:0,pulse:false,spo2:null,etco2:null,sbp:0,dbp:0}},
  steps:[
- {text:'<p>Un estudiante os avisa: un hombre de unos 58 años se ha desplomado en la plaza del campus. Un testigo hace compresiones. Llegáis a los 3 minutos.</p><p>No responde y hace <i>gasping</i>.</p>',
+ {text:'<p>Un estudiante les avisa: un hombre de unos 58 años se ha desplomado en la plaza del campus. Un testigo hace compresiones. Llegan a los 3 minutos.</p><p>No responde y hace <i>gasping</i>.</p>',
   options:[
    {t:'Confirmo la parada, sigo con compresiones de calidad, enciendo el LIFEPAK y coloco los parches',ok:true,fb:'Correcto: respiración agónica = parada. Compresiones sin interrupciones mientras otro prepara el desfibrilador.'},
    {t:'Busco el pulso carotídeo durante 30 s antes de hacer nada',fb:'No. Si no responde y no respira con normalidad, es una parada. Comprobar el pulso no debe pasar de 10 s ni retrasar la RCP.'},
@@ -30,14 +30,14 @@ window.CASES=[
   check:S=>S.f.ns,success:'NO SHOCK ADVISED. Hay un ritmo organizado en pantalla.'},
  {text:'<p><span class="msg">NO SHOCK ADVISED</span>. En pantalla, un ritmo organizado a unos 96 lpm.</p>',goal:'Comprueba si tiene pulso.',
   react:(ev,S)=>{if(ev.type==='acc'&&ev.id==='pulse')S.f.p=1;},check:S=>S.f.p,success:'Pulso presente: recuperación de la circulación (RCE).'},
- {text:'<p>Tiene pulso y empieza a respirar. Antes de salir hacia el hospital, buscad un infarto.</p>',goal:'Haz un ECG de 12 derivaciones e imprímelo. La ambulancia está parada en la plaza.',
+ {text:'<p>Tiene pulso y empieza a respirar. Antes de salir hacia el hospital, busquen un infarto.</p>',goal:'Haz un ECG de 12 derivaciones e imprímelo. La ambulancia está parada en la plaza.',
   hints:['Coloca el "Cable de 12 derivaciones" y pulsa 12-LEAD.','Si pones la ambulancia en marcha, habrá ruido.'],
   react:(ev,S)=>{if(ev.type==='12lead'&&ev.ok)S.f.d12=1;},check:S=>S.f.d12,success:'El LIFEPAK sugiere IAM agudo inferior (ST elevado en II, III y aVF).'},
  {text:'<p>12 derivaciones: <b>elevación del ST en la cara inferior</b>. Constantes: TA 108/64, SpO2 93 %.</p><p>¿Qué es lo más importante ahora?</p>',
   options:[
    {t:'Imprimir el CODE SUMMARY, trasladar a un hospital con hemodinámica y preavisar con el ECG',ok:true,fb:'Correcto. El papel viaja con el paciente: 12 derivaciones y CODE SUMMARY.'},
    {t:'Quitar los parches para que esté más cómodo durante el traslado',fb:'No. Tras una parada, los parches se quedan puestos: puede volver a fibrilar.'},
-   {t:'Ir al hospital más cercano aunque no tenga hemodinámica, sin avisar',fb:'Con un IAM con elevación del ST tras una parada, lo indicado es un centro con capacidad de reperfusión y preaviso, según vuestra red.'}]}
+   {t:'Ir al hospital más cercano aunque no tenga hemodinámica, sin avisar',fb:'Con un IAM con elevación del ST tras una parada, lo indicado es un centro con capacidad de reperfusión y preaviso, según su red.'}]}
  ],
  debrief:['Gasping = parada: compresiones y desfibrilador sin perder tiempo.','En el análisis, nadie toca al paciente: ni compresiones ni ambulancia en marcha.','Tras la descarga, compresiones inmediatas durante 2 min. El pulso se comprueba después.','Tras la RCE: los parches se quedan, 12 derivaciones con el vehículo parado y CODE SUMMARY impreso.']},
 
@@ -50,7 +50,7 @@ window.CASES=[
  {text:'<p>Mujer de 79 años, mareada, sudorosa y casi inconsciente. Piel fría.</p>',goal:'Enciende el LIFEPAK y monitoriza: ECG, SpO2 y tensión arterial.',
   hints:['ON, y coloca el cable de ECG, el sensor de SpO2 y el manguito.','Pulsa NIBP para medir la tensión.'],
   react:(ev,S)=>{if(ev.type==='nibp')S.f.bp=1;},check:S=>S.lp.on&&S.acc.ecg&&S.acc.spo2&&S.f.bp,success:'FC 32, TA 72/40. Bloqueo AV completo con QRS ancho.'},
- {text:'<p>FC 32 lpm, TA 72/40 y nivel de conciencia bajo. Según vuestro protocolo, el médico regulador ordena marcapasos transcutáneo tras los fármacos indicados, que no han funcionado.</p><p>¿Qué necesitas antes de empezar?</p>',
+ {text:'<p>FC 32 lpm, TA 72/40 y nivel de conciencia bajo. Según su protocolo, el médico regulador ordena marcapasos transcutáneo tras los fármacos indicados, que no han funcionado.</p><p>¿Qué necesitas antes de empezar?</p>',
   options:[
    {t:'Parches colocados y también el cable de ECG, y avisar a la paciente porque va a doler (analgesia por orden médica)',ok:true,fb:'Correcto. Con el cable de ECG puesto, el marcapasos funciona a demanda. Duele: analgesia según la orden médica.'},
    {t:'Solo los parches: el cable de ECG sobra cuando hay marcapasos',fb:'No. Sin el ECG, o si se suelta un electrodo, estimula a frecuencia fija, a ciegas, sin tener en cuenta el ritmo propio.'},
@@ -76,7 +76,7 @@ window.CASES=[
  devices:['lp12'],acc:['ecg','spo2','cuff','pads','clear','pulse','cpr'],
  start:{pt:{rhythm:'svt',hr:190,pulse:true,spo2:94,etco2:null,sbp:78,dbp:50,pulseText:'Pulso rápido y débil'}},
  steps:[
- {text:'<p>Varón de 50 años con palpitaciones desde hace 2 horas. Está pálido, con dolor torácico y TA 78/50. El monitor muestra una taquicardia regular de QRS estrecho a 190.</p><p>El médico regulador ordena cardioversión sincronizada con sedoanalgesia, según vuestro protocolo.</p><p>¿Qué es imprescindible?</p>',
+ {text:'<p>Varón de 50 años con palpitaciones desde hace 2 horas. Está pálido, con dolor torácico y TA 78/50. El monitor muestra una taquicardia regular de QRS estrecho a 190.</p><p>El médico regulador ordena cardioversión sincronizada con sedoanalgesia, según su protocolo.</p><p>¿Qué es imprescindible?</p>',
   options:[
    {t:'Parches puestos, SYNC activado y comprobar que aparece una marca sobre cada QRS',ok:true,fb:'Correcto. Sin marcas sobre los QRS no se cardiovierte: cambia de derivación o sube el tamaño.'},
    {t:'Descargar en modo DEA, que es más rápido',fb:'No. El modo DEA es para la parada. Este paciente tiene pulso: necesita una descarga sincronizada en modo manual.'},
@@ -104,12 +104,12 @@ window.CASES=[
  devices:['save','lp12'],acc:['saveConn','occlude','co2','spo2','ecg','chest','tube','bvm','suction','newcirc','o2save'],
  start:{pt:{rhythm:'sinus',hr:96,pulse:true,spo2:97,etco2:null,sbp:132,dbp:80,pipBase:17},lp:{on:true},acc:{ecg:true,spo2:true,bvm:true}},
  steps:[
- {text:'<p>Varón de 30 años, accidente de moto, TCE grave, Glasgow 6. El equipo de vía aérea lo ha intubado según el protocolo y lo ventiláis con bolsa. Mide unos 175 cm. Traslado de 40 minutos.</p><p>¿Podéis pasarlo al SAVe II+?</p>',
+ {text:'<p>Varón de 30 años, accidente de moto, TCE grave, Glasgow 6. El equipo de vía aérea lo ha intubado según el protocolo y lo ventilan con bolsa. Mide unos 175 cm. Traslado de 40 minutos.</p><p>¿Pueden pasarlo al SAVe II+?</p>',
   options:[
    {t:'Sí: adulto de más de 45 kg con vía aérea asegurada, siempre que la capnografía funcione y la bolsa quede a mano',ok:true,fb:'Correcto. Son las condiciones del fabricante.'},
    {t:'Sí, aunque no tengamos capnografía: el SAVe ya mide las presiones',fb:'No. El fabricante exige capnografía o volumen espirado. Sin ella, bolsa.'},
    {t:'No: el SAVe solo se usa en la parada',fb:'No. Está pensado para ventilar durante el traslado a adultos de 45 kg o más.'}]},
- {text:'<p>Circuito nuevo conectado al equipo con sus 3 tubos y todavía sin conectar al paciente. Seguís con la bolsa.</p>',goal:'Enciende el SAVe, elige 175 cm y confirma.',
+ {text:'<p>Circuito nuevo conectado al equipo con sus 3 tubos y todavía sin conectar al paciente. Siguen con la bolsa.</p>',goal:'Enciende el SAVe, elige 175 cm y confirma.',
   hints:['POWER → botón 175 cm → CONFIRM. Nada cambia hasta pulsar CONFIRM.'],
   check:S=>S.sv.running&&S.sv.preset===175&&S.sv.rr===15,success:'Ventilando con FR 15 y VT 420. Como el circuito está abierto, aparece DISCONNECT.'},
  {text:'<p>Con el circuito abierto ha saltado <span class="msg">DISCONNECT</span>: la prueba de desconexión es correcta.</p>',goal:'Haz ahora la prueba de PIP: tapa la salida del circuito hasta que salte la alarma y luego destápala.',
@@ -132,7 +132,7 @@ window.CASES=[
   react:(ev,S,c)=>{if(ev.type==='acc'){if(ev.id==='chest'||ev.id==='tube')S.f.look=1;if(ev.id==='suction'){if(!S.acc.bvm&&S.acc.saveConn)return['tip','Antes de aspirar, pasa a la bolsa (desconecta el SAVe).'];S.f.asp=1;S.pt.obstruct=false;S.pt.spo2=96;S.pt.etco2=38;S.pt.findings.chest='';S.pt.findings.tube='';}if(ev.id==='newcirc')S.f.nc=1;}
    if(ev.type==='key'&&ev.dev==='sv'&&!S.f.look)return['tip','Primero el paciente: mira el tórax y revisa el tubo antes de tocar el ventilador.'];},
   check:S=>S.f.look&&S.f.asp&&S.f.nc&&S.acc.saveConn&&!S.acc.bvm&&!S.sv.alarms.has('PIP REACHED'),success:'Secreciones aspiradas, circuito nuevo y SAVe reconectado: PIP normal, EtCO2 38 y SpO2 96 %.'},
- {text:'<p>Todo normalizado.</p><p>¿Cómo vigilaréis el resto del traslado?</p>',
+ {text:'<p>Todo normalizado.</p><p>¿Cómo vigilarán el resto del traslado?</p>',
   options:[
    {t:'Ronda cada 5 min: tórax, SpO2, curva de EtCO2, FC y TA, y CONFIRM sin cambios para ver la PIP medida',ok:true,fb:'Correcto. Y siempre después de mover al paciente.'},
    {t:'Si no suena ninguna alarma, todo va bien',fb:'No. El fabricante lo dice: la ausencia de alarma no garantiza que el paciente esté bien ventilado.'}]}
@@ -159,7 +159,7 @@ window.CASES=[
   hints:['Toca el display de FR, pulsa ▼ hasta 10 y luego CONFIRM.','"Conectar circuito del SAVe al paciente" y desactiva la bolsa.'],
   check:S=>S.sv.rr===10&&!S.sv.pend&&S.acc.saveConn&&!S.acc.bvm,success:'FR 10 confirmada. Sin alarmas, EtCO2 con curva y el tórax baja del todo.'}
  ],
- debrief:['HIGH PEEP = aire atrapado o salida tapada. El SAVe deja de ventilar.','Desconecta unos segundos, bolsa despacio, revisa el HMEF y la salida espiratoria.','El SAVe tiene un I:E fijo de 1:2: en el asma grave, la única forma de alargar la espiración es bajar la FR (por orden médica).','Con FR 10 y VT 310, el volumen minuto es de unos 3,1 L/min: vigilad la EtCO2 y la SpO2.']},
+ debrief:['HIGH PEEP = aire atrapado o salida tapada. El SAVe deja de ventilar.','Desconecta unos segundos, bolsa despacio, revisa el HMEF y la salida espiratoria.','El SAVe tiene un I:E fijo de 1:2: en el asma grave, la única forma de alargar la espiración es bajar la FR (por orden médica).','Con FR 10 y VT 310, el volumen minuto es de unos 3,1 L/min: vigilen la EtCO2 y la SpO2.']},
 
 /* ===================== 6 · Parada en paciente ventilado ===================== */
 {id:'parada-ventilado',title:'Parada en un paciente ventilado',tag:'Integración',mod:'int',level:'Avanzado',min:10,
@@ -176,7 +176,7 @@ window.CASES=[
   hints:['Toca el display de FR y pulsa ▼ hasta 0 (de 8 pasa a 0) → CONFIRM.','Después, MANUAL TRIGGER cada 6 s.'],
   check:S=>S.sv.rr===0&&!S.sv.pend&&S.sv.trig>0,success:'Modo RCP: PIP 20, sin PEEP, ♥ a 100/min. Una respiración cada 6 s.'},
  {text:'<p>Vehículo parado y parches ya colocados.</p>',goal:'Analiza el ritmo y descarga de forma segura.',
-  hints:['Para las compresiones ("¡Fuera todos!") y pulsa ANALYZE.','Cuando cargue: "¡Fuera todos!" y SHOCK. Cierra o aparta el O2 libre del reservorio; el SAVe puede quedar conectado al tubo si vuestra dirección médica lo acepta.'],
+  hints:['Para las compresiones ("¡Fuera todos!") y pulsa ANALYZE.','Cuando cargue: "¡Fuera todos!" y SHOCK. Cierra o aparta el O2 libre del reservorio; el SAVe puede quedar conectado al tubo si su dirección médica lo acepta.'],
   react:(ev,S,c)=>{if(ev.type==='analysis'&&ev.result==='motion')return['no','Hay movimiento: compresiones paradas y vehículo detenido durante el análisis.'];if(ev.type==='shock'){S.f.sh=1;c.setPt({rhythm:'sinus',hr:100});}},
   check:S=>S.f.sh,success:'Descarga administrada.'},
  {text:'<p><span class="msg">START CPR</span>.</p>',goal:'Reanuda las compresiones y completa 2 minutos con ventilación cada 6 s.',
@@ -220,7 +220,7 @@ window.CASES=[
  devices:['lp12'],acc:['spo2','ecg','o2','cuff'],
  start:{pt:{rhythm:'sinus',hr:118,pulse:true,spo2:98,etco2:null,sbp:104,dbp:66},lp:{on:true}},
  steps:[
- {text:'<p>Sacáis a un hombre de 45 años de un apartamento en llamas. Está obnubilado, con hollín en la boca y respiración lenta.</p>',goal:'Monitorízalo: SpO2, ECG y tensión arterial.',
+ {text:'<p>Sacan a un hombre de 45 años de un apartamento en llamas. Está obnubilado, con hollín en la boca y respiración lenta.</p>',goal:'Monitorízalo: SpO2, ECG y tensión arterial.',
   react:(ev,S)=>{if(ev.type==='nibp')S.f.bp=1;},check:S=>S.acc.spo2&&S.acc.ecg&&S.f.bp,success:'SpO2 98 %, FC 118 y TA 104/66.'},
  {text:'<p>El LIFEPAK marca una <b>SpO2 de 98 %</b>.</p>',
   options:[
@@ -238,15 +238,15 @@ window.CASES=[
  summary:'Niño de 6 años en parada tras un ahogamiento. ¿Modo DEA? ¿SAVe?',
  devices:['lp12'],acc:[],start:{pt:{rhythm:'vf',hr:0,pulse:false,spo2:null,etco2:null,sbp:0,dbp:0},lp:{on:true},acc:{pads:true}},
  steps:[
- {text:'<p>Niño de 6 años (unos 20 kg) sacado de una piscina en parada. Hacéis RCP con ventilaciones de rescate.</p><p>¿Usáis el SAVe II+?</p>',
+ {text:'<p>Niño de 6 años (unos 20 kg) sacado de una piscina en parada. Hacen RCP con ventilaciones de rescate.</p><p>¿Usan el SAVe II+?</p>',
   options:[
    {t:'No: pesa menos de 45 kg. Bolsa-mascarilla del tamaño adecuado',ok:true,fb:'Correcto. Por debajo de 45 kg, nunca el SAVe.'},
    {t:'Sí, eligiendo el preset más bajo (129 cm)',fb:'No. El SAVe es solo para pacientes de 45 kg o más.'}]},
- {text:'<p>Monitor en FV. ¿Cómo desfibriláis con el LIFEPAK 12?</p>',
+ {text:'<p>Monitor en FV. ¿Cómo desfibrilan con el LIFEPAK 12?</p>',
   options:[
    {t:'Según el protocolo pediátrico de la dirección médica: modo manual si alguien está acreditado (ERC: 4 J/kg); si nadie lo está, la dirección médica debe haber decidido antes si se usa el LP12 en DEA con parches de adulto, porque es preferible a no desfibrilar',ok:true,fb:'Correcto. El modo DEA del LP12 no está diseñado para menores de 8 años. La decisión debe estar tomada de antemano.'},
-   {t:'No se puede desfibrilar a un niño con este equipo',fb:'No. Hay que desfibrilar: lo que cambia es cómo, según vuestro protocolo pediátrico.'},
-   {t:'Modo DEA con parches pediátricos',fb:'Con 20 kg, los parches pediátricos (para menos de 15 kg) no valen: van los de adulto. Y el uso del DEA en menores de 8 años debe estar decidido por vuestra dirección médica.'}]},
+   {t:'No se puede desfibrilar a un niño con este equipo',fb:'No. Hay que desfibrilar: lo que cambia es cómo, según su protocolo pediátrico.'},
+   {t:'Modo DEA con parches pediátricos',fb:'Con 20 kg, los parches pediátricos (para menos de 15 kg) no valen: van los de adulto. Y el uso del DEA en menores de 8 años debe estar decidido por su dirección médica.'}]},
  {text:'<p>Pesa unos 20 kg. ¿Qué parches QUIK-COMBO?</p>',
   options:[
    {t:'Los de adulto: los pediátricos son para menos de 15 kg',ok:true,fb:'Correcto, según el manual del LP12. Asegúrate de que no se toquen entre sí; si el tórax es pequeño, posición anteroposterior en modo manual.'},

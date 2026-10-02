@@ -24,7 +24,7 @@ Web estática de formación asíncrona, pensada para publicarse en **GitHub Page
 
 | Qué | Dónde |
 |---|---|
-| Enlaces de Loom | `assets/js/content.js` → `MODS[].loom.url` (pegad el enlace *share* de Loom) |
+| Enlaces de Loom | `assets/js/content.js` → `MODS[].loom.url` (peguen el enlace *share* de Loom) |
 | Vídeos de YouTube revisados | `assets/js/content.js` → `VIDEOS` (`{t:'Título', yt:'ID', fuente:'Canal'}`) |
 | Fotos reales de los equipos | `assets/img/fotos/` (ver `LEEME.md`) y añadir el nombre a `window.PHOTOS` |
 | Manuales | `content/*.html` |

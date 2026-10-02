@@ -1,4 +1,4 @@
-/* Fotos reales disponibles en assets/img/fotos/ (sin extensión). Añadid el nombre aquí al subir cada foto. */
+/* Fotos reales disponibles en assets/img/fotos/ (sin extensión). Añadan el nombre aquí al subir cada foto. */
 window.PHOTOS=[];
 
 /* Contenido: módulos, panel interactivo, autoevaluaciones y vídeos */
@@ -75,7 +75,7 @@ window.PANELS={
 window.QUIZ={
  lp12:[
   {q:'Al encenderlo con la configuración de fábrica, ¿en qué modo arranca el LIFEPAK 12?',o:['En modo DEA','En modo manual y monitor, con la derivación II','En modo marcapasos'],a:1,w:'De fábrica arranca como desfibrilador manual y monitor. Para usarlo como DEA se pulsa ANALYZE [4-13].'},
-  {q:'Vais en marcha y el paciente entra en parada. ¿Cuándo pulsáis ANALYZE?',o:['En marcha, para no perder tiempo','Con el vehículo parado y sin compresiones durante el análisis','Solo al llegar al hospital'],a:1,w:'El movimiento puede provocar una descarga inadecuada o que no se aconseje la descarga cuando sí toca [4-4].'},
+  {q:'Van en marcha y el paciente entra en parada. ¿Cuándo pulsan ANALYZE?',o:['En marcha, para no perder tiempo','Con el vehículo parado y sin compresiones durante el análisis','Solo al llegar al hospital'],a:1,w:'El movimiento puede provocar una descarga inadecuada o que no se aconseje la descarga cuando sí toca [4-4].'},
   {q:'En el checklist diario, la prueba con la carga de prueba (Test Load) se hace a…',o:['10 J','200 J, y debe aparecer ENERGY DELIVERED','360 J, sin mirar el mensaje'],a:1,w:'Apéndice C: 200 J → CHARGE → SHOCK → ENERGY DELIVERED. El User Test usa 10 J internamente.'},
   {q:'Cargas a 200 J en manual y no descargas. ¿Qué pasa a los 60 s?',o:['Descarga sola','La energía se elimina dentro del equipo','Se queda cargado indefinidamente'],a:1,w:'A los 60 s, la energía se retira dentro del equipo [4-16].'},
   {q:'En pleno marcapasos se despega un parche. Lo vuelves a pegar. ¿Qué más hay que hacer?',o:['Nada: vuelve a estimular igual','Volver a subir la corriente: se ha puesto a 0 mA','Apagar y encender el equipo'],a:1,w:'Sale PACING STOPPED y la corriente vuelve a 0 mA; al recolocarlo hay que subirla a mano [4-20].'},
@@ -92,17 +92,17 @@ window.QUIZ={
   {q:'¿Qué alarmas detienen la ventilación?',o:['DISCONNECT y PIP REACHED','DEVICE, HIGH PEEP y la batería en reserva','Todas'],a:1,w:'Paran y abren la válvula: hay que ventilar con bolsa ya.'},
   {q:'Salta PIP REACHED. ¿Por dónde empiezas?',o:['Subo la PIP a 50','Paciente: tubo, secreciones, neumotórax… (DOPE)','Silencio con MUTE'],a:1,w:'Primero el paciente. Sin causa clara → bolsa. No pasar de una PIP de 35.'},
   {q:'En la parada, ¿cómo se pone el SAVe en modo RCP?',o:['Pulsando MANUAL TRIGGER','Bajando la FR a 0 y CONFIRM','Apagándolo'],a:1,w:'Con FR 0, solo ventila al pulsar MANUAL TRIGGER. PIP 20 y sin PEEP.'},
-  {q:'El paciente recupera el pulso y seguís en FR 0. ¿Qué pasa?',o:['Ventila solo a 12 rpm','No recibe respiraciones salvo con MANUAL TRIGGER','Pasa a CPAP'],a:1,w:'Hay que salir del modo RCP: elegir la altura y CONFIRM.'},
-  {q:'Paciente de 40 kg. ¿Usáis el SAVe?',o:['Sí, con el preset más bajo','No: por debajo de 45 kg, bolsa del tamaño adecuado'],a:1,w:'El límite es de 45 kg, sea cual sea la edad.'},
-  {q:'¿Dónde guardáis el SAVe entre servicios?',o:['En la cabina de la ambulancia, al sol','En la base, cargado, sin sol y a ≤ 30 °C (≤ 40 °C solo a corto plazo)'],a:1,w:'Solo tiene cargador de red: hay que salir con la batería llena. Almacenamiento: 0-40 °C a corto plazo y 0-30 °C a largo plazo.'}
+  {q:'El paciente recupera el pulso y siguen en FR 0. ¿Qué pasa?',o:['Ventila solo a 12 rpm','No recibe respiraciones salvo con MANUAL TRIGGER','Pasa a CPAP'],a:1,w:'Hay que salir del modo RCP: elegir la altura y CONFIRM.'},
+  {q:'Paciente de 40 kg. ¿Usan el SAVe?',o:['Sí, con el preset más bajo','No: por debajo de 45 kg, bolsa del tamaño adecuado'],a:1,w:'El límite es de 45 kg, sea cual sea la edad.'},
+  {q:'¿Dónde guardan el SAVe entre servicios?',o:['En la cabina de la ambulancia, al sol','En la base, cargado, sin sol y a ≤ 30 °C (≤ 40 °C solo a corto plazo)'],a:1,w:'Solo tiene cargador de red: hay que salir con la batería llena. Almacenamiento: 0-40 °C a corto plazo y 0-30 °C a largo plazo.'}
  ],
  int:[
   {q:'Suenan alarmas en los dos equipos. ¿En qué orden revisas?',o:['Equipo → paciente','Paciente → vía aérea → ventilación → circulación → equipo','La que suene más fuerte'],a:1,w:'Si en 30 s no está claro: bolsa.'},
-  {q:'RCP con mascarilla y SAVe, con 3 personas: quien sella usa las dos manos. ¿Quién pulsa MANUAL TRIGGER?',o:['Nadie: el SAVe lo hace solo','El líder','Quien sella la mascarilla'],a:1,w:'Criterio del autor: con 3 personas, el líder. Con 2, mejor bolsa; quien comprime solo podría pulsarlo en la pausa si lo habéis ensayado.'},
+  {q:'RCP con mascarilla y SAVe, con 3 personas: quien sella usa las dos manos. ¿Quién pulsa MANUAL TRIGGER?',o:['Nadie: el SAVe lo hace solo','El líder','Quien sella la mascarilla'],a:1,w:'Criterio del autor: con 3 personas, el líder. Con 2, mejor bolsa; quien comprime solo podría pulsarlo en la pausa si lo han ensayado.'},
   {q:'Paciente ventilado: la curva de EtCO2 desaparece de golpe al moverlo. Primera sospecha:',o:['El sensor de SpO2','Tubo desplazado o desconexión','Hipotermia'],a:1,w:'Sin curva = problema de vía aérea hasta que se demuestre lo contrario.'},
-  {q:'Vas a descargar a un paciente intubado y conectado al SAVe con O2 en el reservorio. ¿Qué es correcto?',o:['Sujetar el tubo con la mano durante la descarga','Cerrar o apartar el O2 libre a más de 1 m del tórax y que nadie toque al paciente','Dejar el O2 abierto junto al tórax: no pasa nada'],a:1,w:'Manual del LP12: apartar o cerrar las fuentes de gas durante la descarga [1-2]. Que el SAVe siga conectado al tubo lo decide vuestra dirección médica.'},
+  {q:'Vas a descargar a un paciente intubado y conectado al SAVe con O2 en el reservorio. ¿Qué es correcto?',o:['Sujetar el tubo con la mano durante la descarga','Cerrar o apartar el O2 libre a más de 1 m del tórax y que nadie toque al paciente','Dejar el O2 abierto junto al tórax: no pasa nada'],a:1,w:'Manual del LP12: apartar o cerrar las fuentes de gas durante la descarga [1-2]. Que el SAVe siga conectado al tubo lo decide su dirección médica.'},
   {q:'Niño de 6 años en FV. ¿Qué pasa con el modo DEA del LP12?',o:['Es igual que en el adulto','El fabricante no lo diseñó para menores de 8 años: protocolo pediátrico de la dirección médica'],a:1,w:'ERC: 4 J/kg en manual si hay alguien acreditado; si no, un desfibrilador de adulto antes que no desfibrilar.'},
-  {q:'¿Qué entregáis en el hospital?',o:['Solo la información verbal','12 derivaciones y CODE SUMMARY + ajustes del SAVe y alarmas + transferencia verbal'],a:1,w:'Papel y palabras.'}
+  {q:'¿Qué entregan en el hospital?',o:['Solo la información verbal','12 derivaciones y CODE SUMMARY + ajustes del SAVe y alarmas + transferencia verbal'],a:1,w:'Papel y palabras.'}
  ]
 };
 
