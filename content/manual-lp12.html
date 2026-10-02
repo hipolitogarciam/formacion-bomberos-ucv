@@ -1,0 +1,266 @@
+<div class="manual">
+<p class="lead">Manual de bolsillo del LIFEPAK 12 para la dotación. Es corto y está pensado para leerlo en el móvil. Todos los datos salen del manual oficial del fabricante (<i>Operating Instructions</i>, MIN 3207254-033, ed. 2015). Entre corchetes va la página; [pref.] es el prefacio.</p>
+<div class="key"><b>Antes de nada:</b> las energías, quién usa las terapias manuales y los fármacos los decide <b>vuestra dirección médica</b>. Comprobad también qué opciones lleva vuestro equipo y cómo está configurado: imprimid la configuración.</div>
+<nav class="toc" aria-label="Índice">
+<a href="#lp-que">Qué es</a><a href="#lp-pan">Panel</a><a href="#lp-ener">Baterías</a><a href="#lp-check">Checklist</a><a href="#lp-parches">Parches</a><a href="#lp-dea">DEA</a><a href="#lp-man">Manual</a><a href="#lp-sync">Cardioversión</a><a href="#lp-mp">Marcapasos</a><a href="#lp-mon">Monitorizar</a><a href="#lp-alar">Alarmas</a><a href="#lp-fin">Después</a><a href="#lp-msg">Mensajes</a><a href="#lp-spec">Datos</a>
+</nav>
+
+<h2 id="lp-que">1. Qué es</h2>
+<p>El LIFEPAK 12 es un monitor-desfibrilador de transporte de Physio-Control, hoy Stryker. Según el modelo, puede tener estas funciones:</p>
+<ul>
+<li>DEA;</li>
+<li>desfibrilación manual;</li>
+<li>cardioversión sincronizada;</li>
+<li>marcapasos transcutáneo;</li>
+<li>ECG de 3, 5 y 12 derivaciones;</li>
+<li>SpO2, PNI y EtCO2.</li>
+</ul>
+<ul>
+<li><b>De fábrica arranca como desfibrilador manual y monitor</b>, con la derivación II. Para usarlo como DEA se pulsa <kbd>ANALYZE</kbd> [4-13].</li>
+<li>El paso de DEA a manual se hace con <kbd>ENERGY SELECT</kbd>, <kbd>CHARGE</kbd>, <kbd>PACER</kbd> o <kbd>ADVISORY</kbd>. Según la configuración, el acceso al modo manual puede ser directo, pedir confirmación, pedir contraseña o estar bloqueado (<span class="msg">MANUAL MODE DISABLED</span>) [4-13, 9-4].</li>
+<li><b>Es un equipo antiguo.</b>
+  <ul>
+  <li>Dejó de fabricarse en 2007.</li>
+  <li>El fabricante no da servicio técnico desde el 30-06-2020.</li>
+  <li>Las baterías originales se descatalogaron en 2020 y los parches de este modelo, en 2022.</li>
+  </ul>
+  Fuente: comunicados de fin de soporte de Physio-Control/Stryker; confirmadlo con vuestro distribuidor. Por eso el mantenimiento diario depende de vosotros.</li>
+</ul>
+
+<h2 id="lp-pan">2. Conoce el panel</h2>
+<p>El frontal tiene 6 zonas [2-4]. En la pestaña <b>Panel interactivo</b> puedes tocar cada botón para ver qué hace.</p>
+<div class="tbl"><table>
+<tr><th>Zona</th><th>Botones</th></tr>
+<tr><td>1 · Desfibrilación (derecha)</td><td>
+<ul>
+<li><kbd>ON</kbd></li>
+<li>Pasos numerados en el panel: 1 <kbd>ON</kbd> · 2 <kbd>ENERGY SELECT</kbd> (▼▲) · 3 <kbd>CHARGE</kbd>, y debajo <kbd>SHOCK</kbd></li>
+<li><kbd>SYNC</kbd>, <kbd>ANALYZE</kbd> y <kbd>ADVISORY</kbd></li>
+<li>Luces <b>BATT CHG</b> y <b>SERVICE</b></li>
+</ul></td></tr>
+<tr><td>2 · Marcapasos</td><td><kbd>PACER</kbd> · <kbd>RATE</kbd> · <kbd>CURRENT</kbd> · <kbd>PAUSE</kbd></td></tr>
+<tr><td>3 · Monitor (bajo la pantalla)</td><td>
+<ul>
+<li>Botón giratorio SELECTOR</li>
+<li><kbd>ALARMS</kbd> · <kbd>OPTIONS</kbd> · <kbd>EVENT</kbd> · <kbd>HOME SCREEN</kbd></li>
+<li><kbd>NIBP</kbd> · <kbd>LEAD</kbd> · <kbd>SIZE</kbd></li>
+</ul></td></tr>
+<tr><td>4 · Laterales</td><td>Conectores de cables (terapia, ECG, SpO2, PNI, CO2), altavoz e impresora</td></tr>
+<tr><td>5 · Registro</td><td><kbd>12-LEAD</kbd> · <kbd>TRANSMIT</kbd> · <kbd>CODE SUMMARY</kbd> · <kbd>PRINT</kbd></td></tr>
+<tr><td>6 · Pantalla</td><td>Constantes, ECG, mensajes y estado de las baterías</td></tr>
+</table></div>
+<figure class="photo" data-photo="lp12-frontal">📷 Hueco para la foto del frontal de <b>vuestro</b> LIFEPAK 12: <code>assets/img/fotos/lp12-frontal.jpg</code></figure>
+
+<h2 id="lp-ener">3. Baterías y alimentación</h2>
+<ul>
+<li><b>Lleva 2 baterías.</b> Gasta la 1 hasta el nivel bajo y entonces pasa sola a la 2. Cuando las dos están bajas, una voz pide cambiar la batería [2-16, A-2].</li>
+<li><b>Autonomía mínima con 2 baterías nuevas y cargadas:</b> 43-120 min de monitorización o 40-90 descargas de 360 J, según el tipo de batería y de pantalla. <b>Tras el aviso de batería baja quedan como mínimo 1-4 min de monitorización o 3-6 descargas: cambiad la batería al primer aviso</b> [A-2].</li>
+<li><b>Peligro: una batería débil puede apagar el equipo al cargar para descargar, sin avisar antes.</b> Si sale <span class="msg">REPLACE BATTERY</span> o se apaga, cambiad la batería en ese momento.</li>
+<li>Si se queda sin corriente menos de 30 s, conserva los ajustes (<i>warmstart</i>) [A-2].</li>
+<li>Baterías compatibles: FASTPAK y FASTPAK 2, LIFEPAK NiCd y LIFEPAK SLA [A-2].
+  <ul>
+  <li>Se cargan a <b>5-35 °C</b>.</li>
+  <li>Se guardan a 0-35 °C [A-8], mejor a 4,4-26,7 °C, porque el calor las descarga antes [8-10].</li>
+  <li>El fabricante aconseja cambiarlas cada 2 años [8-11].</li>
+  </ul></li>
+<li>El adaptador de red alimenta el equipo con o sin baterías, y carga primero la batería que más carga tiene [7-2].</li>
+</ul>
+
+<h2 id="lp-check">4. Checklist diario (Apéndice C)</h2>
+<ol>
+<li><b>Aspecto:</b> sin suciedad, golpes ni grietas.</li>
+<li><b>Baterías:</b> contactos sanos y sin fugas.</li>
+<li><b>Cable de ECG</b> sin daños.</li>
+<li><b>Parches y electrodos</b> dentro de fecha, y con recambio.</li>
+<li><b>Encendido:</b> desconectar de la red, esperar 2 s y pulsar <kbd>ON</kbd>.
+  <ul>
+  <li>Deben encenderse un momento los LED y salir los mensajes de autotest.</li>
+  <li>Comprobar que hay <b>2 baterías cargadas</b> y que la luz SERVICE está apagada.</li>
+  </ul></li>
+<li><b>Cable de terapia QUIK-COMBO</b> conectado a la carga de prueba (<i>Test Load</i>) → seleccionar <b>200 J</b> → <kbd>CHARGE</kbd> → <kbd>SHOCK</kbd> → debe salir <span class="msg">ENERGY DELIVERED</span>.
+  <ul>
+  <li>Si sale <span class="msg">CONNECT CABLE</span>, cambiar el cable.</li>
+  </ul></li>
+<li><b>Palas rígidas</b> (si las usáis): tienen una prueba propia a 10 J. Al pulsar un solo botón no debe descargar.</li>
+<li><b>User Test</b> (<kbd>OPTIONS</kbd>): carga 10 J, los descarga dentro del equipo e imprime "Pasa" o "Falla". Si falla, se enciende SERVICE [8-3].</li>
+</ol>
+<div class="key red"><b>Si algo falla, el equipo queda fuera de servicio y se avisa.</b> El fabricante recomienda además cambiar los cables de terapia y las palas cada 3 años [8-2].</div>
+
+<h2 id="lp-parches">5. Parches QUIK-COMBO</h2>
+<ul>
+<li><b>Posición anterolateral</b> (la de siempre):
+  <ul>
+  <li>el ♥/+ por fuera del pezón izquierdo, en la línea axilar media;</li>
+  <li>el otro, bajo la clavícula derecha.</li>
+  </ul></li>
+<li><b>Posición anteroposterior:</b> vale para la desfibrilación manual, la cardioversión y el marcapasos. <b>No vale para el DEA ni para monitorizar</b> [4-2].</li>
+<li>Preparar la piel:
+  <ul>
+  <li>seca y sin exceso de vello;</li>
+  <li>sin bolsas de aire;</li>
+  <li>lejos de marcapasos implantados y de parches de medicación.</li>
+  </ul></li>
+<li><b>Guardar a 15-35 °C.</b> No usarlos si están caducados, secos o lleváis <b>más de 24 h fuera de la bolsa</b> [5-2].</li>
+<li><b>Cambiarlos</b> tras 50 descargas, 24 h sobre la piel u 8 h de marcapasos. Los pediátricos, tras 25 descargas [5-4].</li>
+<li><b>Peso:</b> los de adulto, para 15 kg o más; los pediátricos, para menos de 15 kg. Las palas pediátricas, por debajo de 10 kg [5-2, 2-2].</li>
+</ul>
+<figure class="photo" data-photo="lp12-parches">📷 Hueco para la foto de los parches colocados en un maniquí: <code>assets/img/fotos/lp12-parches.jpg</code></figure>
+
+<h2 id="lp-dea">6. Modo DEA</h2>
+<p><b>Cuándo:</b> el paciente no responde, no respira con normalidad y no tiene pulso [pref.]. En <b>menores de 8 años</b>, el fabricante no diseñó el modo DEA para ellos: seguid el protocolo pediátrico de vuestra dirección médica.</p>
+<ol>
+<li><kbd>ON</kbd> y parches colocados. Mientras falten, sale <span class="msg">CONNECT ELECTRODES</span>.</li>
+<li><b>Parar el vehículo.</b> Nadie toca al paciente: se paran las compresiones.</li>
+<li><kbd>ANALYZE</kbd> → <span class="msg">ANALYZING NOW – STAND CLEAR</span>.</li>
+<li>Si sale <span class="msg">SHOCK ADVISED</span>, el equipo carga solo.</li>
+<li><span class="msg">STAND CLEAR – PUSH SHOCK BUTTON</span> → "¡fuera todos!" → <kbd>SHOCK</kbd> → <span class="msg">ENERGY DELIVERED</span>.</li>
+<li><span class="msg">START CPR</span> → compresiones al momento, 2 min con la configuración de fábrica.</li>
+</ol>
+<ul>
+<li>Si sale <span class="msg">NO SHOCK ADVISED</span>, el equipo no carga → RCP.</li>
+<li>Si no pulsas <kbd>SHOCK</kbd> en 60 s, el equipo se desarma solo (<span class="msg">DISARMING</span>) [4-6].</li>
+<li>Si sale <span class="msg">MOTION DETECTED</span>, el análisis se detiene: parad el movimiento [4-4].</li>
+<li>No pulséis la radio una y otra vez junto al equipo: las interferencias pueden falsear el análisis [1-2].</li>
+</ul>
+<div class="key">La secuencia exacta (RCP inicial, número de descargas y energías del DEA, entre 100 y 360 J) <b>depende de la configuración</b>. Imprimidla y comprobadla [9-5].</div>
+
+<h2 id="lp-man">7. Desfibrilación manual</h2>
+<p class="pill r">Solo personal acreditado en ritmos, con orden médica y según protocolo</p>
+<ol>
+<li><kbd>ENERGY SELECT</kbd>: elegir la energía (hasta 360 J).</li>
+<li><kbd>CHARGE</kbd> → tono de carga completa.</li>
+<li>"¡Fuera todos!" → <kbd>SHOCK</kbd>.</li>
+</ol>
+<ul>
+<li><b>Si no descargas en 60 s, la energía se elimina dentro del equipo.</b> También se elimina si cambias la energía mientras carga: hay que volver a cargar [4-15].</li>
+<li>Para desarmar a mano, pulsar el SELECTOR (<span class="msg">PUSH SELECTOR KNOB TO DISARM</span>).</li>
+<li>Nunca en asistolia ni en AESP.</li>
+<li>Con O2 libre (mascarilla o bolsa desconectada), apartarlo a más de 1 m del tórax durante la descarga.</li>
+</ul>
+
+<h2 id="lp-sync">8. Cardioversión sincronizada</h2>
+<p class="pill r">Solo personal acreditado, con orden médica y según protocolo · sedoanalgesia por orden médica</p>
+<ol>
+<li>Cable de ECG o parches colocados → <kbd>SYNC</kbd>: debe aparecer una <b>marca (triángulo) hacia la mitad de cada QRS</b>, no sobre la onda T. Si falta o está mal colocada, ajusta <kbd>SIZE</kbd> (más o menos) o cambia la derivación con <kbd>LEAD</kbd> antes de cargar: <b>una descarga mal sincronizada puede provocar una FV</b> [4-16].</li>
+<li><kbd>ENERGY SELECT</kbd> → <kbd>CHARGE</kbd>.</li>
+<li><b>Mantener pulsado <kbd>SHOCK</kbd></b> hasta que descargue con el siguiente QRS. Luego soltar [4-16].</li>
+</ol>
+<ul>
+<li>Después de la descarga, que SYNC siga activo o no depende de la configuración (<b>SYNC AFTER SHOCK</b>). <b>Antes de repetir, comprueba que sigue en SYNC.</b></li>
+<li><b>Si el paciente pasa a FV:</b> apaga SYNC y desfibrila. En sincronizado no descargaría.</li>
+</ul>
+
+<h2 id="lp-mp">9. Marcapasos transcutáneo</h2>
+<p class="pill r">Bradicardia con pulso e inestable · personal acreditado · orden médica · analgesia</p>
+<ol>
+<li>Parches colocados (vale la posición anteroposterior) y <b>cable de ECG también colocado</b>.</li>
+<li><kbd>PACER</kbd>: comprueba que la marca de detección cae sobre cada QRS propio y no sobre la T. Si no, ajusta <kbd>SIZE</kbd> o la derivación: si no detecta bien, no estimula cuando toca [4-19].</li>
+<li><kbd>RATE</kbd> (40-170 ppm) → <kbd>CURRENT</kbd>: subir los mA (0-200) hasta ver captura, es decir, cada espiga seguida de un QRS ancho.</li>
+<li><b>Comprobar el pulso</b> (femoral) y la tensión. Ver captura en pantalla no basta.</li>
+</ol>
+<ul>
+<li><kbd>PAUSE</kbd> (mantenido): estimula al 25 % de la frecuencia para ver el ritmo propio.</li>
+<li>Para parar, bajar la corriente a 0 o pulsar <kbd>PACER</kbd>.</li>
+<li>Si cargas el desfibrilador, el marcapasos se para.</li>
+<li>Revisar la piel bajo los parches cada 30 min [5-5].</li>
+</ul>
+<div class="key red">
+<ul>
+<li><b>Si se suelta un parche:</b> sale <span class="msg">PACING STOPPED</span> y la corriente vuelve a 0 mA. Al recolocarlo, <b>hay que volver a subir la corriente</b>.</li>
+<li><b>Si se suelta un electrodo del ECG:</b> estimula a frecuencia fija, a ciegas, sin tener en cuenta el ritmo propio.</li>
+<li><b>Con el marcapasos encendido, la alarma FV/TV no funciona</b> [4-20, 2-22].</li>
+</ul>
+</div>
+
+<h2 id="lp-mon">10. Monitorización</h2>
+<div class="tbl"><table>
+<tr><th>Parámetro</th><th>Para qué</th><th>Trampas</th></tr>
+<tr><td><b>ECG 3/5 derivaciones</b></td><td>Ver el ritmo</td><td>
+<ul>
+<li>No sirve para diagnosticar un infarto.</li>
+<li>Hay dos normas de colores (AHA e IEC): leed la etiqueta del cable.</li>
+<li><span class="msg">LEADS OFF</span> = electrodo suelto [3-6].</li>
+</ul></td></tr>
+<tr><td><b>ECG 12 derivaciones</b></td><td>Buscar el infarto</td><td>
+<ul>
+<li><b>Vehículo parado</b> y paciente quieto [3-14].</li>
+<li>Electrodos de miembros en las extremidades, nunca en el tronco.</li>
+<li>Si sale <span class="msg">NOISY DATA</span>, corrige el ruido. Con más de 30 s de ruido, se cancela.</li>
+<li>Imprimir el trazado.</li>
+</ul></td></tr>
+<tr><td><b>SpO2</b></td><td>Oxigenación</td><td>
+<ul>
+<li><b>Con monóxido de carbono (humo) puede marcar normal aunque haya hipoxia.</b></li>
+<li>Falla con mala perfusión, movimiento o esmalte de uñas, y en el brazo del manguito.</li>
+<li>No sirve para vigilar la apnea [3-16, 3-17].</li>
+</ul></td></tr>
+<tr><td><b>PNI</b></td><td>Tensión arterial</td><td>
+<ul>
+<li>Tarda unos 40 s; se cancela a los 120 s.</li>
+<li><b>Nunca en el brazo del suero</b> [3-24].</li>
+<li>Falla con arritmias, shock y movimiento.</li>
+</ul></td></tr>
+<tr><td><b>EtCO2</b> (si lo lleva)</td><td>Confirmar el tubo, calidad de la RCP y ventilación</td><td>
+<ul>
+<li>La FilterLine es de un solo uso.</li>
+<li><b>No reconoce respiraciones por debajo de 8 mmHg.</b></li>
+<li>Sale <span class="msg">APNEA</span> tras 30 s sin una respiración válida.</li>
+<li>Con cambios bruscos de altitud, la línea se purga [3-31, 3-32].</li>
+</ul></td></tr>
+</table></div>
+<p><b>Colocación de V1-V6</b> [Tabla 3-3]:</p>
+<ul>
+<li><b>V1:</b> 4.º espacio intercostal, a la derecha del esternón.</li>
+<li><b>V2:</b> 4.º espacio intercostal, a la izquierda del esternón.</li>
+<li><b>V3:</b> entre V2 y V4.</li>
+<li><b>V4:</b> 5.º espacio intercostal, en la línea medioclavicular.</li>
+<li><b>V5:</b> a la altura de V4, en la línea axilar anterior.</li>
+<li><b>V6:</b> a la altura de V5, en la línea axilar media.</li>
+</ul>
+
+<h2 id="lp-alar">11. Alarmas</h2>
+<ul>
+<li><kbd>ALARMS</kbd> → <b>QUICK SET</b>: activa las alarmas con límites calculados sobre los valores actuales del paciente. Si el paciente ya está mal, los límites nacen mal.</li>
+<li>Con una alarma sonando, <kbd>ALARMS</kbd> la <b>silencia 2 min</b>.</li>
+<li><b>Con el paciente inestable, no repitas QUICK SET.</b> Silencia hasta 15 min mientras lo atiendes y reajusta los límites cuando esté estable [2-24].</li>
+<li><b>Alarma FV/TV:</b>
+  <ul>
+  <li>funciona en modo manual con la derivación PADDLES o II;</li>
+  <li>se suspende con el marcapasos encendido y mientras el equipo está cargando o cargado;</li>
+  <li>está validada solo en adultos [2-22].</li>
+  </ul></li>
+</ul>
+
+<h2 id="lp-fin">12. Después del servicio</h2>
+<ul>
+<li>Imprimir el <kbd>CODE SUMMARY</kbd>. La memoria guarda al menos 2 pacientes (unos 100 eventos y 45 min de ECG). <b>Al llenarse, borra el más antiguo y no se puede recuperar</b> [6-2].</li>
+<li>Reponer parches, electrodos y papel.</li>
+<li>Baterías: la 2 pasa a la posición 1 y se pone una cargada en la 2.</li>
+<li><b>Limpiar</b> con un paño húmedo. Productos permitidos: amonios cuaternarios, alcohol isopropílico o ácido peracético. <b>Nunca lejía, fenoles, abrasivos ni inflamables. No sumergir ni esterilizar</b> [8-4, 7-6].</li>
+</ul>
+
+<h2 id="lp-msg">13. Mensajes frecuentes</h2>
+<div class="tbl"><table>
+<tr><th>Mensaje</th><th>Qué significa y qué hacer</th></tr>
+<tr><td><span class="msg">CONNECT ELECTRODES</span></td><td>Parches no conectados o mal pegados. Revisa el cable y la piel</td></tr>
+<tr><td><span class="msg">CONNECT CABLE</span></td><td>Falta el cable de terapia (al cargar, al analizar o al subir los mA)</td></tr>
+<tr><td><span class="msg">MOTION DETECTED / STOP MOTION</span></td><td>Hay movimiento durante el análisis: parad el vehículo y las compresiones</td></tr>
+<tr><td><span class="msg">NO SHOCK ADVISED</span></td><td>Ritmo no desfibrilable → RCP y comprobar el pulso según protocolo</td></tr>
+<tr><td><span class="msg">DISARMING…</span></td><td>Han pasado 60 s sin descargar: la energía se ha retirado</td></tr>
+<tr><td><span class="msg">ENERGY FAULT</span></td><td>Desfibrilador fuera de calibración: la energía no coincide con la elegida, aunque puede descargar. Avisa al servicio técnico [4-16, B-2]</td></tr>
+<tr><td><span class="msg">PACING STOPPED</span></td><td>Parche o cable suelto: recolócalo y <b>vuelve a subir los mA</b></td></tr>
+<tr><td><span class="msg">ECG LEADS OFF</span></td><td>Electrodos del ECG sueltos. Con marcapasos, estimula a frecuencia fija</td></tr>
+<tr><td><span class="msg">NOISY DATA! PRESS 12-LEAD TO ACCEPT</span></td><td>Hay ruido en el 12 derivaciones: quieto, vehículo parado y piel bien preparada</td></tr>
+<tr><td><span class="msg">REPLACE BATTERY</span></td><td>Cambia la batería ya</td></tr>
+<tr><td><span class="msg">MANUAL MODE DISABLED</span></td><td>El equipo está configurado para no permitir el modo manual</td></tr>
+</table></div>
+
+<h2 id="lp-spec">14. Datos que conviene saber</h2>
+<ul>
+<li><b>Funcionamiento:</b> 0-50 °C, hasta 4.572 m de altitud.</li>
+<li><b>Protección:</b> IPX4, que resiste salpicaduras, no la inmersión [A-8].</li>
+<li><b>Peso:</b> 6,6-8,0 kg sin baterías [A-2].</li>
+<li><b>No usar en resonancia magnética</b> ni con gases inflamables.</li>
+</ul>
+<p class="src">Fuente: LIFEPAK 12 Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (2008-2015). Material docente de elaboración propia (H. García, médico de Urgencias y Emergencias), v2 · 10/2026. No sustituye al manual oficial ni a la formación práctica acreditada.</p>
+</div>
