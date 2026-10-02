@@ -38,7 +38,7 @@ function home(){
     <h1>LIFEPAK 12 y SAVe II+ en la ambulancia</h1>
     <p>Plan formativo en 3 módulos con manuales de bolsillo, esquemas interactivos de los equipos, infografías, vídeos y casos clínicos en los que manejan los equipos virtuales.</p>
     <div class="row"><a class="btn orange" href="#/m/lp12">Empezar por el módulo 1</a><a class="btn alt" href="#/casos">Ir a los casos clínicos</a></div>
-    <svg class="deco" viewBox="0 0 200 100" fill="none" stroke="#3CC6D2" stroke-width="4"><path d="M0 60h50l10-30 15 60 15-80 12 50h98"/></svg>
+    <svg class="deco" viewBox="0 0 200 100" fill="none" stroke="currentColor" stroke-width="4"><path d="M0 60h50l10-30 15 60 15-80 12 50h98"/></svg>
   </section>
   <div class="section"><h2>Plan formativo</h2>
   <p class="lead">Se recomienda seguir el orden. Cada módulo termina con una autoevaluación y casos prácticos.</p>

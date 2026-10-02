@@ -3,7 +3,7 @@
 @font-face{font-family:Barlow;font-weight:700;font-display:swap;src:url(../fonts/barlow-latin-700-normal.woff2) format('woff2')}
 @font-face{font-family:'Barlow Semi Condensed';font-weight:600;font-display:swap;src:url(../fonts/barlow-semi-condensed-latin-600-normal.woff2) format('woff2')}
 @font-face{font-family:'Barlow Semi Condensed';font-weight:700;font-display:swap;src:url(../fonts/barlow-semi-condensed-latin-700-normal.woff2) format('woff2')}
-:root{--ink:#0E1A2B;--muted:#4A5868;--teal:#0E7C86;--line:#C9D3DC}
+:root{--ink:#0E1A2B;--muted:#4A5868;--teal:#1D4F91;--line:#C9D3DC}
 *{box-sizing:border-box}
 html,body{margin:0;background:#D9DEE3;color:var(--ink);font-family:Barlow,system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .bar{display:flex;gap:10px;justify-content:center;padding:10px}

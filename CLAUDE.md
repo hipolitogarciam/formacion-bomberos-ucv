@@ -35,7 +35,7 @@ Contenido:
 
 ```
 index.html                   Shell: cabecera, navegación y carga de los scripts
-assets/css/app.css           Estilos (tokens en :root, modo oscuro)
+assets/css/app.css           Estilos (tokens en :root, modo oscuro). Paleta B elegida por el autor: azul marino #1D4F91 (primario, token --teal) y rojo #D2401C (acento, --orange). Sin logo de Bomberos UCV hasta confirmar el permiso
 assets/js/content.js         MODS (módulos, enlaces de Loom), SAVE_HEIGHTS (alturas del SAVe), PANELS (panel interactivo), QUIZ, VIDEOS, PHOTOS
 assets/js/panel.js           drawPanel(): dibuja los esquemas SVG de PANELS (panel interactivo e infografías)
 assets/js/cases.js           CASES: los 9 casos (texto, opciones, check(S), react(ev,S,c), debrief)
