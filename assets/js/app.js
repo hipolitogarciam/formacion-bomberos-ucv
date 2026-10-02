@@ -140,7 +140,7 @@ function caso(id){
    <details class="card" style="margin-top:14px"><summary><b>Cómo funciona el simulador</b></summary><ul>
    <li>Lean el caso a la izquierda. Si hay opciones, elijan una; si hay un 🎯 objetivo, cúmplanlo con los botones de los equipos y las acciones.</li>
    <li><b>Acciones</b>: lo que hacen con las manos (parches, compresiones, "¡fuera todos!", mirar el tórax…). Las que tienen ○/✔ se activan y desactivan.</li>
-   <li><b>SAVe:</b> toquen un display (FR, VT, PIP o PEEP) para elegirlo y usen ▲▼. Nada se aplica sin CONFIRM.</li>
+   <li><b>Equipos:</b> los botones tienen la misma disposición que el equipo real. En el LIFEPAK, ENERGY SELECT, RATE y CURRENT tienen su ▼ y su ▲. En el SAVe, cada display (FR, VT, PIP y PEEP) tiene sus − + debajo, y nada se aplica sin CONFIRM.</li><li><b>Pista:</b> además del consejo, resalta con un borde naranja los botones y acciones que tocan.</li><li><b>En el celular</b>, el monitor queda fijo arriba y solo se abre el equipo que se usa en cada paso; el otro se puede abrir tocando su nombre.</li>
    <li>Los tiempos van acelerados: el análisis, la carga y la PNI duran unos segundos, y el botón ⏩ adelanta 2 min de RCP.</li></ul></details>`;
   simInst=SIM.create(document.getElementById('simroot'),c,{back:'#/casos'});
 }

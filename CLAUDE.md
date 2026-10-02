@@ -36,7 +36,8 @@ Contenido:
 ```
 index.html                   Shell: cabecera, navegación y carga de los scripts
 assets/css/app.css           Estilos (tokens en :root, modo oscuro)
-assets/js/content.js         MODS (módulos, enlaces de Loom), PANELS (panel interactivo), QUIZ, VIDEOS, PHOTOS
+assets/js/content.js         MODS (módulos, enlaces de Loom), SAVE_HEIGHTS (alturas del SAVe), PANELS (panel interactivo), QUIZ, VIDEOS, PHOTOS
+assets/js/panel.js           drawPanel(): dibuja los esquemas SVG de PANELS (panel interactivo e infografías)
 assets/js/cases.js           CASES: los 9 casos (texto, opciones, check(S), react(ev,S,c), debrief)
 assets/js/sim.js             Simulador: ECG en canvas, LP12 virtual, SAVe virtual, motor de casos
 assets/js/app.js             Router por hash (#/, #/m/lp12/manual, #/casos, #/caso/<id>, #/acerca)
@@ -119,7 +120,9 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
   - si el LP12 lleva la opción de EtCO2;
   - imprimir la configuración del LP12 (secuencia del DEA, MANUAL ACCESS, SYNC AFTER SHOCK);
   - etiqueta y firmware del SAVe;
-  - si el botón de altura sale del modo RCP.
+  - si el botón de altura sale del modo RCP;
+  - SAVe: dónde aparecen en el frontal las alarmas y el ♥ de la guía de compresiones (no se ven en la foto de referencia; en el panel van aparte como "otros indicadores");
+  - LP12: si el conector redondo de abajo a la derecha es el del cable de terapia (así está etiquetado en el panel).
 - **Ideas para más adelante:**
   - mini-monitor fijo en el móvil durante los casos;
   - más casos (hipotermia, quemado con vía aérea, trauma);

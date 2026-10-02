@@ -102,8 +102,8 @@ function create(root,CASE,opts={}){
   const S={pt:Object.assign({rhythm:'sinus',hr:80,pulse:true,spo2:97,etco2:36,sbp:120,dbp:75,breathing:true,coHb:false,capAt:999,findings:{}},CASE.start.pt||{}),
     acc:Object.assign({},CASE.start.acc||{}),
     lp:Object.assign({on:false,mode:'MANUAL',energy:200,charged:false,charging:false,sync:false,pacer:false,rate:70,mA:0,shocks:0,msg:'',over:null,nibp:null,lead:'II',alarms:false,cprUntil:0,clearAt:-99,printed:[]},CASE.start.lp||{}),
-    sv:Object.assign({on:false,preset:null,rr:0,vt:0,pip:30,peep:0,pend:null,sel:'rr',alarms:new Set(),muted:0,batt:4,showMeas:0,running:false,lastBreath:0,trig:0},CASE.start.sv||{}),
-    t:0,errors:0,step:0,ended:false,f:{}};
+    sv:Object.assign({on:false,preset:null,rr:0,vt:0,pip:30,peep:0,pend:null,pendUser:false,userDef:false,alarms:new Set(),muted:0,batt:4,showMeas:0,running:false,lastBreath:0,trig:0},CASE.start.sv||{}),
+    t:0,errors:0,step:0,ended:false,f:{},hl:new Set()};
   let timers=[];const later=(ms,fn)=>{const id=setTimeout(fn,ms);timers.push(id);return id;};
   const steps=CASE.steps;const devs=CASE.devices||['lp12'];
   // --- estructura
@@ -115,8 +115,13 @@ function create(root,CASE,opts={}){
   const accBox=h('div',{class:'acc'});const log=h('div',{class:'log','aria-live':'polite'});
   const prog=h('div',{class:'prog'},h('i',{style:'width:0%'}));
   const right=h('div',{class:'sim'},mon);
-  if(devs.includes('lp12'))right.append(lpBox);
-  if(devs.includes('save'))right.append(svBox);
+  // cada equipo en un bloque plegable: en el celular solo se abre el que se usa en el paso
+  const W={lp12:h('details',{class:'devw',open:''},h('summary',{},'LIFEPAK 12 (virtual)',h('small',{},'esquema simplificado')),lpBox),
+    save:h('details',{class:'devw',open:''},h('summary',{},'SAVe II+ (virtual)',h('small',{},'esquema simplificado')),svBox)};
+  for(const d of devs)if(W[d])right.append(W[d]);
+  const mobile=()=>matchMedia('(max-width:900px)').matches;
+  let curDev=devs[0];
+  function showDev(d){if(!d||!W[d])return;curDev=d;if(devs.length<2)return;for(const k of devs)W[k].open=mobile()?k===d:true;}
   root.append(h('div',{class:'sim'},prog,h('div',{class:'simtop'},h('div',{class:'sim'},story,accBox,h('div',{class:'logw'},h('b',{},'Registro'),log)),right)));
   const ecg=new ECG(cv);
   const L=(m)=>{const d=h('div',{},`${fmt(S.t)} · ${m}`);log.prepend(d);};
@@ -145,29 +150,41 @@ function create(root,CASE,opts={}){
     status.innerHTML=`<span>${left}</span><span class="e">${right}</span>`;
   }
 
-  /* ---------- LIFEPAK 12 ---------- */
-  const K=(label,cls,key,sub)=>h('button',{class:'k '+(cls||''),type:'button','data-key':key,onclick:()=>lpKey(key)},label,sub?h('small',{},sub):null);
+  /* ---------- LIFEPAK 12 (misma disposición y colores que el panel) ---------- */
+  const PK=(key,label,cls)=>h('button',{class:'pk '+(cls||''),type:'button','data-key':key,onclick:()=>lpKey(key)},label);
+  const ARR=(base,label)=>h('div',{class:'pk arr'},h('button',{type:'button','data-key':base+'-','aria-label':label+': bajar',onclick:()=>lpKey(base+'-')},'▼'),h('span',{},label),h('button',{type:'button','data-key':base+'+','aria-label':label+': subir',onclick:()=>lpKey(base+'+')},'▲'));
   function drawLP(){
     if(!devs.includes('lp12'))return;
+    const lp=S.lp,lit={ON:lp.on,SYNC:lp.on&&lp.sync,PACER:lp.on&&lp.pacer,ANALYZE:lp.on&&lp.mode==='AED',ALARMS:lp.on&&lp.alarms,SHOCK:lp.on&&lp.charged};
+    const k=(key,label,cls)=>{const b=PK(key,label,cls);if(lit[key])b.classList.add('lit');return b;};
+    const nb=(n,el)=>h('div',{class:'nb'},h('span',{class:'num','aria-hidden':'true'},n),el);
     lpBox.innerHTML='';
-    const lit=(k)=>({ON:S.lp.on,SYNC:S.lp.sync,PACER:S.lp.pacer,ANALYZE:S.lp.mode==='AED'&&S.lp.on,ALARMS:S.lp.alarms})[k];
-    const mk=(label,cls,key,sub)=>{const b=K(label,cls,key,sub);if(lit(key))b.classList.add('lit');return b;};
-    lpBox.append(h('h4',{},'LIFEPAK 12 (virtual)',h('small',{style:'font-weight:400;color:#9FB0C3'},'esquema simplificado')),
-      h('div',{class:'grp'},h('span',{},'Desfibrilación'),h('div',{class:'keys'},mk('1 ON','on-btn','ON'),mk('2 ENERGY SELECT','', 'ENERGY'),mk('3 CHARGE','charge','CHARGE'),mk('SHOCK','shock','SHOCK'),mk('ANALYZE','analyze','ANALYZE'),mk('SYNC','','SYNC'))),
-      h('div',{class:'grp'},h('span',{},'Marcapasos'),h('div',{class:'keys'},mk('PACER','pacer','PACER'),mk('RATE','pacer','RATE','+10 ppm'),mk('CURRENT','pacer','CURRENT','+10 mA'),mk('PAUSE','pacer','PAUSE'))),
-      h('div',{class:'grp'},h('span',{},'Monitor y registro'),h('div',{class:'keys'},mk('SELECTOR ▲','', 'SEL+','+1 / +5'),mk('SELECTOR ▼','', 'SEL-','−1 / −5'),mk('SELECTOR ●','', 'SELP','pulsar'),mk('NIBP','', 'NIBP'),mk('ALARMS','', 'ALARMS'),mk('LEAD','', 'LEAD'),mk('12-LEAD','', '12LEAD'),mk('CODE SUMMARY','', 'CODE'),mk('PRINT','', 'PRINT'))));
+    lpBox.append(h('div',{class:'lpbody'},
+      h('div',{class:'lpc'},
+        h('div',{class:'lpleds'},h('span',{},h('i'),'Batt Chg'),h('span',{},h('i'),'Service')),
+        nb('1',k('ON','ON','g led')),
+        h('div',{class:'z blue'},k('ADVISORY','ADVISORY','led'),k('ANALYZE','ANALYZE','y led'),h('span',{class:'arrow','aria-hidden':'true'},'➜')),
+        h('div',{class:'z grey'},nb('2',ARR('ENERGY','ENERGY SELECT')),nb('3',k('CHARGE','CHARGE','y')),k('SHOCK','SHOCK','r led')),
+        h('div'),k('SYNC','SYNC','led'),
+        h('div',{class:'z plain'},k('ALARMS','ALARMS','y led'),k('OPTIONS','OPTIONS'),k('EVENT','EVENT'),k('HOME','⌂ Home Screen','home')),
+        h('div',{class:'z green'},k('PACER','PACER','led'),ARR('RATE','RATE'),ARR('CURRENT','CURRENT'),k('PAUSE','PAUSE')),
+        h('div'),k('SELP','◉ SELECTOR · retirar carga','sel')),
+      h('div',{class:'lprow'},h('span',{},'Registro (a la izquierda de la pantalla)'),k('CODE','CODE SUMMARY'),k('PRINT','PRINT')),
+      h('div',{class:'lprow opt'},h('span',{},'Según las opciones del equipo'),k('12LEAD','12-LEAD'),k('NIBP','NIBP'),k('LEAD','LEAD'))));
+    applyHL();
   }
-  let lastAdj='energy',chargeT=null,disarmT=null;
+  let chargeT=null,disarmT=null;
   function emit(ev){ // pasa el evento al paso actual del caso
     const st=steps[S.step];if(!st||S.ended)return;
     if(st.react){const r=st.react(ev,S,ctx);if(r)feedback(r[0],r[1]);}
     checkGoal();
   }
+  function disarm(msg){const lp=S.lp;lp.charged=false;lp.charging=false;clearTimeout(chargeT);clearTimeout(disarmT);L(msg);}
   function lpKey(k){
-    const lp=S.lp,p=S.pt;
-    if(k!=='ON'&&!lp.on){feedback('tip','El LIFEPAK está apagado: pulsen ON.');return;}
+    const lp=S.lp,p=S.pt;S.hl.delete('lp:'+k);
+    if(k!=='ON'&&!lp.on){feedback('tip','El LIFEPAK está apagado: pulsen ON.');applyHL();return;}
     switch(k){
-      case 'ON': lp.on=!lp.on;if(lp.on){lp.mode='MANUAL';lp.msg='';L('LP12 encendido (modo manual, derivación II)');}else{Object.assign(lp,{charged:false,charging:false,sync:false,pacer:false,mA:0,mode:'MANUAL',over:null,msg:''});L('LP12 apagado');}break;
+      case 'ON': lp.on=!lp.on;if(lp.on){lp.mode='MANUAL';lp.msg='';L('LP12 encendido (modo manual, derivación II)');}else{clearTimeout(chargeT);clearTimeout(disarmT);Object.assign(lp,{charged:false,charging:false,sync:false,pacer:false,mA:0,mode:'MANUAL',over:null,msg:''});L('LP12 apagado');}break;
       case 'ANALYZE':
         if(!S.acc.pads){lp.msg='<span class="alarm">CONNECT ELECTRODES</span>';L('ANALYZE sin parches');break;}
         lp.mode='AED';lp.charged=false;lp.over=null;
@@ -180,16 +197,11 @@ function create(root,CASE,opts={}){
           else{lp.msg='NO SHOCK ADVISED → START CPR';L('NO SHOCK ADVISED');emit({type:'analysis',result:'noshock'});}
           sync();});
         break;
-      case 'ENERGY':
+      case 'ENERGY+': case 'ENERGY-':{
         if(lp.mode==='AED'){lp.mode='MANUAL';L('Paso a modo manual');}
-        if(lp.charged||lp.charging){lp.charged=false;lp.charging=false;clearTimeout(chargeT);L('Energía cambiada durante la carga: carga eliminada, vuelve a cargar');}
-        {const i=ENERGIES.indexOf(lp.energy);lp.energy=ENERGIES[(i+1)%ENERGIES.length];}lastAdj='energy';lp.msg=`ENERGY SELECT / ${lp.energy} J`;break;
-      case 'SEL+': case 'SEL-':{const d=k==='SEL+'?1:-1;
-        if(lastAdj==='energy'){if(lp.charged||lp.charging){lp.charged=false;lp.charging=false;clearTimeout(chargeT);L('Energía cambiada: carga eliminada');}const i=ENERGIES.indexOf(lp.energy);lp.energy=ENERGIES[Math.min(ENERGIES.length-1,Math.max(0,i+d))];lp.msg=`ENERGY SELECT / ${lp.energy} J`;}
-        else if(lastAdj==='rate'){lp.rate=Math.min(170,Math.max(40,lp.rate+5*d));lp.msg=`PACER RATE ${lp.rate} ppm`;}
-        else if(lastAdj==='mA'){setmA(lp.mA+5*d);}
-        break;}
-      case 'SELP': if(lp.charged){lp.charged=false;clearTimeout(disarmT);lp.msg='DISARMING…';L('Carga retirada con el SELECTOR');}break;
+        if(lp.charged||lp.charging)disarm('Energía cambiada durante la carga: carga eliminada, hay que volver a cargar');
+        const i=ENERGIES.indexOf(lp.energy),d=k==='ENERGY+'?1:-1;lp.energy=ENERGIES[Math.min(ENERGIES.length-1,Math.max(0,i+d))];lp.msg=`ENERGY SELECT / ${lp.energy} J`;break;}
+      case 'SELP': if(lp.charged||lp.charging){disarm('Carga retirada con el SELECTOR');lp.msg='DISARMING…';}else lp.msg='SELECTOR: no hay carga que retirar';break;
       case 'CHARGE':
         if(!S.acc.pads){lp.msg='<span class="alarm">CONNECT ELECTRODES</span>';break;}
         if(lp.mode==='AED'){lp.mode='MANUAL';L('Paso a modo manual');}
@@ -207,17 +219,21 @@ function create(root,CASE,opts={}){
         if(lp.mode==='AED')later(1500,()=>{lp.msg='START CPR';L('START CPR');sync();});
         break;
       case 'SYNC': lp.sync=!lp.sync;if(lp.mode==='AED')lp.mode='MANUAL';lp.msg=lp.sync?'SYNC ON':'SYNC OFF';L(lp.msg);break;
+      case 'ADVISORY': lp.msg='ADVISORY: vigilancia del ritmo (no simulada en estos casos)';L('ADVISORY pulsado (no simulado)');break;
       case 'PACER':
         if(!lp.pacer&&!(S.acc.ecg||S.acc.ecg12)){lp.msg='<span class="alarm">CONNECT ECG LEADS</span>';feedback('tip','Para el marcapasos a demanda, coloquen también el cable de ECG.');L('PACER: falta el cable de ECG');break;}
         if(!lp.pacer&&!S.acc.pads){lp.msg='<span class="alarm">CONNECT ELECTRODES</span>';break;}
-        lp.pacer=!lp.pacer;if(!lp.pacer)lp.mA=0;lp.mode='MANUAL';lp.msg=lp.pacer?'PACER ON – DEMAND':'PACER OFF';L(lp.msg);lastAdj='rate';break;
-      case 'RATE': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}lp.rate=Math.min(170,lp.rate+10);if(lp.rate>170)lp.rate=40;lastAdj='rate';lp.msg=`PACER RATE ${lp.rate} ppm`;L(lp.msg);break;
-      case 'CURRENT': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}lastAdj='mA';setmA(lp.mA+10);break;
+        lp.pacer=!lp.pacer;if(!lp.pacer)lp.mA=0;lp.mode='MANUAL';lp.msg=lp.pacer?'PACER ON – DEMAND':'PACER OFF';L(lp.msg);break;
+      case 'RATE+': case 'RATE-': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}lp.rate=Math.min(170,Math.max(40,lp.rate+(k==='RATE+'?10:-10)));lp.msg=`PACER RATE ${lp.rate} ppm`;L(lp.msg);break;
+      case 'CURRENT+': case 'CURRENT-': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}setmA(lp.mA+(k==='CURRENT+'?10:-10));break;
       case 'PAUSE': if(lp.pacer){lp.msg='PAUSED (25 % de la frecuencia)';L('PAUSE: se ve el ritmo propio');}break;
       case 'NIBP':
         if(!S.acc.cuff){lp.msg='<span class="alarm">NIBP CHECK CUFF</span>';break;}
         lp.msg='NIBP midiendo…';L('PNI en curso (~40 s reales)');later(2500,()=>{lp.nibp=p.pulse?`${p.sbp}/${p.dbp}`:'---/---';lp.msg=p.pulse?'':'<span class="alarm">NIBP WEAK PULSE</span>';L('PNI: '+lp.nibp);sync();emit({type:'nibp'});});break;
       case 'ALARMS': lp.alarms=true;lp.msg='ALARMS: QUICK SET activado';L('Alarmas activadas (QUICK SET)');break;
+      case 'OPTIONS': lp.msg='OPTIONS: menú de opciones (no simulado)';break;
+      case 'EVENT': lp.msg='EVENT registrado';L('EVENT registrado');break;
+      case 'HOME': lp.msg='';lp.over=null;break;
       case 'LEAD': lp.lead=lp.lead==='II'?'III':lp.lead==='III'?'PADDLES':'II';lp.msg='Derivación '+lp.lead;break;
       case '12LEAD':
         if(!S.acc.ecg12){lp.msg='<span class="alarm">CONNECT CHEST LEADS</span>';feedback('tip','Para el 12 derivaciones hay que colocar el cable de 12 derivaciones (V1-V6 y miembros).');break;}
@@ -231,35 +247,42 @@ function create(root,CASE,opts={}){
   function setmA(v){const lp=S.lp;if(!S.acc.pads){lp.msg='<span class="alarm">CONNECT CABLE</span>';return;}lp.mA=Math.min(200,Math.max(0,v));lp.msg=`PACER CURRENT ${lp.mA} mA`;const cap=lp.mA>=S.pt.capAt;L(`Corriente ${lp.mA} mA${cap?' → captura eléctrica':''}`);if(cap&&!S._cap){S._cap=1;emit({type:'capture'});}}
   function armDisarm(){clearTimeout(disarmT);disarmT=later(60000,()=>{if(S.lp.charged){S.lp.charged=false;S.lp.msg='DISARMING…';L('60 s sin descargar: energía retirada');sync();}});}
 
-  /* ---------- SAVe II+ ---------- */
+  /* ---------- SAVe II+ (misma disposición que el panel: presets en óvalo, − + bajo cada display) ---------- */
+  const ICO={POWER:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 6.5a7.5 7.5 0 1 0 10 0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><line x1="12" y1="3" x2="12" y2="11" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
+    MUTE:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3z" fill="currentColor"/><path d="M15 9l6 6M21 9l-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>'};
+  const OVAL={'4-3':'4/2','4-6':'3/1','4-9':'2/1','5-0':'1/2','5-3':'1/3','5-6':'1/4','5-9':'2/5','6-0':'3/5','6-3':'4/4'};
   function drawSV(){
     if(!devs.includes('save'))return;
     const sv=S.sv;svBox.innerHTML='';
     const al=['DEVICE','DISCONNECT','PIP REACHED','BATTERY','HIGH PEEP','LOW PEEP','HIGH MV','BREATH','BREATH ASSIST'];
     const show=(k)=>{if(!sv.on)return '';if(sv.showMeas&&(k==='rr'||k==='vt'))return '';const v=(sv.pend&&k in sv.pend)?sv.pend[k]:sv[k];if(sv.showMeas&&k==='pip')return sv.measPip;if(sv.showMeas&&k==='peep')return sv.measPeep;return v;};
-    const seg=(k,lab)=>h('div',{class:sv.sel===k&&sv.on?'sel':'',onclick:()=>{sv.sel=k;drawSV();}},h('small',{},lab),h('b',{class:sv.pend&&k in sv.pend?'fl':''},String(show(k))));
-    const batt=h('span',{class:'batt'});for(let i=0;i<4;i++)batt.append(h('i',{class:i<sv.batt&&sv.on?'f':''}));
-    const sk=(label,key,cls)=>h('button',{class:'k '+(cls||''),type:'button',onclick:()=>svKey(key)},label);
-    const presets=h('div',{class:'keys',style:'grid-template-columns:repeat(auto-fill,minmax(64px,1fr))'},...HEIGHTS.map(x=>{const b=sk(x.ft,'H'+x.id);b.append(h('small',{},x.m));if(sv.preset===x.id)b.classList.add('lit');return b;}));
-    svBox.append(h('h4',{},'SAVe II+ (virtual)',h('span',{},batt,sv.cprBlink&&sv.on&&sv.rr===0?h('span',{style:'color:#FF6B6B;margin-left:8px',class:'alarm'},' ♥ 100/min'):null)),
-      h('div',{class:'alarms'},...al.map(a=>h('span',{class:sv.alarms.has(a)&&sv.on?'a':''},a))),
-      h('div',{class:'seg'},seg('rr','FR rpm'),seg('vt','VT mL'),seg('pip',sv.showMeas?'PIP med.':'PIP cmH2O'),seg('peep',sv.showMeas?'PEEP med.':'PEEP')),
-      h('div',{class:'grp'},h('span',{},'Parámetro seleccionado: '+({rr:'FR',vt:'VT',pip:'PIP',peep:'PEEP'})[sv.sel]+' (toquen un display para cambiar)'),h('div',{class:'keys'},sk('▲','UP'),sk('▼','DN'),sk('CONFIRM','CONFIRM',sv.pend?'charge':''),sk('MANUAL TRIGGER','TRIG','analyze'),sk('MUTE','MUTE'),sk('POWER','POWER','on-btn'))),
-      h('div',{class:'grp'},h('span',{},'Adult height presets'),presets));
+    const sk=(key,label,cls,attrs={})=>h('button',Object.assign({class:'sk '+(cls||''),type:'button','data-key':key,onclick:()=>svKey(key)},attrs),label);
+    const oval=h('div',{class:'oval'});
+    for(const x of HEIGHTS){const b=sk('H'+x.id,x.ft,'pre'+(sv.on&&sv.preset===x.id?' lit':''),{'aria-label':'Preset '+heightLabel(x)});b.append(h('small',{},x.m));b.style.gridArea=OVAL[x.id];oval.append(b);}
+    const cf=sk('CONFIRM','CONFIRM','cf'+(sv.pend?' fl':''));cf.style.gridArea='2/2/4/5';oval.append(cf);
+    const batt=h('div',{class:'svbatt','aria-label':'Batería'});for(let i=3;i>=0;i--)batt.append(h('i',{class:i<sv.batt&&sv.on?'f':''}));batt.append(h('b',{'aria-hidden':'true'},'ϟ'));
+    const disp=(k,lab)=>h('div',{class:'svd'},h('small',{},lab),h('b',{class:sv.pend&&k in sv.pend?'fl':''},String(show(k))),h('div',{class:'pm'},sk(k+'-','−','',{'aria-label':lab+': bajar'}),sk(k+'+','+','',{'aria-label':lab+': subir'})));
+    svBox.append(h('div',{class:'svc'},
+      h('div',{class:'svtop'},sk('POWER','','ico',{html:ICO.POWER,'aria-label':'POWER'}),h('b',{},'SAVe II+'),sk('MUTE','','ico',{html:ICO.MUTE,'aria-label':'MUTE'})),
+      h('div',{class:'svmid'},batt,oval),
+      h('div',{class:'svind'},h('span',{class:sv.on&&sv.running&&sv.preset&&!sv.userDef?'on':''},h('i'),'ADULT PRESETS'),h('span',{class:sv.on&&sv.userDef?'on':''},h('i'),'USER DEFINED'),sk('TRIG','MANUAL TRIGGER','trig')),
+      h('div',{class:'svdisp'},disp('rr','FR (rpm)'),disp('vt','VT (mL)'),disp('pip',sv.showMeas?'PIP medida':'PIP'),disp('peep',sv.showMeas?'PEEP medida':'PEEP'))),
+      h('div',{class:'alarms','aria-label':'Alarmas del SAVe'},...al.map(a=>h('span',{class:sv.alarms.has(a)&&sv.on?'a':''},a)),sv.on&&sv.running&&sv.rr===0?h('span',{class:'a heart'},'♥ 100/min'):null));
+    applyHL();
   }
   function svKey(k){
-    const sv=S.sv;
-    if(k!=='POWER'&&!sv.on){feedback('tip','El SAVe está apagado: pulsen POWER.');return;}
-    if(k==='POWER'){if(!sv.on){sv.on=true;sv.preset=null;sv.rr=0;sv.vt=0;sv.pip=30;sv.peep=0;sv.running=false;sv.alarms.clear();L('SAVe encendido: elijan la altura y CONFIRM');}else{sv.on=false;sv.running=false;L('SAVe apagado (POWER 3 s)');}}
-    else if(k[0]==='H'){const x=HEIGHTS.find(y=>y.id===k.slice(1));sv.preset=x.id;sv.pend={rr:x.rr,vt:x.vt,pip:30,peep:0};L(`Preset ${heightLabel(x)}: FR ${x.rr}, VT ${x.vt} (pendiente de CONFIRM)`);}
-    else if(k==='UP'||k==='DN'){const d=k==='UP'?1:-1;const base=Object.assign({rr:sv.rr,vt:sv.vt,pip:sv.pip,peep:sv.peep},sv.pend||{});
-      const lim={rr:[8,30],vt:[200,800],pip:[10,60],peep:[0,20]},st={rr:1,vt:10,pip:5,peep:1};let v=base[sv.sel]+d*st[sv.sel];
-      if(sv.sel==='rr'&&base.rr===8&&d<0)v=0;else if(sv.sel==='rr'&&base.rr===0&&d>0)v=8;else v=Math.min(lim[sv.sel][1],Math.max(lim[sv.sel][0],v));
-      base[sv.sel]=v;if(base.rr===0){base.pip=20;base.peep=0;}sv.pend=base;
+    const sv=S.sv;S.hl.delete('sv:'+k);
+    if(k!=='POWER'&&!sv.on){feedback('tip','El SAVe está apagado: pulsen POWER.');applyHL();return;}
+    if(k==='POWER'){if(!sv.on){sv.on=true;sv.preset=null;sv.rr=0;sv.vt=0;sv.pip=30;sv.peep=0;sv.running=false;sv.userDef=false;sv.alarms.clear();L('SAVe encendido: elijan la altura y CONFIRM');}else{sv.on=false;sv.running=false;L('SAVe apagado (POWER 3 s)');}}
+    else if(k[0]==='H'){const x=HEIGHTS.find(y=>y.id===k.slice(1));sv.preset=x.id;sv.pend={rr:x.rr,vt:x.vt,pip:30,peep:0};sv.pendUser=false;L(`Preset ${heightLabel(x)}: FR ${x.rr}, VT ${x.vt} (pendiente de CONFIRM)`);}
+    else if(/^(rr|vt|pip|peep)[+-]$/.test(k)){const p=k.slice(0,-1),d=k.endsWith('+')?1:-1;const base=Object.assign({rr:sv.rr,vt:sv.vt,pip:sv.pip,peep:sv.peep},sv.pend||{});
+      const lim={rr:[8,30],vt:[200,800],pip:[10,60],peep:[0,20]},st={rr:1,vt:10,pip:5,peep:1};let v=base[p]+d*st[p];
+      if(p==='rr'&&base.rr===0)v=d>0?8:0;else if(p==='rr'&&base.rr===8&&d<0)v=0;else v=Math.min(lim[p][1],Math.max(lim[p][0],v));
+      base[p]=v;if(base.rr===0){base.pip=20;base.peep=0;}sv.pend=base;sv.pendUser=true;
       if(base.rr*base.vt>12500){sv.alarms.add('HIGH MV');}else sv.alarms.delete('HIGH MV');}
     else if(k==='CONFIRM'){
       if(sv.pend){if(sv.pend.rr*sv.pend.vt>12500){feedback('tip','HIGH MV: la combinación supera unos 12,5 L/min y no se acepta. Ajusten primero el parámetro que van a bajar.');return;}
-        Object.assign(sv,sv.pend);sv.pend=null;sv.running=true;sv.lastBreath=S.t;if(sv.rr>0)sv.alarms.delete('BREATH');L(sv.rr===0?'SAVe en MODO RCP (FR 0): solo ventila con MANUAL TRIGGER':`SAVe ventilando: FR ${sv.rr}, VT ${sv.vt}, PIP ${sv.pip}, PEEP ${sv.peep}`);sv.cprBlink=sv.rr===0;emit({type:'save',what:'confirm'});}
+        Object.assign(sv,sv.pend);sv.pend=null;sv.userDef=!!sv.pendUser;sv.running=true;sv.lastBreath=S.t;if(sv.rr>0)sv.alarms.delete('BREATH');L(sv.rr===0?'SAVe en MODO RCP (FR 0): solo ventila con MANUAL TRIGGER':`SAVe ventilando: FR ${sv.rr}, VT ${sv.vt}, PIP ${sv.pip}, PEEP ${sv.peep}`);sv.cprBlink=sv.rr===0;emit({type:'save',what:'confirm'});}
       else{measure();sv.showMeas=1;L(`CONFIRM sin cambios: PIP medida ${sv.measPip}, PEEP medida ${sv.measPeep}`);later(3000,()=>{sv.showMeas=0;drawSV();});emit({type:'save',what:'measure'});}
     }
     else if(k==='TRIG'){if(!sv.running){feedback('tip','Primero confirmen unos ajustes (altura o FR 0).');return;}sv.trig++;sv.lastBreath=S.t;sv.alarms.delete('BREATH');L('MANUAL TRIGGER: 1 respiración');emit({type:'trigger'});}
@@ -286,11 +309,17 @@ function create(root,CASE,opts={}){
     accBox.innerHTML='';const list=CASE.acc||[];
     const keys=h('div',{class:'keys'});
     for(const id of list){const a=ACC[id];if(!a)continue;if(id==='adv2'&&!S.acc.cpr)continue;
-      const b=h('button',{class:'k'+(a.t&&S.acc[id]?' lit':''),type:'button',onclick:()=>accAct(id)},(a.t?(S.acc[id]?'✔ ':'○ '):'')+a.l);keys.append(b);}
+      const b=h('button',{class:'k'+(a.t&&S.acc[id]?' lit':''),type:'button','data-key':id,onclick:()=>accAct(id)},(a.t?(S.acc[id]?'✔ ':'○ '):'')+a.l);keys.append(b);}
     accBox.append(h('b',{},'Acciones sobre el paciente y el material'),keys);
+    applyHL();
+  }
+  /* Pista: resalta los botones o acciones que tocan en el paso */
+  function applyHL(){
+    for(const [box,pre] of [[lpBox,'lp:'],[svBox,'sv:'],[accBox,'acc:']])
+      box.querySelectorAll('[data-key]').forEach(b=>b.classList.toggle('hl',S.hl.has(pre+b.dataset.key)));
   }
   function accAct(id){
-    const a=ACC[id];
+    const a=ACC[id];S.hl.delete('acc:'+id);
     if(a.t){S.acc[id]=!S.acc[id];L((S.acc[id]?'✔ ':'✖ ')+a.l);
       if(id==='cpr'&&S.acc.cpr&&S.lp.charged&&S.lp.mode==='MANUAL'){}
       if(id==='moving'&&!S.acc.moving)L('Vehículo detenido');}
@@ -323,7 +352,12 @@ function create(root,CASE,opts={}){
       [...st.options].sort(()=>Math.random()-.5).forEach((o)=>{const b=h('button',{type:'button',onclick:()=>{if(S.ended||b.disabled)return;fbEl.style.display='block';if(o.ok){b.classList.add('good');feedback('ok',o.fb||'Correcto.');[...box.children].forEach(x=>x.disabled=true);if(o.effect)o.effect(S,ctx);done(st);}else{b.classList.add('bad');feedback('no',o.fb||'No es lo más adecuado.');}}},o.t);box.append(b);});
       story.append(box);
     }
-    if(st.hints){let i=0;const hb=h('button',{class:'btn alt sm',type:'button',style:'margin-top:10px',onclick:()=>{fbEl.style.display='block';feedback('tip','💡 '+st.hints[Math.min(i,st.hints.length-1)]);i++;}},'Pista');story.append(hb);}
+    S.hl=new Set();
+    const hlDev=(st.hl||[]).map(x=>x.startsWith('lp:')?'lp12':x.startsWith('sv:')?'save':null).find(Boolean);
+    showDev(st.dev||hlDev||curDev);
+    const hints=st.hints||(st.hl?['Les resaltamos en naranja los botones y las acciones de este paso.']:null);
+    if(hints){let i=0;const hb=h('button',{class:'btn alt sm',type:'button',style:'margin-top:10px',onclick:()=>{fbEl.style.display='block';feedback('tip','💡 '+hints[Math.min(i,hints.length-1)]);i++;
+      if(st.hl){S.hl=new Set(st.hl);applyHL();const first=root.querySelector('.hl');if(first){const w=first.closest('details');if(w&&!w.open)w.open=true;first.scrollIntoView({behavior:'smooth',block:'nearest'});}}}},'Pista');story.append(hb);}
     story.append(fbEl);
     sync();drawSV();drawAcc();
     checkGoal();
