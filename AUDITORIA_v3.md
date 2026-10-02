@@ -18,7 +18,20 @@ Corregidos los 4 hallazgos **altos** y los 8 **medios** (commit siguiente a `c39
 - Checklist: fila de FilterLine / EtCO2.
 - `sw.js`: la página de respaldo solo para navegaciones; `icon-512.png` y la nueva infografía en la caché.
 
-Además (pedido por el autor): «v2» → «v3» en el pie, en Fuentes y en los manuales. Los hallazgos **bajos** siguen pendientes.
+Además (pedido por el autor): «v2» → «v3» en el pie, en Fuentes y en los manuales.
+
+Corregidos también los 18 hallazgos **bajos** (02-10-2026):
+- Alturas en el texto con el formato pedido por el autor, «1,75 m (5'9")»; los botones muestran la etiqueta del equipo.
+- Código E15 retirado del panel: no figura en el manual del SAVe de la web (si está en la fuente, se puede recuperar con su página).
+- Páginas añadidas donde faltaban (LP12: [4-15], [B-4], [1-2], [4-20]; SAVe: rangos y respuestas del test). Lo que no es del fabricante va como «guías ERC» o «criterio del autor», y lo del SAVe sin página, como «pág. pendiente de cotejar».
+- Caso de cardioversión: la FV no se resuelve con menos de 150 J (guías ERC: al menos 150 J en bifásico).
+- Simulador: PACER sin cable de ECG estimula en modo no demanda, con aviso; contraste de alarmas apagadas, botón ON y botones del SAVe; el ECG libera su escucha de `resize`; el monitor es una región accesible; las pestañas llevan `aria-selected`.
+- Portada: secuencia de cada módulo generada desde las pestañas (con vídeos complementarios y sin panel en el módulo 3).
+- `sw.js`: si la red tarda más de 4 s, se sirve la copia guardada (pendiente de probar por https).
+- Infografías: aviso en el celular para ampliar o guardar en PDF; flechas con el color de acento; errata de SHOCK corregida.
+- Navegación del celular con degradado de «hay más» y el enlace activo siempre visible.
+- Botón de imprimir el manual siempre visible; aviso en Fuentes sobre los vídeos de Loom y YouTube (en inglés).
+- README en «ustedes» y CLAUDE.md al día; `MODS[].color` retirado; resaltados con `--orange`.
 
 ## Hallazgos
 

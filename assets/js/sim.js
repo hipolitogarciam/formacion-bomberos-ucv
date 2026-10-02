@@ -23,7 +23,8 @@ const RH={
   paced:{beat:true,tpl:t=>PACED(t,true),label:'Ritmo de marcapasos con captura'}
 };
 class ECG{
-  constructor(cv){this.cv=cv;this.ctx=cv.getContext('2d');this.r='sinus';this.hr=75;this.t=0;this.x=0;this.beats=[];this.next=0;this.pnext=0;this.py=null;this.cpr=false;this.off=false;this.sync=false;this.pacer=null;this.resize();addEventListener('resize',()=>this.resize());}
+  constructor(cv){this.cv=cv;this.ctx=cv.getContext('2d');this.r='sinus';this.hr=75;this.t=0;this.x=0;this.beats=[];this.next=0;this.pnext=0;this.py=null;this.cpr=false;this.off=false;this.sync=false;this.pacer=null;this.resize();this._rs=()=>this.resize();addEventListener('resize',this._rs);}
+  dispose(){removeEventListener('resize',this._rs);}
   resize(){const r=this.cv.getBoundingClientRect();const d=devicePixelRatio||1;this.W=Math.max(200,r.width);this.H=r.height||120;this.cv.width=this.W*d;this.cv.height=this.H*d;this.ctx.setTransform(d,0,0,d,0,0);this.ctx.fillStyle='#05080D';this.ctx.fillRect(0,0,this.W,this.H);this.x=0;this.py=null;}
   set(r,hr){this.r=r;if(hr!=null)this.hr=hr;}
   val(t){
@@ -108,7 +109,7 @@ function create(root,CASE,opts={}){
   const steps=CASE.steps;const devs=CASE.devices||['lp12'];
   // --- estructura
   const story=h('div',{class:'story'});
-  const mon=h('div',{class:'mon',role:'img','aria-label':'Monitor del LIFEPAK 12'});
+  const mon=h('div',{class:'mon',role:'region','aria-label':'Monitor del LIFEPAK 12'});
   const cv=h('canvas');const vit=h('div',{class:'vit'});const status=h('div',{class:'status'});
   mon.append(h('div',{class:'scr'},cv,vit),status);
   const lpBox=h('div',{class:'dev'});const svBox=h('div',{class:'dev save'});
@@ -221,9 +222,10 @@ function create(root,CASE,opts={}){
       case 'SYNC': lp.sync=!lp.sync;if(lp.mode==='AED')lp.mode='MANUAL';lp.msg=lp.sync?'SYNC ON':'SYNC OFF';L(lp.msg);break;
       case 'ADVISORY': lp.msg='ADVISORY: vigilancia del ritmo (no simulada en estos casos)';L('ADVISORY pulsado (no simulado)');break;
       case 'PACER':
-        if(!lp.pacer&&!(S.acc.ecg||S.acc.ecg12)){lp.msg='<span class="alarm">CONNECT ECG LEADS</span>';feedback('tip','Para el marcapasos a demanda, coloquen también el cable de ECG.');L('PACER: falta el cable de ECG');break;}
         if(!lp.pacer&&!S.acc.pads){lp.msg='<span class="alarm">CONNECT ELECTRODES</span>';break;}
-        lp.pacer=!lp.pacer;if(!lp.pacer)lp.mA=0;lp.mode='MANUAL';lp.msg=lp.pacer?'PACER ON – DEMAND':'PACER OFF';L(lp.msg);break;
+        lp.pacer=!lp.pacer;if(!lp.pacer)lp.mA=0;lp.mode='MANUAL';
+        if(lp.pacer&&!(S.acc.ecg||S.acc.ecg12)){lp.msg='<span class="alarm">PACER ON – NON-DEMAND (ECG LEADS OFF)</span>';feedback('tip','Sin el cable de ECG estimula a frecuencia fija, a ciegas, sin tener en cuenta el ritmo propio. Para el marcapasos a demanda, coloquen también el cable de ECG.');L('PACER sin ECG: frecuencia fija (no demanda)');}
+        else{lp.msg=lp.pacer?'PACER ON – DEMAND':'PACER OFF';L(lp.msg);}break;
       case 'RATE+': case 'RATE-': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}lp.rate=Math.min(170,Math.max(40,lp.rate+(k==='RATE+'?10:-10)));lp.msg=`PACER RATE ${lp.rate} ppm`;L(lp.msg);break;
       case 'CURRENT+': case 'CURRENT-': if(!lp.pacer){lp.msg='Pulsen PACER primero';break;}setmA(lp.mA+(k==='CURRENT+'?10:-10));break;
       case 'PAUSE': if(lp.pacer){lp.msg='PAUSED (25 % de la frecuencia)';L('PAUSE: se ve el ritmo propio');}break;
@@ -385,7 +387,7 @@ function create(root,CASE,opts={}){
     if(Math.floor(S.t*2)!==Math.floor((S.t-dt)*2)){svTick();if(CASE.tick)CASE.tick(S,ctx);drawSVlite();drawVit();if(!S._done)checkGoal();}
     raf=requestAnimationFrame(loop);}
   let svSig='';function drawSVlite(){const s=JSON.stringify([...S.sv.alarms])+S.sv.showMeas+S.sv.on;if(s!==svSig){svSig=s;drawSV();}}
-  function destroy(){cancelAnimationFrame(raf);timers.forEach(clearTimeout);}
+  function destroy(){cancelAnimationFrame(raf);timers.forEach(clearTimeout);ecg.dispose();}
   renderStep();raf=requestAnimationFrame(loop);
   return {destroy};
 }

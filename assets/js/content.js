@@ -3,17 +3,17 @@ window.PHOTOS=[];
 
 /* Contenido: módulos, panel interactivo, autoevaluaciones y vídeos */
 window.MODS=[
- {id:'lp12',n:1,title:'LIFEPAK 12',sub:'Monitor-desfibrilador',color:'#0E7C86',
+ {id:'lp12',n:1,title:'LIFEPAK 12',sub:'Monitor-desfibrilador',
   intro:'Checklist, modo DEA, terapias manuales (desfibrilación, cardioversión y marcapasos) y monitorización: ECG, 12 derivaciones, SpO2, PNI y EtCO2.',
   goals:['Hacer el checklist diario y saber cuándo un equipo queda fuera de servicio.','Usar el modo DEA con seguridad, también en la ambulancia.','Conocer los pasos y las trampas de la desfibrilación manual, la cardioversión y el marcapasos (personal acreditado).','Monitorizar e interpretar las trampas de la SpO2, la PNI y la EtCO2.'],
   manual:'content/manual-lp12.html',infoHtml:'assets/docs/infografia-lp12.html',panel:'lp12',
   loom:{title:'Sesión 1 · LIFEPAK 12 (≈ 12 min)',url:''}},
- {id:'save',n:2,title:'SAVe II+',sub:'Ventilador de transporte',color:'#F08A24',
+ {id:'save',n:2,title:'SAVe II+',sub:'Ventilador de transporte',
   intro:'Cuándo usarlo y cuándo no, puesta en marcha con prueba de alarmas, presets por altura, oxígeno, modo RCP y resolución de alarmas.',
   goals:['Decidir entre bolsa y ventilador según las condiciones del fabricante.','Poner en marcha el SAVe y probar sus alarmas.','Calcular el flujo de O2 y usar el modo RCP.','Resolver DISCONNECT, PIP REACHED y HIGH PEEP empezando por el paciente.'],
   manual:'content/manual-save.html',infoHtml:'assets/docs/infografia-save.html',panel:'save',
   loom:{title:'Sesión 2 · SAVe II+ (≈ 11 min)',url:''}},
- {id:'int',n:3,title:'Integración clínica',sub:'Los dos equipos en el paciente',color:'#3CC6D2',
+ {id:'int',n:3,title:'Integración clínica',sub:'Los dos equipos en el paciente',
   intro:'Roles, el orden de conexión, la ronda de 5 minutos, alarmas simultáneas, parada en el paciente ventilado, niños y entrega en el hospital.',
   goals:['Repartir papeles con 2 o 3 personas.','Seguir el orden paciente → vía aérea → ventilación → circulación → equipo.','Manejar una parada en un paciente conectado al SAVe.','Saber qué no hacer en niños y en zonas con humo.'],
   manual:'content/manual-integracion.html',infoHtml:'assets/docs/infografia-int.html',panel:null,
@@ -35,8 +35,8 @@ window.PANELS=(function(){
  const spk=[];for(let dx=-36;dx<=36;dx+=12)for(let dy=-36;dy<=36;dy+=12)if(dx*dx+dy*dy<=38*38)spk.push({t:'circle',x:150+dx,y:730+dy,r:2.6,fill:'#9A9482'});
  // SAVe II+: presets en el óvalo alrededor de CONFIRM (posiciones según el equipo real)
  const C=[451,268],POS=[[334,388],[251,321],[259,239],[331,175],[451,148],[570,175],[644,239],[640,321],[570,388]];
- const presets=SAVE_HEIGHTS.map((h,i)=>({id:'H'+h.id,x:POS[i][0]-42,y:POS[i][1]-22,w:84,h:44,r:10,l:h.ft,fill:'#3B7DDD',sz:22,n:`Preset ${h.ft} (${h.m})`,
-   i:`Altura ${h.m} (${h.ft}): FR ${h.rr} y VT ${h.vt} mL, unos 6 mL/kg de peso ideal. Elijan la altura y pulsen CONFIRM. Para <b>salir del modo RCP</b> hay que subir la FR por encima de 0 (por ejemplo, con un preset de altura) y pulsar CONFIRM: comprueben en su equipo que el preset sale del modo RCP.`,p:'14, 24'}));
+ const presets=SAVE_HEIGHTS.map((h,i)=>({id:'H'+h.id,x:POS[i][0]-42,y:POS[i][1]-22,w:84,h:44,r:10,l:h.ft,fill:'#3B7DDD',sz:22,n:`Preset ${heightLabel(h)}`,
+   i:`Altura ${heightLabel(h)}: FR ${h.rr} y VT ${h.vt} mL, unos 6 mL/kg de peso ideal. Elijan la altura y pulsen CONFIRM. Para <b>salir del modo RCP</b> hay que subir la FR por encima de 0 (por ejemplo, con un preset de altura) y pulsar CONFIRM: comprueben en su equipo que el preset sale del modo RCP.`,p:'14, 24'}));
  const metric=SAVE_HEIGHTS.map((h,i)=>({t:'text',x:Math.round(C[0]+(POS[i][0]-C[0])*1.5),y:Math.round(C[1]+(POS[i][1]-C[1])*1.5),s:h.m,sz:16,fill:'#E6E8EA',w:600}));
  const pm=(id,cx,n)=>({id:'pm-'+id,x:cx-58,y:632,w:116,h:56,r:28,fill:'#1D2A3D',stroke:'#3B7DDD',n:`− + de ${n}`,
    extra:[{t:'circle',x:cx-28,y:660,r:22,fill:'#3B7DDD'},{t:'circle',x:cx+28,y:660,r:22,fill:'#3B7DDD'},{t:'text',x:cx-28,y:660,s:'−',sz:32},{t:'text',x:cx+28,y:660,s:'+',sz:32}],
@@ -68,7 +68,7 @@ window.PANELS=(function(){
   ],
   hot:[
    {id:'leds',ghost:true,x:570,y:170,w:150,h:52,n:'Luces BATT CHG y SERVICE',i:'<b>BATT CHG:</b> hay una batería cargándose con el adaptador de red. <b>SERVICE:</b> ha fallado el autotest: equipo fuera de servicio y aviso al técnico.',p:'2-5'},
-   {id:'on',x:775,y:172,w:150,h:46,r:23,fill:'#2E8B47',l:'ON',led:true,n:'1 · ON',i:'Enciende y apaga el equipo. <b>De fábrica arranca como desfibrilador manual y monitor</b>, con la derivación II. Antes de encender para el checklist, desconecten de la red y esperen 2 s.',p:'2-5, 4-13'},
+   {id:'on',x:775,y:172,w:150,h:46,r:23,fill:'#287A3E',l:'ON',led:true,n:'1 · ON',i:'Enciende y apaga el equipo. <b>De fábrica arranca como desfibrilador manual y monitor</b>, con la derivación II. Antes de encender para el checklist, desconecten de la red y esperen 2 s.',p:'2-5, 4-13'},
    {id:'energy',x:775,y:236,w:150,h:48,r:24,fill:D,l:'ENERGY\nSELECT',sz:15,arrows:true,n:'2 · ENERGY SELECT ▼▲',i:'Elige la energía en modo manual (hasta 360 J): ▼ baja y ▲ sube. Desde el modo DEA, pulsarlo pasa a manual si la configuración lo permite. <b>Si cambian la energía mientras carga, la carga se elimina.</b>',p:'4-15, 4-16'},
    {id:'charge',x:775,y:294,w:150,h:44,r:22,fill:Y,tc:'#111111',l:'CHARGE',n:'3 · CHARGE',i:'Carga el desfibrilador en modo manual. Al terminar suena un tono. <b>Si no descargan en 60 s, la energía se elimina dentro del equipo.</b> Al cargar, el marcapasos se para.',p:'4-15, 4-20'},
    {id:'shock',x:775,y:344,w:150,h:40,r:20,fill:'#D32F2F',l:'SHOCK',led:true,n:'SHOCK',i:'Descarga. Antes, "¡fuera todos!". En la cardioversión, <b>manténganlo pulsado</b> hasta que descargue con el siguiente QRS.',p:'4-6, 4-16'},
@@ -125,7 +125,7 @@ window.PANELS=(function(){
    {id:'adultpre',ghost:true,x:84,y:474,w:236,h:38,extra:[{t:'circle',x:100,y:493,r:7,fill:'#2B2E33',stroke:'#C9CDD2',sw:1.5},{t:'text',x:116,y:493,s:'ADULT PRESETS',sz:17,a:'start',fill:'#E6E8EA'}],n:'Indicador ADULT PRESETS',i:'Se enciende cuando el equipo ventila con un preset por altura.',p:'13-14'},
    {id:'userdef',ghost:true,x:346,y:474,w:214,h:38,extra:[{t:'circle',x:362,y:493,r:7,fill:'#2B2E33',stroke:'#C9CDD2',sw:1.5},{t:'text',x:378,y:493,s:'USER DEFINED',sz:17,a:'start',fill:'#E6E8EA'}],n:'Indicador USER DEFINED',i:'Se enciende cuando se han cambiado los parámetros a mano y se han confirmado con CONFIRM.',p:'13-14'},
    disp('rr',126,96,'15','FR (frecuencia respiratoria)','Frecuencia respiratoria: 0 u 8-30 rpm. <b>FR 0 = modo RCP</b>: solo ventila al pulsar MANUAL TRIGGER.','13-15'),
-   disp('vt',291,150,'420','VT (volumen corriente)','Volumen corriente: 200-800 mL. Aquí salen también los códigos de error (E13 frío, E15 batería, E16 calor).','13-15, 40'),
+   disp('vt',291,150,'420','VT (volumen corriente)','Volumen corriente: 200-800 mL. Aquí salen también los códigos de error (E13 frío extremo, E16 calor extremo).','13-15, 40'),
    disp('pip',512,97,'30','PIP (límite de presión)','Límite de presión: 10-60 cmH2O (30 de inicio, 20 en modo RCP). Si se alcanza, salta PIP REACHED y la respiración se corta. <b>No pasar de 35</b>; los cambios, por orden médica.','13-15'),
    disp('peep',678,99,'0','PEEP','PEEP: 0-20 cmH2O, por orden médica. En modo RCP se desactiva.','13-15'),
    pm('rr',174,'FR'),pm('vt',366,'VT'),pm('pip',560,'PIP'),pm('peep',728,'PEEP'),
@@ -150,12 +150,12 @@ window.QUIZ={
   {q:'Los parches QUIK-COMBO pediátricos son para…',o:['Menores de 8 años, pesen lo que pesen','Menos de 15 kg','Menos de 25 kg'],a:1,w:'Manual del LP12: pediátricos para menos de 15 kg; los de adulto, para 15 kg o más [5-3].'}
  ],
  save:[
-  {q:'¿Cuál de estas condiciones exige el fabricante para usar el SAVe II+?',o:['Tener O2 a presión','Capnografía (o volumen espirado) funcionando','Paciente de más de 18 años'],a:1,w:'Sin capnografía o volumen espirado no se usa: bolsa. El límite es de peso (45 kg), no de edad.'},
-  {q:'Eligen 1,75 m (5\'9"). ¿Cuándo empieza a ventilar con esos valores?',o:['En cuanto pulsan la altura','Al pulsar CONFIRM','A los 10 s'],a:1,w:'Ningún cambio se aplica sin CONFIRM.'},
+  {q:'¿Cuál de estas condiciones exige el fabricante para usar el SAVe II+?',o:['Tener O2 a presión','Capnografía (o volumen espirado) funcionando','Paciente de más de 18 años'],a:1,w:'Sin capnografía o volumen espirado no se usa: bolsa [4]. El límite es de peso (45 kg), no de edad.'},
+  {q:'Eligen 1,75 m (5\'9"). ¿Cuándo empieza a ventilar con esos valores?',o:['En cuanto pulsan la altura','Al pulsar CONFIRM','A los 10 s'],a:1,w:'Ningún cambio se aplica sin CONFIRM [14, 32].'},
   {q:'FR 15 y VT 420 mL. ¿Qué flujo de O2 ponen al tubo reservorio?',o:['2 L/min','7 L/min (6,3 redondeado hacia arriba)','15 L/min siempre'],a:1,w:'Flujo = volumen minuto, redondeado hacia arriba → FiO2 cercana al 100 %.'},
-  {q:'¿Qué alarmas detienen la ventilación?',o:['DISCONNECT y PIP REACHED','DEVICE, HIGH PEEP y la batería en reserva','Todas'],a:1,w:'Paran y abren la válvula: hay que ventilar con bolsa ya.'},
-  {q:'Salta PIP REACHED. ¿Por dónde empiezan?',o:['Subo la PIP a 50','Paciente: tubo, secreciones, neumotórax… (DOPE)','Silencio con MUTE'],a:1,w:'Primero el paciente. Sin causa clara → bolsa. No pasar de una PIP de 35.'},
-  {q:'En la parada, ¿cómo se pone el SAVe en modo RCP?',o:['Pulsando MANUAL TRIGGER','Bajando la FR a 0 y CONFIRM','Apagándolo'],a:1,w:'Con FR 0, solo ventila al pulsar MANUAL TRIGGER. PIP 20 y sin PEEP.'},
+  {q:'¿Qué alarmas detienen la ventilación?',o:['DISCONNECT y PIP REACHED','DEVICE, HIGH PEEP y la batería en reserva','Todas'],a:1,w:'Paran y abren la válvula: hay que ventilar con bolsa ya [16, 36-43].'},
+  {q:'Salta PIP REACHED. ¿Por dónde empiezan?',o:['Subo la PIP a 50','Paciente: tubo, secreciones, neumotórax… (DOPE)','Silencio con MUTE'],a:1,w:'Primero el paciente. Sin causa clara → bolsa [38-43]. No pasar de una PIP de 35 [13-15].'},
+  {q:'En la parada, ¿cómo se pone el SAVe en modo RCP?',o:['Pulsando MANUAL TRIGGER','Bajando la FR a 0 y CONFIRM','Apagándolo'],a:1,w:'Con FR 0, solo ventila al pulsar MANUAL TRIGGER. PIP 20 y sin PEEP [13-15, 32-33].'},
   {q:'El paciente recupera el pulso y siguen en FR 0. ¿Qué pasa?',o:['Ventila solo a 12 rpm','No recibe respiraciones salvo con MANUAL TRIGGER','Pasa a CPAP'],a:1,w:'Hay que salir del modo RCP: subir la FR por encima de 0 (por ejemplo, con el botón de altura) y CONFIRM. Comprueben en su equipo que el botón de altura sale del modo RCP.'},
   {q:'Paciente de 40 kg. ¿Usan el SAVe?',o:['Sí, con el preset más bajo','No: por debajo de 45 kg, bolsa del tamaño adecuado'],a:1,w:'El límite es de 45 kg, sea cual sea la edad.'},
   {q:'¿Dónde guardan el SAVe entre servicios?',o:['En la cabina de la ambulancia, al sol','En la base, cargado, sin sol y a ≤ 30 °C (≤ 40 °C solo a corto plazo)'],a:1,w:'Solo tiene cargador de red: hay que salir con la batería llena. Almacenamiento: 0-40 °C a corto plazo y 0-30 °C a largo plazo.'}

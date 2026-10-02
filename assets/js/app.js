@@ -18,6 +18,7 @@ function route(){
   if(simInst){simInst.destroy();simInst=null;}
   const parts=(location.hash.replace(/^#\/?/,'')||'').split('/').filter(Boolean);
   document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on',a.dataset.r===(parts[0]||'home')||(parts[0]==='m'&&a.dataset.r===parts[1])||(parts[0]==='caso'&&a.dataset.r==='casos')));
+  {const nav=document.querySelector('.nav'),on=nav&&nav.querySelector('a.on');if(on)nav.scrollLeft=on.offsetLeft-nav.offsetLeft-(nav.clientWidth-on.offsetWidth)/2;} // enlace activo visible en el celular
   window.scrollTo(0,0);
   if(!parts.length)return home();
   if(parts[0]==='m')return mod(parts[1],parts[2]||'inicio');
@@ -43,13 +44,15 @@ function home(){
   <div class="section"><h2>Plan formativo</h2>
   <p class="lead">Se recomienda seguir el orden. Cada módulo termina con una autoevaluación y casos prácticos.</p>
   <ol class="plan">
-   ${MODS.map(m=>`<li><b>Módulo ${m.n} · ${m.title}</b> <span class="pill">${m.sub}</span><br>${m.intro}<br><small>Vídeo (≈ 10-13 min) → manual de bolsillo → panel interactivo → infografía → casos → autoevaluación</small><br><a href="#/m/${m.id}">Abrir el módulo ${m.n} →</a></li>`).join('')}
+   ${MODS.map(m=>`<li><b>Módulo ${m.n} · ${m.title}</b> <span class="pill">${m.sub}</span><br>${m.intro}<br><small>${planSeq(m)}</small><br><a href="#/m/${m.id}">Abrir el módulo ${m.n} →</a></li>`).join('')}
   </ol></div>
   <div class="section"><div class="card key"><b>Aviso importante.</b> Material docente de elaboración propia, basado en los manuales de los fabricantes. Las energías, quién usa las terapias manuales, los fármacos y la vía aérea los decide <b>su dirección médica</b>. Comprueben la configuración y las opciones de sus equipos. <b>Esta web no sustituye la formación práctica ni la acreditación.</b> <a href="#/acerca">Fuentes y límites</a>.</div></div>`;
 }
 
 /* ---------- Módulo ---------- */
 const TABS=[['inicio','Inicio'],['manual','Manual'],['panel','Panel interactivo'],['infografia','Infografía'],['videos','Vídeos'],['casos','Casos'],['test','Autoevaluación']];
+const SEQ={manual:'manual de bolsillo',panel:'panel interactivo',infografia:'infografía',videos:'vídeos complementarios',casos:'casos',test:'autoevaluación'};
+function planSeq(m){return ['Vídeo de la sesión (≈ 10-13 min)',...TABS.filter(t=>t[0]!=='inicio'&&(t[0]!=='panel'||m.panel)).map(t=>SEQ[t[0]])].join(' → ');}
 function mod(id,tab){
   const m=MODS.find(x=>x.id===id);if(!m)return home();
   document.title=`Módulo ${m.n} · ${m.title}`;
@@ -57,7 +60,7 @@ function mod(id,tab){
   if(!tabs.some(t=>t[0]===tab))tab='inicio';
   app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › Módulo ${m.n}<a class="cklink" href="#/checklist">📋 Checklist de inicio de guardia</a></div>
    <div class="mod-n">Módulo ${m.n} · ${m.sub}</div><h1>${m.title}</h1>
-   <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" class="${t[0]===tab?'on':''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
+   <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${t[0]===tab}" class="${t[0]===tab?'on':''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
    <div id="tab"></div><div class="next" id="tabnext"></div>`;
   app.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{location.hash=`#/m/${id}/${b.dataset.t}`;}));
   {const bar=app.querySelector('.tabs'),on=bar.querySelector('.on');if(on)bar.scrollLeft=on.offsetLeft-bar.offsetLeft-(bar.clientWidth-on.offsetWidth)/2;} // pestaña activa visible en el celular
@@ -82,7 +85,7 @@ function loom(l){
 async function tManual(m,T){
   T.innerHTML='<p class="muted">Cargando…</p>';
   try{if(!cache[m.manual]){const r=await fetch(m.manual);if(!r.ok)throw 0;cache[m.manual]=await r.text();}
-    const canPrint=/github\.io$|^localhost$/.test(location.hostname);T.innerHTML=(canPrint?`<div class="row" style="justify-content:flex-end;margin-bottom:8px"><button class="btn alt sm" onclick="window.print()">Imprimir o guardar en PDF</button></div>`:'')+cache[m.manual];
+    T.innerHTML=`<div class="row" style="justify-content:flex-end;margin-bottom:8px"><button class="btn alt sm" type="button" onclick="window.print()">Imprimir o guardar en PDF</button></div>`+cache[m.manual];
     photos(T);
   }catch(e){T.innerHTML='<p>No se pudo cargar el manual. Comprueben la conexión.</p>';}
 }
@@ -103,7 +106,7 @@ function tPanel(m,T){
 function fitA4(a){const f=a.querySelector('iframe');if(f)f.style.transform=`scale(${a.clientWidth/794})`;}
 addEventListener('resize',()=>{const a=document.getElementById('a4');if(a)fitA4(a);});
 function tInfo(m,T){
-  T.innerHTML=`<p>Infografía A4 de consulta rápida: ${m.panel?`el panel del ${m.title} con lo que hace cada botón`:'lo esencial del módulo en una hoja'}. Imprímanla o guárdenla en PDF y llévenla en la ambulancia.</p>
+  T.innerHTML=`<p>Infografía A4 de consulta rápida: ${m.panel?`el panel del ${m.title} con lo que hace cada botón`:'lo esencial del módulo en una hoja'}. Imprímanla o guárdenla en PDF y llévenla en la ambulancia.</p><p class="muted only-narrow">En el celular la hoja se ve pequeña: ábranla en pantalla completa y amplíen con los dedos, o guárdenla en PDF.</p>
    <div class="row" style="margin-bottom:12px"><button class="btn" type="button" id="iprint">Imprimir o guardar en PDF</button><a class="btn alt" href="${m.infoHtml}" target="_blank" rel="noopener">Abrir en pantalla completa</a></div>
    <div class="card" style="padding:8px"><div class="a4" id="a4"><iframe src="${m.infoHtml}?embed" title="Infografía ${esc(m.title)}"></iframe></div></div>`;
   const a=document.getElementById('a4'),f=a.querySelector('iframe');fitA4(a);
@@ -229,6 +232,7 @@ function acerca(){
    <li>Los paneles son esquemas de elaboración propia, no a escala. Los casos son ficticios y el simulador está simplificado.</li></ul>
   <h3>Autoría</h3><p>Hipólito García, médico de Urgencias y Emergencias. Versión 3 · octubre de 2026. LIFEPAK, QUIK-COMBO y CODE SUMMARY son marcas de Physio-Control/Stryker; SAVe es una marca de AutoMedx/Safeguard Medical. Esta web no está afiliada a los fabricantes.</p>
   <h3>Funciona sin conexión</h3><p>Tras la primera visita, la web queda guardada en el dispositivo y se puede consultar sin internet (salvo los vídeos). En el celular, "Añadir a pantalla de inicio".</p>
+  <h3>Vídeos</h3><p>Los vídeos de las sesiones (Loom) y los complementarios (YouTube, en modo de privacidad mejorada) se cargan desde esos servicios solo al reproducirlos, y pueden guardar datos propios en el dispositivo. Los complementarios están en inglés.</p>
   <p class="src">Tipografía Barlow (SIL Open Font License).</p></div>`;
 }
 

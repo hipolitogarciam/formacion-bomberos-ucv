@@ -101,17 +101,18 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
   - indicadores ADULT PRESETS y USER DEFINED;
   - abajo, 4 displays (FR, VT, PIP, PEEP), cada uno con sus botones **− +** debajo.
 
-## Estado (01-10-2026)
+## Estado (02-10-2026)
 
-- v2 completa y probada:
-  - los 9 casos se completan de principio a fin;
-  - revisión clínica independiente sin errores críticos;
-  - consola limpia en ordenador y en móvil.
+- v3 publicada en GitHub Pages (https://hipolitogarciam.github.io/formacion-bomberos-ucv/):
+  - tratamiento de "ustedes", navegación con «Siguiente», paneles y simulador con la disposición real, infografías A4 en HTML, checklist de inicio de guardia, paleta B;
+  - auditoría independiente (`AUDITORIA_v3.md`) con todos sus hallazgos corregidos;
+  - los 9 casos se completan de principio a fin; consola limpia; sin scroll horizontal a 390 px.
 - **Pendiente técnico:**
   - fotos reales;
   - enlaces de Loom (cuando se graben);
   - vídeos de YouTube: aprobados los de VIDEOS_CANDIDATOS.md; faltan vídeos del LP12 para cardioversión y marcapasos, y de alarmas del SAVe II+ (siguen con búsqueda);
-  - infografías v2 con fotos.
+  - comprobar el service worker por https (caché sin conexión y espera máxima de 4 s a la red);
+  - cotejar con el PDF las citas del LP12 que no se revisaron en la auditoría.
 - **Pendiente de la dirección médica o del equipo físico:**
   - política de DEA en menores de 8 años;
   - acreditación para las terapias manuales;
@@ -124,6 +125,5 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
   - SAVe: dónde aparecen en el frontal las alarmas y el ♥ de la guía de compresiones (no se ven en la foto de referencia; en el panel van aparte como "otros indicadores");
   - LP12: si el conector redondo de abajo a la derecha es el del cable de terapia (así está etiquetado en el panel).
 - **Ideas para más adelante:**
-  - mini-monitor fijo en el móvil durante los casos;
   - más casos (hipotermia, quemado con vía aérea, trauma);
   - versión imprimible de los manuales.

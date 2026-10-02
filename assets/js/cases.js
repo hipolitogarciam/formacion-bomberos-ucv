@@ -59,7 +59,7 @@ window.CASES=[
   hints:['PACER → RATE ▲ hasta 70 → CURRENT ▲ hasta que cada espiga vaya seguida de un QRS ancho.','En este caso la captura llega en torno a 70 mA.'],
   check:S=>S.lp.pacer&&S.lp.rate>=70&&S.lp.mA>=S.pt.capAt,success:'Captura eléctrica: cada espiga va seguida de un QRS ancho.'},
  {text:'<p>En pantalla hay captura eléctrica.</p>',hl:['acc:pulse','lp:NIBP'],goal:'Confirmen la captura mecánica.',
-  hints:['Palpen el pulso (mejor el femoral, por los artefactos del marcapasos) y vuelvan a medir la tensión.'],
+  hints:['Palpen el pulso y vuelvan a medir la tensión. Mejor el pulso femoral, por los artefactos del marcapasos (criterio del autor).'],
   react:(ev,S,c)=>{if(ev.type==='acc'&&ev.id==='pulse'){S.f.pp=1;S.pt.pulseText='Pulso femoral a la frecuencia del marcapasos';}if(ev.type==='nibp')S.f.bp2=1;},
   onEnter:(S)=>{S.pt.sbp=102;S.pt.dbp=58;S.pt.spo2=95;},
   check:S=>S.f.pp&&S.f.bp2,success:'Captura mecánica confirmada: pulso a 70 lpm y TA 102/58.'},
@@ -87,9 +87,9 @@ window.CASES=[
  {text:'<p>Equipo cargado en SYNC.</p>',hl:['acc:clear','lp:SHOCK'],goal:'Descarguen.',hints:['"¡Fuera todos!" y SHOCK. En el equipo real hay que mantener pulsado SHOCK hasta que descargue con el siguiente QRS.'],
   react:(ev,S,c)=>{if(ev.type==='shock'&&ev.sync){S.f.cv=1;c.after(1200,()=>{c.setPt({rhythm:'vf',pulse:false,hr:0,spo2:null});c.log('El paciente pasa a FV');});}if(ev.type==='shock'&&!ev.sync)return['no','Esa descarga no estaba sincronizada.'];},
   check:S=>S.f.cv,success:'Descarga sincronizada administrada.'},
- {text:'<p>Tras la descarga, el ritmo cambia: <b>fibrilación ventricular</b>. Ya no tiene pulso.</p>',hl:['lp:SYNC','lp:CHARGE','acc:clear','lp:SHOCK'],goal:'Desfibrilen: es una FV.',
-  hints:['En SYNC no descargará: no hay QRS. Desactiven SYNC.','Comprueben si su equipo deja SYNC activo tras la descarga (opción SYNC AFTER SHOCK).','SYNC desactivado → energía de desfibrilación según el protocolo → CHARGE → "¡fuera todos!" → SHOCK.'],
-  react:(ev,S,c)=>{if(ev.type==='shock'&&!ev.sync){c.setPt({rhythm:'sinus',hr:92,pulse:true,sbp:110,dbp:70,spo2:96});S.f.df=1;}},
+ {text:'<p>Tras la descarga, el ritmo cambia: <b>fibrilación ventricular</b>. Ya no tiene pulso.</p>',hl:['lp:SYNC','lp:ENERGY+','lp:CHARGE','acc:clear','lp:SHOCK'],goal:'Desfibrilen: es una FV.',
+  hints:['En SYNC no descargará: no hay QRS. Desactiven SYNC.','Comprueben si su equipo deja SYNC activo tras la descarga (opción SYNC AFTER SHOCK).','SYNC desactivado → ENERGY SELECT ▲ hasta la energía de desfibrilación del protocolo (guías ERC: al menos 150 J en bifásico) → CHARGE → "¡fuera todos!" → SHOCK.'],
+  react:(ev,S,c)=>{if(ev.type==='shock'&&!ev.sync&&ev.energy<150)return['no','Esa energía es la de la cardioversión. Para una FV, la de desfibrilación del protocolo: las guías ERC indican al menos 150 J en bifásico. Sigue en FV: suban la energía con ENERGY SELECT ▲ y vuelvan a cargar.'];if(ev.type==='shock'&&!ev.sync){c.setPt({rhythm:'sinus',hr:92,pulse:true,sbp:110,dbp:70,spo2:96});S.f.df=1;}},
   check:S=>S.f.df,success:'Desfibrilación administrada → ritmo sinusal con pulso.'},
  {text:'<p>Ritmo sinusal a 92, TA 110/70.</p><p>¿Qué deben recordar para la próxima cardioversión?</p>',
   options:[
@@ -146,7 +146,7 @@ window.CASES=[
  start:{pt:{rhythm:'sinus',hr:128,pulse:true,spo2:90,etco2:58,sbp:96,dbp:60},lp:{on:true},acc:{ecg:true,spo2:true,co2:true,saveConn:true},
    sv:{on:true,preset:'5-3',rr:18,vt:310,pip:35,peep:0,running:true,userDef:true}},
  steps:[
- {text:'<p>Mujer de 40 años, crisis asmática grave, intubada por el equipo médico y conectada al SAVe (1,60 m · 5\'3", FR 18, VT ajustado a mano a 310 por ser mujer). Al poco, suena una alarma.</p>',
+ {text:'<p>Mujer de 40 años, crisis asmática grave, intubada por el equipo médico y conectada al SAVe: preset 1,60 m (5\'3"), FR 18 y VT ajustado a mano a 310 por ser mujer. Al poco, suena una alarma.</p>',
   onEnter:(S,c)=>{S.pt.trap=true;S.pt.findings.chest='Tórax hinchado que apenas baja entre respiraciones';c.log('Atrapamiento aéreo');},
   options:[
    {t:'HIGH PEEP: el ventilador se ha detenido. Hay que ventilar ya con bolsa, porque esta alarma para la ventilación',ok:true,fb:'Correcto. DEVICE, HIGH PEEP y la batería en reserva detienen la ventilación.'},
@@ -168,7 +168,7 @@ window.CASES=[
  start:{pt:{rhythm:'sinus',hr:110,pulse:true,spo2:95,etco2:36,sbp:100,dbp:62},lp:{on:true},acc:{ecg:true,spo2:true,co2:true,saveConn:true,moving:true,pads:true},
    sv:{on:true,preset:'5-9',rr:15,vt:420,pip:30,peep:0,running:true}},
  steps:[
- {text:'<p>Traslado de un varón de 64 años intubado tras un IAM, conectado al SAVe (1,75 m · 5\'9"). La ambulancia va en marcha.</p><p>De repente, el monitor cambia y la EtCO2 cae a 8.</p>',
+ {text:'<p>Traslado de un varón de 64 años intubado tras un IAM, conectado al SAVe con el preset 1,75 m (5\'9"). La ambulancia va en marcha.</p><p>De repente, el monitor cambia y la EtCO2 cae a 8.</p>',
   onEnter:(S,c)=>{c.setPt({rhythm:'vf',pulse:false,hr:0,etco2:8,spo2:null});c.log('FV, EtCO2 8');},
   hl:['acc:cpr','acc:moving'],goal:'Primeras acciones: empiecen las compresiones y ordenen parar la ambulancia.',hints:['"Compresiones torácicas" y desactiven "Ambulancia en marcha".'],
   check:S=>S.acc.cpr&&!S.acc.moving,success:'Compresiones en marcha y vehículo detenido.'},

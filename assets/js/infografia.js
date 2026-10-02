@@ -83,11 +83,11 @@ window.INFOG=function(id){
   function lines(){
     const pr=page.getBoundingClientRect(),ln=document.getElementById('lines'),k=K();
     ln.setAttribute('viewBox',`0 0 ${page.offsetWidth} ${page.offsetHeight}`);
-    let s='<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#E07A10"/></marker></defs>';
+    let s='<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#D2401C"/></marker></defs>';
     page.querySelectorAll('.call').forEach(b=>{
       const r=b.getBoundingClientRect(),left=b.parentNode.id==='cl';
       const x0=((left?r.right:r.left)-pr.left)/k,y0=(r.top+r.height/2-pr.top)/k;
-      for(const idh of b.dataset.ids.split(' ')){const [x,y]=pt(idh);s+=`<path d="M${x0} ${y0} L${x} ${y}" stroke="#E07A10" stroke-width="1" fill="none" marker-end="url(#ah)" opacity=".9"/>`;s+=`<circle cx="${x0}" cy="${y0}" r="1.8" fill="#E07A10"/>`;}
+      for(const idh of b.dataset.ids.split(' ')){const [x,y]=pt(idh);s+=`<path d="M${x0} ${y0} L${x} ${y}" stroke="#D2401C" stroke-width="1" fill="none" marker-end="url(#ah)" opacity=".9"/>`;s+=`<circle cx="${x0}" cy="${y0}" r="1.8" fill="#D2401C"/>`;}
     });
     ln.innerHTML=s;
   }
