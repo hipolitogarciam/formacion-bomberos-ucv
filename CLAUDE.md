@@ -111,7 +111,7 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
   - publicar en GitHub Pages;
   - fotos reales;
   - enlaces de Loom (cuando se graben);
-  - vídeos de YouTube revisados;
+  - vídeos de YouTube: aprobados los de VIDEOS_CANDIDATOS.md; faltan vídeos del LP12 para cardioversión y marcapasos, y de alarmas del SAVe II+ (siguen con búsqueda);
   - infografías v2 con fotos.
 - **Pendiente de la dirección médica o del equipo físico:**
   - política de DEA en menores de 8 años;

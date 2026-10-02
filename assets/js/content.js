@@ -174,15 +174,19 @@ window.QUIZ={
    Para añadir un vídeo de YouTube concreto: {t:'Título', yt:'ID_DEL_VIDEO', fuente:'Canal'}.
    Mientras no haya un vídeo revisado, se ofrece la búsqueda en YouTube. */
 window.VIDEOS={
- lp12:[
-  {t:'LIFEPAK 12: modo DEA y desfibrilación',q:'LIFEPAK 12 AED mode defibrillation training'},
-  {t:'LIFEPAK 12: marcapasos transcutáneo',q:'LIFEPAK 12 transcutaneous pacing'},
+ lp12:[ // revisados y aprobados por el autor (02-10-2026); ver VIDEOS_CANDIDATOS.md
+  {t:'LIFEPAK 12: test diario (procedimiento de DeKalb EMS)',yt:'_fAEkKdDD1Q',fuente:'TheGrogmister · DeKalb EMS'},
+  {t:'LIFEPAK 12: puesta en marcha y desfibrilación',yt:'d4Xa3BrRXzw',fuente:'QRS Educational Services'},
+  {t:'LIFEPAK 12: modo DEA',yt:'IQHRUdI0BGo',fuente:'Shock Value'},
+  {t:'LIFEPAK 12: colocación del ECG de 12 derivaciones',yt:'4Zxf93LuTgg',fuente:'CommandeRoy · Whatcom County Medic One'},
+  {t:'ECG de 12 derivaciones: colocación y calidad de la señal',yt:'ismBgo8O8ms',fuente:'Tom Bouthillet'},
   {t:'LIFEPAK 12: cardioversión sincronizada',q:'LIFEPAK 12 synchronized cardioversion'},
-  {t:'ECG de 12 derivaciones: colocación de electrodos',q:'colocación electrodos ECG 12 derivaciones'}
+  {t:'LIFEPAK 12: marcapasos transcutáneo',q:'LIFEPAK 12 transcutaneous pacing'}
  ],
  save:[
-  {t:'Safeguard Medical: "How to Operate the SAVeII+ Interface" (canal oficial)',url:'https://www.youtube.com/@SafeguardMedical',fuente:'Canal oficial del fabricante'},
-  {t:'SAVe II ventilator: puesta en marcha',q:'SAVe II ventilator AutoMedx setup'}
+  {t:'SAVe II+: puesta en marcha en 5 pasos',yt:'GKJbhbWSCms',fuente:'Safeguard Medical (fabricante)'},
+  {t:'SAVe II+: modo manual y modo RCP',yt:'OzEpe6AG6x4',fuente:'Safeguard Medical (fabricante)'},
+  {t:'SAVe II+: alarmas',q:'SAVe II ventilator alarms'}
  ],
  int:[
   {t:'Capnografía en la parada cardiaca',q:'capnografía parada cardiaca RCP'},
