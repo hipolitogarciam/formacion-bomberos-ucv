@@ -5,29 +5,40 @@
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const plain=html=>{const d=document.createElement('div');d.innerHTML=html;return d.textContent.replace(/\s+/g,' ').trim();};
 function short(html,min=70,max=150){ // primeras frases completas hasta ~min caracteres
-  const ss=(plain(html).match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[]).map(x=>x.trim());let out='';
+  const ss=(plain(html).match(/[^.!?]+[.!?]+["»”]?|[^.!?]+$/g)||[]).map(x=>x.trim());let out='';
   for(const s of ss){if(out&&(out.length>=min||out.length+s.length>max))break;out+=(out?' ':'')+s;}
   return out;
 }
 const CFG={
   lp12:{
     cols:'44mm 1fr 64mm',split:.55,balance:false,len:[55,112],
+    // textos propios donde el resumen automático perdería un mensaje de seguridad (mismo contenido que PANELS)
+    x:{leds:'BATT CHG: batería cargándose con el adaptador de red. SERVICE: ha fallado el autotest → fuera de servicio y avisar al técnico.',
+      energy:'Elige la energía en manual (hasta 360 J): ▼ baja, ▲ sube. Si cambian la energía mientras carga, la carga se elimina.',
+      charge:'Carga en modo manual. Si no descargan en 60 s, la energía se elimina dentro del equipo. Al cargar, el marcapasos se para.',
+      shock:'Descarga, después de "¡fuera todos!". En la cardioversión, manténganlo pulsado hasta que descargue con el siguiente QRS.',
+      sync:'Cardioversión sincronizada: una marca sobre cada QRS. Si el paciente pasa a FV, apaguen SYNC y desfibrilen.',
+      pacer:'Enciende o apaga el marcapasos transcutáneo. Necesita los parches y también el cable de ECG (a demanda).',
+      alarms:'Activa las alarmas (QUICK SET). Con una alarma sonando, la silencia 2 min. Con el paciente inestable, no repitan QUICK SET.'},
     title:'LIFEPAK 12 · Guía rápida del panel',
     sub:'Qué hace cada botón y cada zona del frontal. Las terapias manuales (desfibrilación manual, cardioversión y marcapasos): solo personal acreditado, con orden médica y según protocolo.',
     src:'Fuente: LIFEPAK 12 Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (2008-2015); entre corchetes, la página.',
     groups:P=>{
       const opt=['12lead','nibp','lead','size'];
-      const g=P.hot.filter(h=>!opt.includes(h.id)).map(h=>({ids:[h.id],t:h.n||h.l,x:short(h.i,...CFG.lp12.len),p:h.p,src:h.src}));
+      const g=P.hot.filter(h=>!opt.includes(h.id)).map(h=>({ids:[h.id],t:h.n||h.l,x:CFG.lp12.x[h.id]||short(h.i,...CFG.lp12.len),p:h.p,src:h.src}));
       g.push({ids:opt,t:'Según las opciones del equipo',x:'No están en todos los equipos: 12-LEAD (ECG de 12 derivaciones, con el vehículo parado), NIBP (tensión; nunca en el brazo del suero), LEAD (derivación) y SIZE (tamaño del ECG).',p:'3-2, 3-3, 3-8, 3-24'});
       return g;}
   },
   save:{
     cols:'43mm 1fr 43mm',split:.5,balance:true,len:[60,130],
+    x:{alarmpanel:'Paran la ventilación: DEVICE, HIGH PEEP y la batería en reserva → bolsa ya. Las demás siguen ventilando. Primero el paciente, luego el equipo.',
+      pip:'Límite de presión: 10-60 cmH2O (30 de inicio, 20 en modo RCP). Si se alcanza, salta PIP REACHED. No pasar de 35; los cambios, por orden médica.',
+      trigger:'Da una respiración con el VT fijado; en modo RCP es la única forma de ventilar. Con tubo, 1 cada 6 s; si PIP REACHED se repite → bolsa. Con mascarilla, lo pulsa el líder.'},
     title:'SAVe II+ · Guía rápida del panel',
     sub:'Qué hace cada botón y cada indicador. Solo adultos de 45 kg o más, con capnografía funcionando y la bolsa siempre a mano.',
     src:'Fuente: SAVe II+ Operator\'s Manual M42110 Rev 5.3 (AutoMedx, 2021), según un extracto documentado (páginas pendientes de cotejar con el manual completo).',
     groups:P=>{
-      const H=P.hot,by=id=>H.find(h=>h.id===id),one=id=>{const h=by(id);return {ids:[id],t:h.n||h.l,x:short(h.i),p:h.p};};
+      const H=P.hot,by=id=>H.find(h=>h.id===id),one=id=>{const h=by(id);return {ids:[id],t:h.n||h.l,x:CFG.save.x[id]||short(h.i,...CFG.save.len),p:h.p};};
       const pre=H.filter(h=>h.id[0]==='H').map(h=>h.id),pm=H.filter(h=>h.id.startsWith('pm-')).map(h=>h.id);
       const tab=SAVE_HEIGHTS.map(x=>`${x.ft} ${x.m}: ${x.rr}/${x.vt}`).join(' · ');
       return [one('power'),one('mute'),one('batt'),
@@ -36,9 +47,16 @@ const CFG={
         {ids:pm,t:'Botones − +',x:short(by(pm[0]).i,90,170),p:by(pm[0]).p},one('alarmpanel'),one('heart')];}
   }
 };
+// Ajuste común de las páginas A4: modo incrustado, reducción en pantallas estrechas y botón de imprimir
+window.INFOG_SETUP=function(page,onResize){
+  if(/embed/.test(location.search))document.body.classList.add('embed');
+  const wrap=document.getElementById('wrap');
+  function fit(){if(!wrap)return;const s=Math.min(1,wrap.clientWidth/page.offsetWidth);page.style.transformOrigin='0 0';page.style.transform=s<1?`scale(${s})`:'';wrap.style.height=s<1?`${page.offsetHeight*s}px`:'';}
+  fit();addEventListener('resize',()=>{fit();if(onResize)onResize();});
+  const pb=document.getElementById('print');if(pb)pb.onclick=()=>print();
+};
 window.INFOG=function(id){
   const P=PANELS[id],C=CFG[id];
-  if(/embed/.test(location.search))document.body.classList.add('embed');
   document.title=C.title;
   const page=document.getElementById('page');
   page.innerHTML=`<header><h1>${esc(C.title)}</h1><p>${esc(C.sub)}</p></header>
@@ -73,11 +91,7 @@ window.INFOG=function(id){
     });
     ln.innerHTML=s;
   }
-  // en pantallas estrechas, la página A4 se reduce para que no haya scroll horizontal
-  const wrap=document.getElementById('wrap');
-  function fit(){if(!wrap)return;const s=Math.min(1,wrap.clientWidth/page.offsetWidth);page.style.transformOrigin='0 0';page.style.transform=s<1?`scale(${s})`:'';wrap.style.height=s<1?`${page.offsetHeight*s}px`:'';}
-  fit();lines();addEventListener('resize',()=>{fit();lines();});addEventListener('beforeprint',lines);
+  INFOG_SETUP(page,lines);lines();addEventListener('beforeprint',lines);
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(lines);
-  const pb=document.getElementById('print');if(pb)pb.onclick=()=>print();
 };
 })();

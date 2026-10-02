@@ -91,29 +91,23 @@ function photos(T){ // si existe la foto real, sustituye el hueco
 }
 function tPanel(m,T){
   const P=PANELS[m.panel];
-  T.innerHTML=`<p>Toquen cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala, con la disposición del equipo real.${m.id==='lp12'?' Los botones con borde discontinuo dependen de las opciones del equipo.':''}</small></p>
+  T.innerHTML=`<p>Toquen cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala, con la disposición del equipo real.${m.id==='lp12'?' Los botones con borde discontinuo dependen de las opciones del equipo.':''}</small></p>${P.acred?'<p class="pill r">Desfibrilación manual, cardioversión y marcapasos: solo personal acreditado, con orden médica y según protocolo</p>':''}
    <div class="panelwrap"><div class="card" style="padding:10px"><div class="row" style="justify-content:flex-end;margin-bottom:6px"><button class="btn alt sm" type="button" id="pzoom" aria-pressed="false">🔍 Ampliar</button></div><div class="pscroll" id="pscroll">${drawPanel(P)}</div><div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}">📷 Aquí aparecerá la foto real de su equipo cuando la añadan.</div></div>
    <div class="card info" id="pinfo" aria-live="polite"><h3>${esc(P.title)}</h3><p>Seleccionen un elemento del panel.</p></div></div>`;
   const info=document.getElementById('pinfo'),zb=document.getElementById('pzoom'),ps=document.getElementById('pscroll');
   zb.addEventListener('click',()=>{const on=ps.classList.toggle('zoom');zb.setAttribute('aria-pressed',on);zb.textContent=on?'🔍 Reducir':'🔍 Ampliar';});
-  const show=(g)=>{T.querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const h=P.hot.find(x=>x.id===g.dataset.id);info.innerHTML=`<h3>${esc(h.n||h.l||'')}</h3><p>${h.i}</p><p class="src">${h.src?esc(h.src):'Manual oficial, pág. '+h.p}</p>`;if(innerWidth<860)info.scrollIntoView({behavior:'smooth',block:'nearest'});};
+  const show=(g)=>{T.querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const h=P.hot.find(x=>x.id===g.dataset.id);info.innerHTML=`<h3>${esc(h.n||h.l||'')}</h3><p>${h.i}</p>${(P.acred||[]).includes(h.id)?'<p class="pill r">Solo personal acreditado, con orden médica y según protocolo</p>':''}<p class="src">${h.src?esc(h.src):'Manual oficial, pág. '+h.p}</p>`;if(innerWidth<860)info.scrollIntoView({behavior:'smooth',block:'nearest'});};
   T.querySelectorAll('.hot').forEach(g=>{g.addEventListener('click',()=>show(g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(g);}});});
   photos(T);
 }
 function fitA4(a){const f=a.querySelector('iframe');if(f)f.style.transform=`scale(${a.clientWidth/794})`;}
 addEventListener('resize',()=>{const a=document.getElementById('a4');if(a)fitA4(a);});
 function tInfo(m,T){
-  if(m.infoHtml){
-    T.innerHTML=`<p>Infografía A4 de consulta rápida: el panel del ${m.title} con lo que hace cada botón. Imprímanla o guárdenla en PDF y llévenla en la ambulancia.</p>
-     <div class="row" style="margin-bottom:12px"><button class="btn" type="button" id="iprint">Imprimir o guardar en PDF</button><a class="btn alt" href="${m.infoHtml}" target="_blank" rel="noopener">Abrir en pantalla completa</a></div>
-     <div class="card" style="padding:8px"><div class="a4" id="a4"><iframe src="${m.infoHtml}?embed" title="Infografía ${esc(m.title)}"></iframe></div></div>`;
-    const a=document.getElementById('a4'),f=a.querySelector('iframe');fitA4(a);
-    document.getElementById('iprint').onclick=()=>{try{f.contentWindow.print();}catch(e){open(m.infoHtml,'_blank');}};
-    return;
-  }
-  T.innerHTML=`<p>Infografía A4 de consulta rápida. Imprímanla y llévenla en la ambulancia.</p>
-   <div class="row" style="margin-bottom:12px"><a class="btn" href="${m.info}.pdf" download>Descargar PDF</a><a class="btn alt" href="${m.info}.jpg" target="_blank" rel="noopener">Ver en grande</a></div>
-   <div class="card" style="padding:8px"><img src="${m.info}.jpg" alt="Infografía ${esc(m.title)}" loading="lazy" style="width:100%;border-radius:8px"></div>`;
+  T.innerHTML=`<p>Infografía A4 de consulta rápida: ${m.panel?`el panel del ${m.title} con lo que hace cada botón`:'lo esencial del módulo en una hoja'}. Imprímanla o guárdenla en PDF y llévenla en la ambulancia.</p>
+   <div class="row" style="margin-bottom:12px"><button class="btn" type="button" id="iprint">Imprimir o guardar en PDF</button><a class="btn alt" href="${m.infoHtml}" target="_blank" rel="noopener">Abrir en pantalla completa</a></div>
+   <div class="card" style="padding:8px"><div class="a4" id="a4"><iframe src="${m.infoHtml}?embed" title="Infografía ${esc(m.title)}"></iframe></div></div>`;
+  const a=document.getElementById('a4'),f=a.querySelector('iframe');fitA4(a);
+  document.getElementById('iprint').onclick=()=>{try{f.contentWindow.print();}catch(e){open(m.infoHtml,'_blank');}};
 }
 function tVideos(m,T){
   const list=VIDEOS[m.id]||[];
@@ -186,6 +180,7 @@ const CK={
   ['<b>Filtros</b> puestos y en buen estado.','Cambiarlos.'],
   ['<b>Tubo reservorio</b> de O2.','Conseguirlo.'],
   ['<b>HMEF</b> de recambio.','Conseguirlo.'],
+  ['<b>FilterLine</b> (línea de EtCO2) de recambio y en fecha, y el LIFEPAK 12 con la opción de EtCO2 funcionando.','Sin capnografía no se usa el SAVe: ventilar con bolsa.'],
   ['<b>Cargador</b> de red disponible.','Conseguirlo.']
  ],
  comun:[ // Criterio del autor
@@ -232,7 +227,7 @@ function acerca(){
    <li>Las energías, la indicación de las terapias manuales, los fármacos, la sedoanalgesia y la vía aérea los decide la dirección médica.</li>
    <li>El LIFEPAK 12 es configurable: impriman su configuración y revisen la secuencia del DEA, el acceso al modo manual, SYNC AFTER SHOCK y las alarmas.</li>
    <li>Los paneles son esquemas de elaboración propia, no a escala. Los casos son ficticios y el simulador está simplificado.</li></ul>
-  <h3>Autoría</h3><p>Hipólito García, médico de Urgencias y Emergencias. Versión 2 · octubre de 2026. LIFEPAK, QUIK-COMBO y CODE SUMMARY son marcas de Physio-Control/Stryker; SAVe es una marca de AutoMedx/Safeguard Medical. Esta web no está afiliada a los fabricantes.</p>
+  <h3>Autoría</h3><p>Hipólito García, médico de Urgencias y Emergencias. Versión 3 · octubre de 2026. LIFEPAK, QUIK-COMBO y CODE SUMMARY son marcas de Physio-Control/Stryker; SAVe es una marca de AutoMedx/Safeguard Medical. Esta web no está afiliada a los fabricantes.</p>
   <h3>Funciona sin conexión</h3><p>Tras la primera visita, la web queda guardada en el dispositivo y se puede consultar sin internet (salvo los vídeos). En el celular, "Añadir a pantalla de inicio".</p>
   <p class="src">Tipografía Barlow (SIL Open Font License).</p></div>`;
 }

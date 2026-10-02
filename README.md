@@ -12,7 +12,7 @@ Web estática de formación asíncrona, pensada para publicarse en **GitHub Page
   - vídeo de la sesión (Loom);
   - manual de bolsillo;
   - panel interactivo;
-  - infografía en PDF;
+  - infografía A4 imprimible (se puede guardar en PDF);
   - vídeos complementarios;
   - casos clínicos;
   - autoevaluación.
@@ -28,7 +28,7 @@ Web estática de formación asíncrona, pensada para publicarse en **GitHub Page
 | Vídeos de YouTube revisados | `assets/js/content.js` → `VIDEOS` (`{t:'Título', yt:'ID', fuente:'Canal'}`) |
 | Fotos reales de los equipos | `assets/img/fotos/` (ver `LEEME.md`) y añadir el nombre a `window.PHOTOS` |
 | Manuales | `content/*.html` |
-| Infografías | LP12 y SAVe: `assets/docs/infografia-*.html` (se dibujan con el panel de `PANELS`); integración: `assets/docs/` (PDF y JPG) |
+| Infografías | `assets/docs/infografia-*.html`: las del LP12 y el SAVe se dibujan con el panel de `PANELS` (`assets/js/infografia.js`); la de integración es HTML propio |
 
 **Tras cualquier cambio**, sube `VERSION` en `sw.js`. Si no, los móviles seguirán mostrando la copia guardada.
 

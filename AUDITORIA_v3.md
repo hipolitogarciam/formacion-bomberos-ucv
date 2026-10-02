@@ -4,6 +4,22 @@ Fecha: 02-10-2026 · Revisión sobre `main` (commit `0987089`, `VERSION` de `sw.
 
 **Resumen: 30 hallazgos · 0 críticos · 4 altos · 8 medios · 18 bajos.** Los 9 casos se completan de principio a fin, la consola está limpia, no hay scroll horizontal a 390 px y todos los archivos referenciados existen. Lo más importante es que la infografía del módulo 3 sigue tratando de "tú", que en modo oscuro todos los botones principales tienen un contraste de 2,25:1 y que la infografía del SAVe no dice qué alarmas paran la ventilación.
 
+## Estado de las correcciones (02-10-2026, tras revisar el autor el informe)
+
+Corregidos los 4 hallazgos **altos** y los 8 **medios** (commit siguiente a `c39092f`):
+- Infografía del módulo 3 rehecha como página A4 HTML (`assets/docs/infografia-int.html`), en "ustedes", con la condición de la dirección médica para dejar el SAVe conectado y con v3. Retirados `Infografia_Integracion.jpg` y `.pdf` (copia idéntica en la carpeta privada del autor y en el historial de git).
+- Modo oscuro: nuevo token `--on-teal` (texto oscuro sobre el primario claro): 8,3:1. `--red` más claro en oscuro: aviso de personal acreditado 7,1:1.
+- Infografías del LP12 y del SAVe: textos propios para los cuadros con mensajes de seguridad (alarmas que paran la ventilación, PIP ≤ 35, MANUAL TRIGGER con tubo, SERVICE, 60 s, SYNC en FV, SHOCK mantenido, PACER con ECG, QUICK SET).
+- Metros de los presets del SAVe virtual: blancos sobre un azul más oscuro: 5,2:1.
+- Páginas del LP12: corregidas tras cotejarlas con el PDF. **Una propuesta del informe no se aplicó**: «de fábrica arranca como manual y monitor» sí está en la 4-13 (se mantiene). La anteroposterior está en la 4-3 (no en la 4-4) y «un solo uso, un paciente» en la 5-6.
+- Salida del modo RCP con redacción prudente en panel, test, caso 6 y manual 3.
+- Tabla de zonas del manual del LP12 ajustada al panel (12-LEAD, NIBP, LEAD y SIZE «según las opciones»).
+- Aviso de personal acreditado en el panel del LP12 (introducción y botones de terapia) y en 3 preguntas del test.
+- Checklist: fila de FilterLine / EtCO2.
+- `sw.js`: la página de respaldo solo para navegaciones; `icon-512.png` y la nueva infografía en la caché.
+
+Además (pedido por el autor): «v2» → «v3» en el pie, en Fuentes y en los manuales. Los hallazgos **bajos** siguen pendientes.
+
 ## Hallazgos
 
 | Gravedad | Página/archivo | Problema | Corrección propuesta |

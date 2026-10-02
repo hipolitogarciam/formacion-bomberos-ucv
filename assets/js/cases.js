@@ -188,11 +188,11 @@ window.CASES=[
    {t:'Sigo comprimiendo y compruebo el pulso en la siguiente pausa para analizar',ok:true,fb:'Correcto. La subida brusca sugiere RCE, pero el pulso se comprueba en la pausa, sin parar antes de tiempo.'},
    {t:'Paro ya las compresiones y busco el pulso durante 30 s',fb:'No. Pausa corta y en el momento del análisis.'}]},
  {text:'<p>En la pausa: ritmo organizado con <b>pulso</b>. Paran las compresiones.</p>',hl:['sv:H5-9','sv:CONFIRM','acc:chest'],goal:'Hagan que el SAVe vuelva a ventilar solo y comprueben que el tórax sube.',
-  onEnter:(S)=>{S.acc.cpr=false;},hints:['Fuera del modo RCP: botón 5\'9" (1,75 m) → CONFIRM.','En FR 0 el SAVe NO ventila solo.'],
+  onEnter:(S)=>{S.acc.cpr=false;},hints:['Para salir del modo RCP, suban la FR por encima de 0: por ejemplo, botón 5\'9" (1,75 m) → CONFIRM. Comprueben en su equipo que el botón de altura sale del modo RCP.','En FR 0 el SAVe NO ventila solo.'],
   react:(ev,S)=>{if(ev.type==='acc'&&ev.id==='chest'&&S.sv.rr>0)S.f.c=1;},
   check:S=>S.sv.rr>0&&!S.sv.pend&&S.f.c,success:'Ventilación automática: FR 15 y VT 420. El tórax sube.'}
  ],
- debrief:['Parada con ventilador: compresiones YA y orden de parar el vehículo.','SAVe en FR 0 (modo RCP) con MANUAL TRIGGER cada 6 s. Si sale PIP REACHED una y otra vez → bolsa al tubo.','Análisis con el vehículo parado y sin compresiones. En la descarga, nadie toca.','Tras la RCE: salgan del modo RCP (altura → CONFIRM). Es un olvido peligroso.']},
+ debrief:['Parada con ventilador: compresiones YA y orden de parar el vehículo.','SAVe en FR 0 (modo RCP) con MANUAL TRIGGER cada 6 s. Si sale PIP REACHED una y otra vez → bolsa al tubo.','Análisis con el vehículo parado y sin compresiones. En la descarga, nadie toca.','Tras la RCE: salgan del modo RCP subiendo la FR por encima de 0 (por ejemplo, con el botón de altura → CONFIRM). Es un olvido peligroso.']},
 
 /* ===================== 7 · DISCONNECT ===================== */
 {id:'desconexion',title:'Alarma al subir a la ambulancia',tag:'Integración',mod:'int',level:'Intermedio',min:5,

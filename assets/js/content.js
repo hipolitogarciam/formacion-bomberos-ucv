@@ -16,7 +16,7 @@ window.MODS=[
  {id:'int',n:3,title:'Integración clínica',sub:'Los dos equipos en el paciente',color:'#3CC6D2',
   intro:'Roles, el orden de conexión, la ronda de 5 minutos, alarmas simultáneas, parada en el paciente ventilado, niños y entrega en el hospital.',
   goals:['Repartir papeles con 2 o 3 personas.','Seguir el orden paciente → vía aérea → ventilación → circulación → equipo.','Manejar una parada en un paciente conectado al SAVe.','Saber qué no hacer en niños y en zonas con humo.'],
-  manual:'content/manual-integracion.html',info:'assets/docs/Infografia_Integracion',panel:null,
+  manual:'content/manual-integracion.html',infoHtml:'assets/docs/infografia-int.html',panel:null,
   loom:{title:'Sesión 3 · Integración clínica (≈ 10 min)',url:''}}
 ];
 
@@ -36,7 +36,7 @@ window.PANELS=(function(){
  // SAVe II+: presets en el óvalo alrededor de CONFIRM (posiciones según el equipo real)
  const C=[451,268],POS=[[334,388],[251,321],[259,239],[331,175],[451,148],[570,175],[644,239],[640,321],[570,388]];
  const presets=SAVE_HEIGHTS.map((h,i)=>({id:'H'+h.id,x:POS[i][0]-42,y:POS[i][1]-22,w:84,h:44,r:10,l:h.ft,fill:'#3B7DDD',sz:22,n:`Preset ${h.ft} (${h.m})`,
-   i:`Altura ${h.m} (${h.ft}): FR ${h.rr} y VT ${h.vt} mL, unos 6 mL/kg de peso ideal. Elijan la altura y pulsen CONFIRM. También sirven para <b>salir del modo RCP</b>.`,p:'14, 24'}));
+   i:`Altura ${h.m} (${h.ft}): FR ${h.rr} y VT ${h.vt} mL, unos 6 mL/kg de peso ideal. Elijan la altura y pulsen CONFIRM. Para <b>salir del modo RCP</b> hay que subir la FR por encima de 0 (por ejemplo, con un preset de altura) y pulsar CONFIRM: comprueben en su equipo que el preset sale del modo RCP.`,p:'14, 24'}));
  const metric=SAVE_HEIGHTS.map((h,i)=>({t:'text',x:Math.round(C[0]+(POS[i][0]-C[0])*1.5),y:Math.round(C[1]+(POS[i][1]-C[1])*1.5),s:h.m,sz:16,fill:'#E6E8EA',w:600}));
  const pm=(id,cx,n)=>({id:'pm-'+id,x:cx-58,y:632,w:116,h:56,r:28,fill:'#1D2A3D',stroke:'#3B7DDD',n:`− + de ${n}`,
    extra:[{t:'circle',x:cx-28,y:660,r:22,fill:'#3B7DDD'},{t:'circle',x:cx+28,y:660,r:22,fill:'#3B7DDD'},{t:'text',x:cx-28,y:660,s:'−',sz:32},{t:'text',x:cx+28,y:660,s:'+',sz:32}],
@@ -44,6 +44,7 @@ window.PANELS=(function(){
  const disp=(id,x,w,val,n,i,p)=>({id,x,y:560,w,h:64,r:4,fill:'#0A0C0D',stroke:'#2B2F33',l:val,tc:'#9BE34A',sz:44,n,i,p});
  return {
  lp12:{title:'LIFEPAK 12 · frontal',vb:'0 0 1000 990',
+  acred:['energy','charge','shock','sync','pacer','rate','current','pause'], // terapias manuales: aviso de personal acreditado (regla 3)
   deco:[
    {t:'rect',x:50,y:20,w:910,h:860,r:40,fill:'#E8E3D3',stroke:'#A89F86',sw:3},
    {t:'rect',x:22,y:250,w:46,h:390,r:8,fill:'#2B3036'},{t:'text',x:45,y:434,s:'ECG',sz:14},
@@ -75,8 +76,8 @@ window.PANELS=(function(){
    {id:'analyze',x:578,y:296,w:156,h:44,r:22,fill:Y,tc:'#111111',l:'ANALYZE',led:true,n:'ANALYZE',i:'Modo DEA: analiza el ritmo. <b>Vehículo parado y nadie tocando al paciente.</b> Si es desfibrilable, carga solo y pide SHOCK; si no pulsan en 60 s, se desarma. La flecha azul del panel lleva de ANALYZE a SHOCK.',p:'4-4 a 4-6'},
    {id:'sync',x:775,y:398,w:150,h:44,r:22,fill:D,l:'SYNC',led:true,n:'SYNC',i:'Activa la cardioversión sincronizada: debe salir <b>una marca sobre cada QRS</b>. Si el paciente pasa a FV, apaguen SYNC y desfibrilen. Que siga activo tras descargar depende de la configuración (SYNC AFTER SHOCK).',p:'4-16, 9-4'},
    {id:'pacer',x:775,y:462,w:150,h:44,r:22,fill:D,l:'PACER',led:true,n:'PACER',i:'Enciende o apaga el marcapasos transcutáneo. Necesita los parches y también el cable de ECG para funcionar a demanda.',p:'4-19'},
-   {id:'rate',x:775,y:514,w:150,h:44,r:22,fill:D,l:'RATE',arrows:true,n:'RATE ▼▲',i:'Frecuencia del marcapasos: 40-170 ppm. Cada pulsación cambia 10 ppm (▼ baja, ▲ sube); el SELECTOR la cambia de 5 en 5.',p:'4-19'},
-   {id:'current',x:775,y:566,w:150,h:44,r:22,fill:D,l:'CURRENT',sz:16,arrows:true,n:'CURRENT ▼▲',i:'Corriente: 0-200 mA. Cada pulsación cambia 10 mA (▼ baja, ▲ sube); el SELECTOR la cambia de 5 en 5. Súbanla hasta la captura y <b>comprueben el pulso</b>. Si se suelta un parche, vuelve a 0.',p:'4-20'},
+   {id:'rate',x:775,y:514,w:150,h:44,r:22,fill:D,l:'RATE',arrows:true,n:'RATE ▼▲',i:'Frecuencia del marcapasos: 40-170 ppm. Cada pulsación cambia 10 ppm (▼ baja, ▲ sube); el SELECTOR la cambia de 5 en 5.',p:'4-19, A-7'},
+   {id:'current',x:775,y:566,w:150,h:44,r:22,fill:D,l:'CURRENT',sz:16,arrows:true,n:'CURRENT ▼▲',i:'Corriente: 0-200 mA. Cada pulsación cambia 10 mA (▼ baja, ▲ sube); el SELECTOR la cambia de 5 en 5. Súbanla hasta la captura y <b>comprueben el pulso</b>. Si se suelta un parche, vuelve a 0.',p:'4-20, A-7'},
    {id:'pause',x:775,y:618,w:150,h:44,r:22,fill:D,l:'PAUSE',n:'PAUSE',i:'Mientras se mantiene pulsado, estimula al 25 % de la frecuencia para ver el ritmo propio del paciente.',p:'4-20'},
    {id:'alarms',x:578,y:514,w:156,h:44,r:22,fill:Y,tc:'#111111',l:'ALARMS',led:true,n:'ALARMS',i:'Activa las alarmas (QUICK SET pone límites sobre los valores actuales). Con una alarma sonando, la silencia 2 min. <b>Con el paciente inestable no repitan QUICK SET</b>: silencien hasta 15 min.',p:'2-22 a 2-24'},
    {id:'options',x:578,y:566,w:156,h:44,r:22,fill:D,l:'OPTIONS',n:'OPTIONS',i:'Menú de opciones: datos del paciente, modo de marcapasos (demanda o no demanda), impresión de la configuración y <b>User Test</b> (se carga a 10 J, descarga dentro del equipo e imprime "Pasa" o "Falla").',p:'2-9, 8-3'},
@@ -92,8 +93,8 @@ window.PANELS=(function(){
    {id:'printer',x:250,y:660,w:295,h:165,r:8,fill:'#E1DCCD',stroke:'#B7AF98',extra:[{t:'rect',x:268,y:690,w:259,h:10,r:3,fill:'#9E967F'}],l:'IMPRESORA',tc:'#6B6452',sz:18,n:'Impresora',i:'Imprime las tiras de ECG, el 12 derivaciones y el CODE SUMMARY. Papel de 50 o 100 mm.',p:'2-10, 2-11'},
    {id:'therapy',c:true,x:712,y:822,r:30,fill:'#1A1A1A',extra:[{t:'circle',x:712,y:822,r:14,fill:'#3A3A3A'}],n:'Conector del cable de terapia',i:'Conector del cable de terapia (QUIK-COMBO o palas). El cable y su conector se revisan cada día en el checklist.',p:'2-10, 2-11'},
    {id:'warn',x:250,y:836,w:295,h:30,r:4,fill:'#F7F5EE',stroke:'#CFC8B4',l:'DANGER · EXPLOSION HAZARD',tc:'#333333',sz:13,n:'Etiqueta de peligro',i:'Etiqueta del equipo: riesgo de explosión, <b>no usar en presencia de gases inflamables</b>. Salida eléctrica peligrosa: solo personal cualificado.',src:'Etiqueta del propio equipo'},
-   {id:'12lead',dash:true,x:110,y:934,w:170,h:46,r:23,fill:D,l:'12-LEAD',n:'12-LEAD (según el modelo)',i:'Adquiere e imprime el ECG de 12 derivaciones (con el cable de 12 derivaciones). <b>Vehículo parado y paciente quieto.</b> Con NOISY DATA, corrijan el ruido; con más de 30 s de ruido se cancela.',p:'3-8 a 3-14'},
-   {id:'nibp',dash:true,x:310,y:934,w:170,h:46,r:23,fill:D,l:'NIBP',n:'NIBP (según el modelo)',i:'Inicia una medición de la tensión arterial: tarda unos 40 s y se cancela a los 120 s. <b>Nunca en el brazo del suero.</b>',p:'3-24'},
+   {id:'12lead',dash:true,x:110,y:934,w:170,h:46,r:23,fill:D,l:'12-LEAD',n:'12-LEAD (según el modelo)',i:'Adquiere e imprime el ECG de 12 derivaciones (con el cable de 12 derivaciones). <b>Vehículo parado y paciente quieto.</b> Con NOISY DATA, corrijan el ruido; con más de 30 s de ruido se cancela.',p:'3-8 a 3-16'},
+   {id:'nibp',dash:true,x:310,y:934,w:170,h:46,r:23,fill:D,l:'NIBP',n:'NIBP (según el modelo)',i:'Inicia una medición de la tensión arterial: tarda unos 40 s y se cancela a los 120 s. <b>Nunca en el brazo del suero.</b>',p:'3-26'},
    {id:'lead',dash:true,x:510,y:934,w:170,h:46,r:23,fill:D,l:'LEAD',n:'LEAD (según el modelo)',i:'Cambia la derivación del ECG. Para la alarma FV/TV solo valen PADDLES o II.',p:'3-2'},
    {id:'size',dash:true,x:710,y:934,w:170,h:46,r:23,fill:D,l:'SIZE',n:'SIZE (según el modelo)',i:'Cambia el tamaño del ECG. Si en SYNC las marcas faltan o caen sobre la onda T, ajusten el tamaño (más o menos) o cambien la derivación: una mala sincronización puede provocar una FV.',p:'3-3, 4-16'}
   ]},
@@ -140,13 +141,13 @@ window.QUIZ={
   {q:'Al encenderlo con la configuración de fábrica, ¿en qué modo arranca el LIFEPAK 12?',o:['En modo DEA','En modo manual y monitor, con la derivación II','En modo marcapasos'],a:1,w:'De fábrica arranca como desfibrilador manual y monitor. Para usarlo como DEA se pulsa ANALYZE [4-13].'},
   {q:'Van en marcha y el paciente entra en parada. ¿Cuándo pulsan ANALYZE?',o:['En marcha, para no perder tiempo','Con el vehículo parado y sin compresiones durante el análisis','Solo al llegar al hospital'],a:1,w:'El movimiento puede provocar una descarga inadecuada o que no se aconseje la descarga cuando sí toca [4-4].'},
   {q:'En el checklist diario, la prueba con la carga de prueba (Test Load) se hace a…',o:['10 J','200 J, y debe aparecer ENERGY DELIVERED','360 J, sin mirar el mensaje'],a:1,w:'Apéndice C: 200 J → CHARGE → SHOCK → ENERGY DELIVERED. El User Test usa 10 J internamente.'},
-  {q:'Cargan a 200 J en manual y no descargan. ¿Qué pasa a los 60 s?',o:['Descarga sola','La energía se elimina dentro del equipo','Se queda cargado indefinidamente'],a:1,w:'A los 60 s, la energía se retira dentro del equipo [4-16].'},
-  {q:'En pleno marcapasos se despega un parche. Lo vuelven a pegar. ¿Qué más hay que hacer?',o:['Nada: vuelve a estimular igual','Volver a subir la corriente: se ha puesto a 0 mA','Apagar y encender el equipo'],a:1,w:'Sale PACING STOPPED y la corriente vuelve a 0 mA; al recolocarlo hay que subirla a mano [4-20].'},
-  {q:'Durante una cardioversión, el paciente pasa a FV. ¿Qué hacen?',o:['Mantener SYNC y descargar','Apagar SYNC y desfibrilar','Esperar a que vuelva a tener QRS'],a:1,w:'En SYNC, el equipo busca un QRS para descargar; en FV no lo hay.'},
-  {q:'Paciente rescatado de un incendio con SpO2 98 %. ¿Qué piensan?',o:['Está bien oxigenado','Con CO, la SpO2 puede salir normal aunque haya hipoxia','El sensor está roto'],a:1,w:'La carboxihemoglobina falsea la pulsioximetría [3-16].'},
-  {q:'¿Qué posición de los parches NO sirve para el modo DEA?',o:['Anterolateral','Anteroposterior'],a:1,w:'La anteroposterior vale para el modo manual, la cardioversión y el marcapasos, pero no para el DEA ni para monitorizar [4-2].'},
+  {q:'Cargan a 200 J en manual y no descargan. ¿Qué pasa a los 60 s?',o:['Descarga sola','La energía se elimina dentro del equipo','Se queda cargado indefinidamente'],a:1,w:'Solo personal acreditado, con orden médica y según protocolo. A los 60 s, la energía se retira dentro del equipo [4-16].'},
+  {q:'En pleno marcapasos se despega un parche. Lo vuelven a pegar. ¿Qué más hay que hacer?',o:['Nada: vuelve a estimular igual','Volver a subir la corriente: se ha puesto a 0 mA','Apagar y encender el equipo'],a:1,w:'Solo personal acreditado, con orden médica y según protocolo. Sale PACING STOPPED y la corriente vuelve a 0 mA; al recolocarlo hay que subirla a mano [4-20].'},
+  {q:'Durante una cardioversión, el paciente pasa a FV. ¿Qué hacen?',o:['Mantener SYNC y descargar','Apagar SYNC y desfibrilar','Esperar a que vuelva a tener QRS'],a:1,w:'Solo personal acreditado, con orden médica y según protocolo. En SYNC, el equipo busca un QRS para descargar; en FV no lo hay.'},
+  {q:'Paciente rescatado de un incendio con SpO2 98 %. ¿Qué piensan?',o:['Está bien oxigenado','Con CO, la SpO2 puede salir normal aunque haya hipoxia','El sensor está roto'],a:1,w:'La carboxihemoglobina falsea la pulsioximetría [3-17].'},
+  {q:'¿Qué posición de los parches NO sirve para el modo DEA?',o:['Anterolateral','Anteroposterior'],a:1,w:'La anteroposterior vale para el modo manual, la cardioversión y el marcapasos, pero no para el DEA ni para monitorizar [4-3].'},
   {q:'¿Con qué se limpia el LIFEPAK 12?',o:['Lejía diluida','Alcohol isopropílico, amonios cuaternarios o ácido peracético, con un paño húmedo','Se sumerge en desinfectante'],a:1,w:'Nunca lejía, fenoles, abrasivos ni inflamables. No sumergir [8-4, 7-6].'},
-  {q:'Los parches QUIK-COMBO pediátricos son para…',o:['Menores de 8 años, pesen lo que pesen','Menos de 15 kg','Menos de 25 kg'],a:1,w:'Manual del LP12: pediátricos para menos de 15 kg; los de adulto, para 15 kg o más [5-2].'}
+  {q:'Los parches QUIK-COMBO pediátricos son para…',o:['Menores de 8 años, pesen lo que pesen','Menos de 15 kg','Menos de 25 kg'],a:1,w:'Manual del LP12: pediátricos para menos de 15 kg; los de adulto, para 15 kg o más [5-3].'}
  ],
  save:[
   {q:'¿Cuál de estas condiciones exige el fabricante para usar el SAVe II+?',o:['Tener O2 a presión','Capnografía (o volumen espirado) funcionando','Paciente de más de 18 años'],a:1,w:'Sin capnografía o volumen espirado no se usa: bolsa. El límite es de peso (45 kg), no de edad.'},
@@ -155,7 +156,7 @@ window.QUIZ={
   {q:'¿Qué alarmas detienen la ventilación?',o:['DISCONNECT y PIP REACHED','DEVICE, HIGH PEEP y la batería en reserva','Todas'],a:1,w:'Paran y abren la válvula: hay que ventilar con bolsa ya.'},
   {q:'Salta PIP REACHED. ¿Por dónde empiezan?',o:['Subo la PIP a 50','Paciente: tubo, secreciones, neumotórax… (DOPE)','Silencio con MUTE'],a:1,w:'Primero el paciente. Sin causa clara → bolsa. No pasar de una PIP de 35.'},
   {q:'En la parada, ¿cómo se pone el SAVe en modo RCP?',o:['Pulsando MANUAL TRIGGER','Bajando la FR a 0 y CONFIRM','Apagándolo'],a:1,w:'Con FR 0, solo ventila al pulsar MANUAL TRIGGER. PIP 20 y sin PEEP.'},
-  {q:'El paciente recupera el pulso y siguen en FR 0. ¿Qué pasa?',o:['Ventila solo a 12 rpm','No recibe respiraciones salvo con MANUAL TRIGGER','Pasa a CPAP'],a:1,w:'Hay que salir del modo RCP: elegir la altura y CONFIRM.'},
+  {q:'El paciente recupera el pulso y siguen en FR 0. ¿Qué pasa?',o:['Ventila solo a 12 rpm','No recibe respiraciones salvo con MANUAL TRIGGER','Pasa a CPAP'],a:1,w:'Hay que salir del modo RCP: subir la FR por encima de 0 (por ejemplo, con el botón de altura) y CONFIRM. Comprueben en su equipo que el botón de altura sale del modo RCP.'},
   {q:'Paciente de 40 kg. ¿Usan el SAVe?',o:['Sí, con el preset más bajo','No: por debajo de 45 kg, bolsa del tamaño adecuado'],a:1,w:'El límite es de 45 kg, sea cual sea la edad.'},
   {q:'¿Dónde guardan el SAVe entre servicios?',o:['En la cabina de la ambulancia, al sol','En la base, cargado, sin sol y a ≤ 30 °C (≤ 40 °C solo a corto plazo)'],a:1,w:'Solo tiene cargador de red: hay que salir con la batería llena. Almacenamiento: 0-40 °C a corto plazo y 0-30 °C a largo plazo.'}
  ],

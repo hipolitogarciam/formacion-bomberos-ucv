@@ -29,7 +29,7 @@ Contenido:
 - **Se usa sobre todo en el móvil**: hay que probar siempre a 390 px de ancho, sin scroll horizontal.
 - **Sin registro, cookies ni analítica.** No se guarda quién completa la formación: es una decisión del autor.
 - **Idioma:** castellano.
-  - **Pendiente de decidir:** ahora los textos usan "vosotros" (España). Para Venezuela quizá convenga "ustedes". No cambiarlo sin que el autor lo confirme.
+  - **Tratamiento:** "ustedes/su" en todo el texto (decidido por el autor el 02-10-2026). Nunca "vosotros" ni "tú" dirigido al alumno; las opciones de los casos van en primera persona.
 
 ## Estructura
 
@@ -42,7 +42,7 @@ assets/js/cases.js           CASES: los 9 casos (texto, opciones, check(S), reac
 assets/js/sim.js             Simulador: ECG en canvas, LP12 virtual, SAVe virtual, motor de casos
 assets/js/app.js             Router por hash (#/, #/m/lp12/manual, #/casos, #/caso/<id>, #/acerca)
 content/manual-*.html        Manuales de bolsillo (fragmentos HTML que se cargan con fetch)
-assets/docs/                 Infografías: infografia-lp12.html e infografia-save.html (A4 imprimibles, usan PANELS); la de integración en PDF y JPG
+assets/docs/                 Infografías A4 imprimibles: infografia-lp12.html e infografia-save.html (usan PANELS) e infografia-int.html (HTML propio)
 assets/js/infografia.js      Genera las infografías A4 (panel en el centro y flechas a los cuadros)
 assets/img/fotos/            Fotos REALES de los equipos (ver LEEME.md); se activan en window.PHOTOS
 sw.js                        Service worker (caché sin conexión)
@@ -77,7 +77,7 @@ Probar en local: `python3 -m http.server 8765` y abrir `http://localhost:8765`. 
 
 ## Fuentes (no están en el repositorio; las tiene el autor en su proyecto de Claude)
 
-- **LIFEPAK 12** Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (ed. 2008-2015). Todo el material del LP12 está cotejado con esta edición (01-10-2026).
+- **LIFEPAK 12** Defibrillator/Monitor Operating Instructions, Physio-Control, MIN 3207254-033 (ed. 2008-2015). Material cotejado con esta edición (01-10-2026). En la auditoría v3 (02-10-2026) se revisaron 27 citas con el PDF y se corrigieron las páginas desfasadas; el resto de citas no se ha vuelto a cotejar una por una.
 - **SAVe II+** Operator's Manual M42110 Rev 5.3 (2021), a partir de un extracto documentado, más la ficha de Safeguard SGM-MKT-SV2P-01 y la FDA 510(k) K131877. **No hay manual completo:** las páginas citadas del SAVe están pendientes de cotejar.
 - Guías ERC, para el criterio clínico.
 
@@ -108,7 +108,6 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
   - revisión clínica independiente sin errores críticos;
   - consola limpia en ordenador y en móvil.
 - **Pendiente técnico:**
-  - publicar en GitHub Pages;
   - fotos reales;
   - enlaces de Loom (cuando se graben);
   - vídeos de YouTube: aprobados los de VIDEOS_CANDIDATOS.md; faltan vídeos del LP12 para cardioversión y marcapasos, y de alarmas del SAVe II+ (siguen con búsqueda);
