@@ -165,7 +165,9 @@ kbd{font-family:var(--head);font-weight:700;font-size:.9em;background:var(--navy
 .fig text.sm{font-size:12px;font-weight:600;fill:var(--ink2)}
 .fig text.pd{fill:var(--red);font-size:16px}
 .dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);vertical-align:-1px;margin-right:5px}
-.manual h3{margin-top:16px}
+.manual h3{margin-top:22px}
+.card.manual>h3:first-child{margin-top:0}
+.card.manual li{margin:6px 0}
 .cl{white-space:nowrap}
 .photo{display:flex;align-items:center;justify-content:center;gap:10px;border:1.5px dashed var(--muted);border-radius:12px;padding:14px;color:var(--muted);font-size:14px;line-height:1.35;margin:12px 0;background:var(--surface)}
 .photo .ic{width:24px;height:24px}
@@ -182,7 +184,10 @@ p.pill{display:block;width:fit-content;max-width:100%;font-family:Barlow,system-
 .panelsvg .hot{cursor:pointer}
 .a4{position:relative;width:100%;aspect-ratio:210/297;overflow:hidden;border-radius:6px;background:#fff}
 .a4 iframe{position:absolute;top:0;left:0;width:794px;height:1123px;border:0;transform-origin:0 0}
-.panelsvg{color:var(--muted)}
+.panelsvg{color:var(--muted);text-rendering:geometricPrecision}
+.panelsvg .hs{transition:stroke .12s,stroke-width .12s}
+.panelsvg .hot:active .hs{stroke:var(--orange);stroke-width:5}
+.pscroll{border-radius:8px}
 .panelsvg .hot:hover .hs,.panelsvg .hot.sel .hs,.panelsvg .hot:focus-visible .hs{stroke:var(--orange);stroke-width:5}
 .panelsvg .hot:focus{outline:none}
 .pscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -346,7 +351,7 @@ p.pill{display:block;width:fit-content;max-width:100%;font-family:Barlow,system-
 .embed{position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#000;margin:12px 0 0}
 .embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-footer{border-top:1px solid var(--line);margin-top:40px;padding:18px 16px 40px;color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:18px 16px 40px;color:var(--muted);font-size:14px;line-height:1.45}
 footer .in{max-width:1180px;margin:0 auto}
 .offline{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;z-index:40;display:none}
 /* Checklist */
@@ -370,7 +375,14 @@ details.help summary::before{content:'';flex:none;width:8px;height:8px;border-ri
 .ck2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 16px}
 @media (max-width:560px){.ckt{font-size:14px}.ckt .fx{width:38%}.ckt .n{width:30px}.cksheet{padding:12px}}
 @page{size:A4;margin:10mm 11mm}
-@media print{.top,.tabs,footer,.btn,.noprint,.offline,.cklink{display:none!important}body{background:#fff;font-size:10pt}.card{box-shadow:none}
+@media print{.top,.tabs,footer,.btn,.noprint,.offline,.cklink,.crumbs,.toc,.photo,.next{display:none!important}body{background:#fff;color:#000;font-size:10pt}.card{box-shadow:none}
+  /* sin fondos al imprimir: teclas y mensajes con borde, para que no queden en blanco sobre blanco */
+  kbd{background:none!important;color:#000!important;border:.25mm solid #000;padding:0 1.2mm}.msg{background:none!important;color:#000!important;border:.25mm solid #666;padding:0 1.2mm}
+  .manual h2{break-after:avoid;margin-top:5mm;padding-top:2mm}.manual h3{break-after:avoid}.manual tr,.manual li,.key,.fig{break-inside:avoid}
+  .manual table{box-shadow:none;border:.25mm solid #999;border-style:solid}.manual th,.manual td{border-bottom:.25mm solid #999}.manual th{color:#000}
+  .key{border:.25mm solid #999;border-left:1.2mm solid #666;background:none}.pill{border:.25mm solid #999;background:none;color:#000}
+  .info,.qres{position:static;box-shadow:none}a{color:#000}
+  .lead{font-size:11pt}.manual tr:first-child{break-after:avoid}.mod-n{color:#000}
   main{padding:0!important;max-width:none!important}.cksheet{border:0;padding:0}.cksheet h1{font-size:19pt;margin:0 0 3mm}.cksheet h2{font-size:14pt;margin:4mm 0 1.5mm;break-after:avoid}
   .ck2{display:block}.ckf{grid-template-columns:1fr 1fr;gap:2mm 6mm;font-size:10.5pt}
   .ckt{font-size:9.4pt;line-height:1.24}.ckt th,.ckt td{padding:1.1mm 2mm}.ckf.obs span{min-height:4.5em}.cksheet .src{font-size:8.4pt;margin:0 0 1.5mm}.cksheet .key{padding:1.5mm 3mm;margin:2mm 0;font-size:9pt}

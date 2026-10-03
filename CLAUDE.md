@@ -34,8 +34,8 @@ Contenido:
 ## Estructura
 
 ```
-index.html                   Shell: cabecera, navegación y carga de los scripts
-assets/css/app.css           Estilos (tokens en :root, modo oscuro). Paleta B elegida por el autor: azul marino #1D4F91 (primario, token --teal) y rojo #D2401C (acento, --orange). Sin logo de Bomberos UCV hasta confirmar el permiso
+index.html                   Shell: cabecera, navegación, sprite de iconos SVG propios (<symbol id="i-…">) y carga de los scripts
+assets/css/app.css           Estilos (tokens en :root, modo oscuro). Paleta B elegida por el autor: azul marino #1D4F91 (primario, token --teal) y rojo #D2401C (acento, --orange). Sin logo de Bomberos UCV hasta confirmar el permiso. Diseño «Panel de guardia» (ver más abajo)
 assets/js/content.js         MODS (módulos, enlaces de Loom), SAVE_HEIGHTS (alturas del SAVe), PANELS (panel interactivo), QUIZ, VIDEOS, PHOTOS
 assets/js/panel.js           drawPanel(): dibuja los esquemas SVG de PANELS (panel interactivo e infografías)
 assets/js/cases.js           CASES: los 9 casos (texto, opciones, check(S), react(ev,S,c), debrief)
@@ -68,11 +68,24 @@ Probar en local: `python3 -m http.server 8765` y abrir `http://localhost:8765`. 
 6. **Sin YouTube incrustado sin revisar:** en `VIDEOS`, `{t, yt:'ID', fuente}` solo para vídeos que el autor haya revisado. Mientras no los haya, se usan enlaces de búsqueda.
 7. Los enlaces de Loom van en `MODS[].loom.url` (enlace *share*).
 
+## Diseño «Panel de guardia» (elegido por el autor el 03-10-2026, v3.15-v3.18)
+
+- **Celular:** la navegación es una barra inferior fija con 7 iconos (`.nav` a menos de 760 px; su alto está en `--nav-h`, que también usan `main`, el pie, la ficha del panel y el resultado del test). En escritorio va arriba.
+- **Iconos:** nada de emoji en la interfaz. Se usan los símbolos del sprite de `index.html`: `<svg class="ic"><use href="#i-nombre"/></svg>` (en `sim.js`, con `IC('nombre')`). Para un icono nuevo, añadir un `<symbol>` monolínea de 24×24.
+- **Objetivos táctiles:** 44 px como mínimo. Excepción aceptada a 390 px: las flechas ▼▲ del LIFEPAK virtual (40 px de ancho) y los − + del SAVe virtual (37 px), para no mover la disposición real.
+- **Contraste:** AA medido en claro y oscuro para todos los pares de tokens. Si se toca un color, volver a medirlo.
+- **Orden del CSS:** las reglas `@media` de un componente van **después** de sus reglas base (un bloque del monitor estuvo sin aplicarse por ir antes).
+- **Impresión:** infografías en 1 hoja A4 cada una y checklist en 2. En `@media print`, las teclas (`kbd`) y los mensajes (`.msg`) van con borde y sin fondo.
+- **Textos de los huecos:** «Foto de … de su unidad: pendiente» y «Vídeo pendiente de publicar»; la ruta del archivo va en un comentario HTML.
+- **Icono de la app:** ECG y onda de ventilación sobre azul (`assets/img/icon.svg`; los PNG de 192 y 512 van a sangre y valen como *maskable*).
+- **Caché del navegador al probar en local:** `python3 -m http.server` deja recursos en caché; antes de comprobar, recargar con `fetch(url,{cache:'reload'})` o abrir con `?v=n`.
+
 ## Checklist antes de cada publicación
 
 - [ ] La consola no muestra errores en todas las rutas (`#/`, los 3 módulos con todas sus pestañas, `#/casos`, cada `#/caso/<id>` y `#/acerca`).
 - [ ] Los 9 casos se completan sin bloqueos.
 - [ ] Sin scroll horizontal a 390 px. El modo oscuro se lee bien.
+- [ ] Infografías en 1 hoja y checklist en 2 (PDF con Chrome sin interfaz).
 - [ ] `VERSION` de `sw.js` incrementada.
 - [ ] Si cambió contenido clínico, el autor lo ha revisado.
 
@@ -105,6 +118,7 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
 ## Estado (03-10-2026)
 
 - v3 publicada en GitHub Pages (https://hipolitogarciam.github.io/formacion-bomberos-ucv/):
+  - pulido visual «Panel de guardia» en 4 fases (v3.15-v3.18): navegación inferior, iconos SVG, tablas, simulador, icono de la app e impresión de manuales;
   - tratamiento de "ustedes", navegación con «Siguiente», paneles y simulador con la disposición real, infografías A4 en HTML, checklist de inicio de guardia, paleta B;
   - auditoría independiente (`AUDITORIA_v3.md`) con todos sus hallazgos corregidos;
   - contenido de reanimación revisado frente a las guías ERC 2025 (`REVISION_ERC2025.md`, 33 temas, todo aplicado; v3.14). Corregido también un dato del LP12: energías del DEA 150-360 J [9-6], no 100-360 J;

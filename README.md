@@ -29,6 +29,8 @@ Web estática de formación asíncrona, pensada para publicarse en **GitHub Page
 | Fotos reales de los equipos | `assets/img/fotos/` (ver `LEEME.md`) y añadan el nombre a `window.PHOTOS` |
 | Manuales | `content/*.html` |
 | Checklist de inicio de guardia | `assets/js/app.js` → `CK` |
+| Iconos de la interfaz | `index.html` → sprite SVG (`<symbol id="i-…">`); se usan con `<svg class="ic"><use href="#i-…"/></svg>` |
+| Icono de la app | `assets/img/icon.svg` y los PNG de 192 y 512 px |
 | Infografías | `assets/docs/infografia-*.html`: las del LP12 y el SAVe se dibujan con el panel de `PANELS` (`assets/js/infografia.js`); la de integración es HTML propio |
 
 **Tras cualquier cambio**, suban `VERSION` en `sw.js`. Si no, los celulares seguirán mostrando la copia guardada.
