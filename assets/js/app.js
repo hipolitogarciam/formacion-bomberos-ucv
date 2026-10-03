@@ -146,10 +146,10 @@ function caso(id){
   const m=MODS.find(x=>x.id===c.mod);
   app.innerHTML=`<div class="crumbs"><span><a href="#/">Inicio</a> › <a href="#/casos">Casos</a> › ${esc(c.title)}</span></div><div id="simroot"></div>
    <details class="card mt help"><summary><b>Cómo funciona el simulador</b></summary><ul>
-   <li>Lean el caso a la izquierda. Si hay opciones, elijan una; si hay un 🎯 objetivo, cúmplanlo con los botones de los equipos y las acciones.</li>
-   <li><b>Acciones</b>: lo que hacen con las manos (parches, compresiones, "¡fuera todos!", mirar el tórax…). Las que tienen ○/✔ se activan y desactivan.</li>
+   <li>Lean el caso a la izquierda. Si hay opciones, elijan una; si hay un <svg class="ic"><use href="#i-target"/></svg> objetivo, cúmplanlo con los botones de los equipos y las acciones.</li>
+   <li><b>Acciones</b>: lo que hacen con las manos (parches, compresiones, "¡fuera todos!", mirar el tórax…). Las que tienen <svg class="ic"><use href="#i-circle"/></svg>/<svg class="ic"><use href="#i-tick"/></svg> se activan y desactivan.</li>
    <li><b>Equipos:</b> los botones tienen la misma disposición que el equipo real. En el LIFEPAK, ENERGY SELECT, RATE y CURRENT tienen su ▼ y su ▲. En el SAVe, cada display (FR, VT, PIP y PEEP) tiene sus − + debajo, y nada se aplica sin CONFIRM.</li><li><b>Pista:</b> además del consejo, resalta con un borde naranja los botones y acciones que tocan.</li><li><b>En el celular</b>, el monitor queda fijo arriba y solo se abre el equipo que se usa en cada paso; el otro se puede abrir tocando su nombre.</li>
-   <li>Los tiempos van acelerados: el análisis, la carga y la PNI duran unos segundos, y el botón ⏩ adelanta 2 min de RCP.</li></ul></details>`;
+   <li>Los tiempos van acelerados: el análisis, la carga y la PNI duran unos segundos, y el botón <svg class="ic"><use href="#i-forward"/></svg> adelanta 2 min de RCP.</li></ul></details>`;
   simInst=SIM.create(document.getElementById('simroot'),c,{back:'#/casos'});
 }
 
@@ -196,7 +196,7 @@ const CK={
 function checklist(){
   document.title='Checklist de inicio de guardia';
   const row=(r,lp)=>{const [n,q,a]=lp?r:['',r[0],r[1]];return `<tr><td class="cb"><label><input type="checkbox"><span class="vh">Hecho</span></label></td>${lp?`<td class="n">${n}</td>`:''}<td>${q}</td><td class="fx">${a}</td></tr>`;};
-  const tbl=(rows,lp)=>`<table class="ckt"><tr><th class="cb">✔</th>${lp?'<th class="n">Paso</th>':''}<th>Comprobar</th><th class="fx">Si falla</th></tr>${rows.map(r=>row(r,lp)).join('')}</table>`;
+  const tbl=(rows,lp)=>`<table class="ckt"><tr><th class="cb">✓</th>${lp?'<th class="n">Paso</th>':''}<th>Comprobar</th><th class="fx">Si falla</th></tr>${rows.map(r=>row(r,lp)).join('')}</table>`;
   app.innerHTML=`<div class="crumbs noprint"><span><a href="#/">Inicio</a> › Checklist de inicio de guardia</span></div>
   <div class="row between noprint mb ckhead"><p class="lead">Para revisar los equipos al empezar la guardia. Las casillas no se guardan: impriman la hoja o guárdenla en PDF.</p><button class="btn" type="button" onclick="window.print()"><svg class="ic"><use href="#i-print"/></svg>Imprimir o guardar en PDF</button></div>
   <div class="cksheet">

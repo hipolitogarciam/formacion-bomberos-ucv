@@ -27,12 +27,12 @@ async function act(a){
 }
 const L=(lp)=>({lp}),A=(a)=>({a}),V=(sv)=>({sv}),w=(w)=>({w});
 const PLAY={
- 'dea-campus':[null,[L('ON'),A('Colocar parches'),L('ANALYZE'),w(5600)],[A('📢'),L('SHOCK')],[A('Compresiones'),A('⏩')],[A('Compresiones'),L('ANALYZE'),w(3000)],[A('Palpar')],[A('Cable de 12'),L('12LEAD'),w(3000)],null],
+ 'dea-campus':[null,[L('ON'),A('Colocar parches'),L('ANALYZE'),w(5600)],[A('"¡Fuera'),L('SHOCK')],[A('Compresiones'),A('Avanzar')],[A('Compresiones'),L('ANALYZE'),w(3000)],[A('Palpar')],[A('Cable de 12'),L('12LEAD'),w(3000)],null],
  'marcapasos':[[L('ON'),A('Cable de ECG'),A('Sensor de SpO2'),A('Manguito'),L('NIBP'),w(3000)],null,[L('PACER'),L('RATE+'),{lp:'CURRENT+',n:7}],[A('Palpar'),L('NIBP'),w(3000)],[{lp:'CURRENT+',n:7}]],
- 'cardioversion':[null,[L('ON'),L('SYNC'),{lp:'ENERGY-',n:4},L('CHARGE'),w(2800)],[A('📢'),L('SHOCK'),w(1600)],[L('SYNC'),{lp:'ENERGY+',n:4},L('CHARGE'),w(2800),A('📢'),L('SHOCK')],null],
+ 'cardioversion':[null,[L('ON'),L('SYNC'),{lp:'ENERGY-',n:4},L('CHARGE'),w(2800)],[A('"¡Fuera'),L('SHOCK'),w(1600)],[L('SYNC'),{lp:'ENERGY+',n:4},L('CHARGE'),w(2800),A('"¡Fuera'),L('SHOCK')],null],
  'save-tce':[null,[V('POWER'),V('H5-9'),V('CONFIRM')],[A('Tapar'),w(1200),A('Tapar'),w(1200)],[A('Conectar circuito'),A('Ventilar con bolsa'),A('Línea de EtCO2'),A('Mirar el tórax')],null,[A('Mirar el tórax'),A('Ventilar con bolsa'),A('Conectar circuito'),A('Aspirar'),A('Cambiar circuito'),A('Conectar circuito'),A('Ventilar con bolsa'),w(1200)],null],
  'save-asma':[null,[A('Desconectar el tubo'),A('Ventilar con bolsa')],[{sv:'rr-',n:8},V('CONFIRM'),A('Conectar circuito'),A('Ventilar con bolsa')]],
- 'parada-ventilado':[[A('Compresiones'),A('Ambulancia')],[{sv:'rr-',n:8},V('CONFIRM'),V('TRIG')],[A('📢'),L('ANALYZE'),w(5600),A('📢'),L('SHOCK')],[A('Compresiones'),A('⏩')],null,[V('H5-9'),V('CONFIRM'),A('Mirar el tórax')]],
+ 'parada-ventilado':[[A('Compresiones'),A('Ambulancia')],[{sv:'rr-',n:8},V('CONFIRM'),V('TRIG')],[A('"¡Fuera'),L('ANALYZE'),w(5600),A('"¡Fuera'),L('SHOCK')],[A('Compresiones'),A('Avanzar')],null,[V('H5-9'),V('CONFIRM'),A('Mirar el tórax')]],
  'desconexion':[[A('Mirar el tórax'),A('Revisar tubo')],null],
  'humo':[[A('Sensor de SpO2'),A('Cable de ECG'),A('Manguito'),L('NIBP'),w(3000)],null,null],
  'nino':[null,null,null]

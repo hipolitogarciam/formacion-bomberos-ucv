@@ -4,6 +4,7 @@
 'use strict';
 const $=(s,r=document)=>r.querySelector(s);
 const h=(tag,attrs={},...kids)=>{const e=document.createElement(tag);for(const k in attrs){if(k==='class')e.className=attrs[k];else if(k==='html')e.innerHTML=attrs[k];else if(k.startsWith('on'))e.addEventListener(k.slice(2),attrs[k]);else if(attrs[k]!==false&&attrs[k]!=null)e.setAttribute(k,attrs[k]);}for(const c of kids.flat()){if(c==null)continue;e.append(c.nodeType?c:document.createTextNode(c));}return e;};
+const IC=n=>`<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 const G=(t,mu,s,a)=>a*Math.exp(-((t-mu)*(t-mu))/(2*s*s));
 const sig=(x)=>1/(1+Math.exp(-x));
 
@@ -80,7 +81,7 @@ const ACC={
   cuff:{l:'Manguito de PNI',t:true},
   co2:{l:'Línea de EtCO2 (FilterLine)',t:true},
   cpr:{l:'Compresiones torácicas',t:true},
-  clear:{l:'📢 "¡Fuera todos!"'},
+  clear:{l:'"¡Fuera todos!"',ic:'megaphone'},
   moving:{l:'Ambulancia en marcha',t:true},
   pulse:{l:'Palpar el pulso'},
   chest:{l:'Mirar el tórax'},
@@ -94,7 +95,7 @@ const ACC={
   newcirc:{l:'Cambiar circuito / HMEF'},
   o2save:{l:'O2 al reservorio del SAVe',t:true},
   airway:{l:'Retirar tubo desplazado y ventilar con bolsa-mascarilla'},
-  adv2:{l:'⏩ Avanzar 2 min de RCP'}
+  adv2:{l:'Avanzar 2 min de RCP',ic:'forward'}
 };
 
 /* ---------- Motor ---------- */
@@ -114,7 +115,7 @@ function create(root,CASE,opts={}){
   mon.append(h('div',{class:'scr'},cv,vit),status);
   const lpBox=h('div',{class:'dev'});const svBox=h('div',{class:'dev save'});
   const accBox=h('div',{class:'acc'});const log=h('div',{class:'log','aria-live':'polite'});
-  const prog=h('div',{class:'prog'},h('i',{style:'width:0%'}));
+  const prog=h('div',{class:'prog',role:'progressbar','aria-label':'Progreso del caso','aria-valuemin':'0','aria-valuemax':'100'},h('i',{style:'width:0%'}));
   const right=h('div',{class:'sim'},mon);
   // cada equipo en un bloque plegable: en el celular solo se abre el que se usa en el paso
   const W={lp12:h('details',{class:'devw',open:''},h('summary',{},'LIFEPAK 12 (virtual)',h('small',{},'esquema simplificado')),lpBox),
@@ -311,8 +312,8 @@ function create(root,CASE,opts={}){
     accBox.innerHTML='';const list=CASE.acc||[];
     const keys=h('div',{class:'keys'});
     for(const id of list){const a=ACC[id];if(!a)continue;if(id==='adv2'&&!S.acc.cpr)continue;
-      const b=h('button',{class:'k'+(a.t&&S.acc[id]?' lit':''),type:'button','data-key':id,onclick:()=>accAct(id)},(a.t?(S.acc[id]?'✔ ':'○ '):'')+a.l);keys.append(b);}
-    accBox.append(h('b',{},'Acciones sobre el paciente y el material'),keys);
+      const b=h('button',{class:'k'+(a.t&&S.acc[id]?' lit':''),type:'button','data-key':id,onclick:()=>accAct(id)},h('span',{class:'ki',html:IC(a.t?(S.acc[id]?'tick':'circle'):(a.ic||'chevron'))}),h('span',{},a.l));if(a.t)b.setAttribute('aria-pressed',S.acc[id]?'true':'false');keys.append(b);}
+    accBox.append(h('b',{class:'acct'},'Acciones sobre el paciente y el material'),keys);
     applyHL();
   }
   /* Pista: resalta los botones o acciones que tocan en el paso */
@@ -322,7 +323,7 @@ function create(root,CASE,opts={}){
   }
   function accAct(id){
     const a=ACC[id];S.hl.delete('acc:'+id);
-    if(a.t){S.acc[id]=!S.acc[id];L((S.acc[id]?'✔ ':'✖ ')+a.l);
+    if(a.t){S.acc[id]=!S.acc[id];L((S.acc[id]?'✓ ':'✕ ')+a.l);
       if(id==='cpr'&&S.acc.cpr&&S.lp.charged&&S.lp.mode==='MANUAL'){}
       if(id==='moving'&&!S.acc.moving)L('Vehículo detenido');}
     else{
@@ -334,32 +335,32 @@ function create(root,CASE,opts={}){
       if(id==='suction'){L('Aspiración de secreciones');}
       if(id==='newcirc'){L('Circuito/HMEF nuevos');}
       if(id==='airway'){L('Tubo retirado según protocolo; bolsa-mascarilla');}
-      if(id==='adv2'){S.t+=120;if(S.sv.running&&S.sv.rr===0)S.sv.lastBreath=S.t;L('⏩ +2 min de RCP');if(S.lp.mode==='AED'&&S.lp.on){S.lp.msg='PUSH ANALYZE';}}
+      if(id==='adv2'){S.t+=120;if(S.sv.running&&S.sv.rr===0)S.sv.lastBreath=S.t;L('+2 min de RCP');if(S.lp.mode==='AED'&&S.lp.on){S.lp.msg='PUSH ANALYZE';}}
     }
     sync();drawSV();drawAcc();emit({type:'acc',id,on:!!S.acc[id]});
   }
 
   /* ---------- Historia y pasos ---------- */
   let fbEl=null;
-  function feedback(type,msg){if(!fbEl)return;fbEl.style.display='block';fbEl.className='fb '+(type==='ok'?'ok':type==='no'?'no':'tip');fbEl.innerHTML=msg;if(type==='no')S.errors++;}
+  function feedback(type,msg){if(!fbEl)return;fbEl.style.display='flex';fbEl.className='fb '+(type==='ok'?'ok':type==='no'?'no':'tip');fbEl.innerHTML=IC(type==='ok'?'tick':type==='no'?'warn':'bulb')+'<span>'+msg+'</span>';if(type==='no')S.errors++;}
   function renderStep(){
     const st=steps[S.step];prog.firstChild.style.width=(100*S.step/steps.length)+'%';
     if(st.onEnter)st.onEnter(S,ctx);
     story.innerHTML='';
-    story.append(h('div',{class:'who'},`${CASE.title} · paso ${S.step+1} de ${steps.length}`),h('div',{html:st.text}));
-    if(st.goal)story.append(h('div',{class:'goal',html:'🎯 '+st.goal}));
+    story.append(h('div',{class:'who'},h('span',{},CASE.title),h('span',{class:'stepn'},`Paso ${S.step+1} de ${steps.length}`)),h('div',{html:st.text}));
+    if(st.goal)story.append(h('div',{class:'goal',html:IC('target')+'<span>'+st.goal+'</span>'}));
     fbEl=h('div',{class:'fb',style:'display:none'});
     if(st.options){
       const box=h('div',{class:'choices'});
-      [...st.options].sort(()=>Math.random()-.5).forEach((o)=>{const b=h('button',{type:'button',onclick:()=>{if(S.ended||b.disabled)return;fbEl.style.display='block';if(o.ok){b.classList.add('good');feedback('ok',o.fb||'Correcto.');[...box.children].forEach(x=>x.disabled=true);if(o.effect)o.effect(S,ctx);done(st);}else{b.classList.add('bad');feedback('no',o.fb||'No es lo más adecuado.');}}},o.t);box.append(b);});
+      [...st.options].sort(()=>Math.random()-.5).forEach((o)=>{const b=h('button',{type:'button',onclick:()=>{if(S.ended||b.disabled)return;fbEl.style.display='flex';if(o.ok){b.classList.add('good');feedback('ok',o.fb||'Correcto.');[...box.children].forEach(x=>x.disabled=true);if(o.effect)o.effect(S,ctx);done(st);}else{b.classList.add('bad');feedback('no',o.fb||'No es lo más adecuado.');}}},o.t);box.append(b);});
       story.append(box);
     }
     S.hl=new Set();
     const hlDev=(st.hl||[]).map(x=>x.startsWith('lp:')?'lp12':x.startsWith('sv:')?'save':null).find(Boolean);
     showDev(st.dev||hlDev||curDev);
     const hints=st.hints||(st.hl?['Les resaltamos en naranja los botones y las acciones de este paso.']:null);
-    if(hints){let i=0;const hb=h('button',{class:'btn alt sm',type:'button',style:'margin-top:10px',onclick:()=>{fbEl.style.display='block';feedback('tip','💡 '+hints[Math.min(i,hints.length-1)]);i++;
-      if(st.hl){S.hl=new Set(st.hl);applyHL();const first=root.querySelector('.hl');if(first){const w=first.closest('details');if(w&&!w.open)w.open=true;first.scrollIntoView({behavior:'smooth',block:'nearest'});}}}},'Pista');story.append(hb);}
+    if(hints){let i=0;const hb=h('button',{class:'btn alt sm hint',type:'button',html:IC('bulb')+'<span>Pista</span>',onclick:()=>{fbEl.style.display='flex';feedback('tip',hints[Math.min(i,hints.length-1)]);i++;
+      if(st.hl){S.hl=new Set(st.hl);applyHL();const first=root.querySelector('.hl');if(first){const w=first.closest('details');if(w&&!w.open)w.open=true;first.scrollIntoView({behavior:'smooth',block:'nearest'});}}}});story.append(hb);}
     story.append(fbEl);
     sync();drawSV();drawAcc();
     checkGoal();
@@ -367,16 +368,16 @@ function create(root,CASE,opts={}){
   function checkGoal(){const st=steps[S.step];if(!st||st.options||S._done)return;if(st.check&&st.check(S)){done(st);}}
   function done(st){
     if(S._done)return;S._done=true;
-    if(st.success){fbEl.style.display='block';feedback('ok','✔ '+st.success);}
+    if(st.success){fbEl.style.display='flex';feedback('ok',st.success);}
     if(st.after)st.after(S,ctx);
-    const nb=h('button',{class:'btn',type:'button',style:'margin-top:12px',onclick:()=>{S._done=false;S.step++;if(S.step>=steps.length)finish();else renderStep();}},S.step+1>=steps.length?'Ver resumen del caso':'Continuar →');
+    const nb=h('button',{class:'btn cont',type:'button',html:(S.step+1>=steps.length?'Ver resumen del caso':'Continuar')+IC('arrow'),onclick:()=>{S._done=false;S.step++;if(S.step>=steps.length)finish();else renderStep();}});
     story.append(nb);nb.focus({preventScroll:true});
   }
   function finish(){
     S.ended=true;prog.firstChild.style.width='100%';
-    story.innerHTML='';story.append(h('div',{class:'who'},CASE.title+' · resumen'),h('h3',{},S.errors===0?'Caso completado sin errores':`Caso completado · ${S.errors} decisión(es) a revisar`),
+    story.innerHTML='';story.append(h('div',{class:'who'},h('span',{},CASE.title),h('span',{class:'stepn'},'Resumen')),h('h3',{},S.errors===0?'Caso completado sin errores':`Caso completado · ${S.errors} decisión(es) a revisar`),
       h('ul',{class:'debrief',html:(CASE.debrief||[]).map(x=>'<li>'+x+'</li>').join('')}),
-      h('div',{class:'row'},h('button',{class:'btn',type:'button',onclick:()=>{destroy();create(root,CASE,opts);}},'Repetir caso'),opts.back?h('a',{class:'btn alt',href:opts.back},'Otros casos'):null));
+      h('div',{class:'row mt'},h('button',{class:'btn',type:'button',html:IC('refresh')+'Repetir caso',onclick:()=>{destroy();create(root,CASE,opts);}}),opts.back?h('a',{class:'btn alt',href:opts.back},'Otros casos'):null));
     if(opts.onFinish)opts.onFinish(S);
   }
 
