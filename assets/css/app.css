@@ -138,7 +138,7 @@ a.card:hover{border-color:var(--teal);box-shadow:0 2px 10px rgba(14,26,43,.1)}
 .manual table{width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;border-style:hidden;box-shadow:0 0 0 1px var(--line)}
 .manual th,.manual td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
 .manual tr:last-child td{border-bottom:0}
-.manual th{background:var(--teal-bg);color:var(--teal);font-family:var(--head);font-size:13px;letter-spacing:.4px;text-transform:uppercase}
+.manual th{background:var(--teal-bg);color:var(--teal);font-family:var(--head);font-size:15px;letter-spacing:.2px}
 .manual tr:nth-child(odd) td{background:var(--zebra)}
 .manual td:first-child{font-weight:600}
 .tbl{overflow-x:auto;border-radius:10px}
