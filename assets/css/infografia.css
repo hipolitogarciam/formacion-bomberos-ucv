@@ -5,6 +5,7 @@
 @font-face{font-family:'Barlow Semi Condensed';font-weight:700;font-display:swap;src:url(../fonts/barlow-semi-condensed-latin-700-normal.woff2) format('woff2')}
 :root{--ink:#0E1A2B;--muted:#4A5868;--teal:#1D4F91;--line:#C9D3DC}
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{margin:0;background:#D9DEE3;color:var(--ink);font-family:Barlow,system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:10px}
 .bar button,.bar a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font:700 16px Barlow,sans-serif;border:0;border-radius:12px;padding:9px 18px;background:var(--teal);color:#fff;text-decoration:none;cursor:pointer}

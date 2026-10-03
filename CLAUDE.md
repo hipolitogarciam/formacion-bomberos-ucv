@@ -71,6 +71,8 @@ Probar en local: `python3 -m http.server 8765` y abrir `http://localhost:8765`. 
 ## Diseño «Panel de guardia» (elegido por el autor el 03-10-2026, v3.15-v3.18)
 
 - **Celular:** la navegación es una barra inferior fija con 7 iconos (`.nav` a menos de 760 px; su alto está en `--nav-h`, que también usan `main`, el pie, la ficha del panel y el resultado del test). En escritorio va arriba.
+- **Cabecera en el celular:** no es fija (`position:static` a menos de 760 px) y respeta la zona segura superior (`env(safe-area-inset-top)`). Así no hay un elemento fijo (la barra) dentro de uno pegajoso. El monitor del simulador se pega arriba del todo.
+- **Infografías incrustadas:** `infografia.css` lleva `text-size-adjust:100%`; sin eso, el celular agranda el texto dentro del iframe y descuadra las columnas.
 - **Iconos:** nada de emoji en la interfaz. Se usan los símbolos del sprite de `index.html`: `<svg class="ic"><use href="#i-nombre"/></svg>` (en `sim.js`, con `IC('nombre')`). Para un icono nuevo, añadir un `<symbol>` monolínea de 24×24.
 - **Objetivos táctiles:** 44 px como mínimo. Excepción aceptada a 390 px: las flechas ▼▲ del LIFEPAK virtual (40 px de ancho) y los − + del SAVe virtual (37 px), para no mover la disposición real.
 - **Contraste:** AA medido en claro y oscuro para todos los pares de tokens. Si se toca un color, volver a medirlo.
