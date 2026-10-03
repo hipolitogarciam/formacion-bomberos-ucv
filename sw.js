@@ -1,5 +1,5 @@
 /* Caché para uso sin conexión. Sube VERSION al publicar cambios. */
-const VERSION='v3.19-2026-10-03';
+const VERSION='v3.20-2026-10-03';
 const CORE=['./','index.html','manifest.webmanifest','assets/css/app.css','assets/js/content.js','assets/js/panel.js','assets/js/cases.js','assets/js/sim.js','assets/js/app.js',
 'content/manual-lp12.html','content/manual-save.html','content/manual-integracion.html',
 'assets/fonts/barlow-latin-400-normal.woff2','assets/fonts/barlow-latin-400-italic.woff2','assets/fonts/barlow-latin-600-normal.woff2','assets/fonts/barlow-latin-700-normal.woff2','assets/fonts/barlow-semi-condensed-latin-600-normal.woff2','assets/fonts/barlow-semi-condensed-latin-700-normal.woff2',

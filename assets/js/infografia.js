@@ -33,7 +33,7 @@ const CFG={
     cols:'43mm 1fr 43mm',split:.5,balance:true,len:[60,130],
     x:{alarmpanel:'Paran la ventilación: DEVICE, HIGH PEEP y la batería en reserva → bolsa ya. Las demás siguen ventilando. Primero el paciente, luego el equipo.',
       pip:'Límite de presión: 10-60 cmH2O (30 de inicio, 20 en modo RCP). Si se alcanza, salta PIP REACHED. Fuera de la RCP, no pasar de 35; en la RCP, lo fija su dirección médica (ERC 2025: alarma a 60-70).',
-      trigger:'Da una respiración con el VT fijado; en modo RCP es la única forma de ventilar. Con tubo, 1 cada 6 s; si PIP REACHED se repite → bolsa. Con mascarilla, lo pulsa el líder.'},
+      trigger:'Da una respiración con el VT fijado; en modo RCP es la única forma de ventilar. Con tubo, 1 cada 6 s; si PIP REACHED se repite → bolsa. Con mascarilla, lo pulsa el tercero.'},
     title:'SAVe II+ · Guía rápida del panel',
     sub:'Qué hace cada botón y cada indicador. Solo adultos de 45 kg o más, con capnografía funcionando y la bolsa siempre a mano.',
     src:'Fuente: SAVe II+ Operator\'s Manual M42110 Rev 5.3 (AutoMedx, 2021), según un extracto documentado (páginas pendientes de cotejar con el manual completo).',

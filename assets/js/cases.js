@@ -134,7 +134,7 @@ window.CASES=[
   check:S=>S.f.look&&S.f.asp&&S.f.nc&&S.acc.saveConn&&!S.acc.bvm&&!S.sv.alarms.has('PIP REACHED'),success:'Secreciones aspiradas, circuito nuevo y SAVe reconectado: PIP normal, EtCO2 38 y SpO2 96 %.'},
  {text:'<p>Todo normalizado.</p><p>¿Cómo vigilarán el resto del traslado?</p>',
   options:[
-   {t:'Ronda cada 5 min: tórax, SpO2, curva de EtCO2, FC y TA, y CONFIRM sin cambios para ver la PIP medida',ok:true,fb:'Correcto. Y siempre después de mover al paciente.'},
+   {t:'Reevaluación continua: tórax, SpO2, curva de EtCO2, FC y TA, y CONFIRM sin cambios para ver la PIP medida',ok:true,fb:'Correcto. Y siempre después de mover al paciente.'},
    {t:'Si no suena ninguna alarma, todo va bien',fb:'No. El fabricante lo dice: la ausencia de alarma no garantiza que el paciente esté bien ventilado.'}]}
  ],
  debrief:['Condiciones para el SAVe: 45 kg o más, capnografía funcionando y bolsa a mano.','Puesta en marcha: altura → CONFIRM → prueba de DISCONNECT → prueba de PIP → paciente → ver que el tórax sube.','O2: flujo = FR × VT, redondeado hacia arriba.','Ante PIP REACHED, DOPE: Desplazamiento, Obstrucción, neumotórax (P), Equipo. Primero el paciente.']},
