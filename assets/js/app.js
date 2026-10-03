@@ -58,7 +58,7 @@ function mod(id,tab){
   document.title=`Módulo ${m.n} · ${m.title}`;
   const tabs=TABS.filter(t=>t[0]!=='panel'||m.panel);
   if(!tabs.some(t=>t[0]===tab))tab='inicio';
-  app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › Módulo ${m.n}<a class="cklink" href="#/checklist">📋 Checklist de inicio de guardia</a></div>
+  app.innerHTML=`<div class="crumbs"><span><a href="#/">Inicio</a> › Módulo ${m.n}</span><a class="cklink" href="#/checklist"><svg class="ic"><use href="#i-check"/></svg>Checklist de inicio de guardia</a></div>
    <div class="mod-n">Módulo ${m.n} · ${m.sub}</div><h1>${m.title}</h1>
    <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${t[0]===tab}" class="${t[0]===tab?'on':''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
    <div id="tab"></div><div class="next" id="tabnext"></div>`;
@@ -68,24 +68,24 @@ function mod(id,tab){
   ({inicio:tInicio,manual:tManual,panel:tPanel,infografia:tInfo,videos:tVideos,casos:tCasos,test:tTest}[tab])(m,T);
   // Botón "Siguiente": Inicio → Manual → Panel → Infografía → Vídeos → Casos → Autoevaluación → siguiente módulo
   const k=tabs.findIndex(t=>t[0]===tab),nt=tabs[k+1],nm=MODS[MODS.indexOf(m)+1];
-  document.getElementById('tabnext').innerHTML=nt?`<a class="btn" href="#/m/${id}/${nt[0]}">Siguiente: ${nt[1]} →</a>`
-    :nm?`<a class="btn" href="#/m/${nm.id}">Siguiente: módulo ${nm.n} · ${nm.title} →</a>`
-    :`<a class="btn" href="#/">Plan formativo completado: volver al inicio →</a>`;
+  document.getElementById('tabnext').innerHTML=nt?`<a class="btn" href="#/m/${id}/${nt[0]}">Siguiente: ${nt[1]}<svg class="ic"><use href="#i-arrow"/></svg></a>`
+    :nm?`<a class="btn" href="#/m/${nm.id}">Siguiente: módulo ${nm.n} · ${nm.title}<svg class="ic"><use href="#i-arrow"/></svg></a>`
+    :`<a class="btn" href="#/">Plan formativo completado: volver al inicio<svg class="ic"><use href="#i-arrow"/></svg></a>`;
 }
 function tInicio(m,T){
   T.innerHTML=`<div class="card"><h3>Al terminar este módulo sabrán…</h3><ul>${m.goals.map(g=>`<li>${g}</li>`).join('')}</ul>
     <h3>Cómo seguirlo</h3><ol><li>Vean el vídeo de la sesión, aquí debajo.</li><li>Lean el <a href="#/m/${m.id}/manual">manual de bolsillo</a>.</li>${m.panel?`<li>Exploren el <a href="#/m/${m.id}/panel">panel interactivo</a>.</li>`:''}<li>Descarguen la <a href="#/m/${m.id}/infografia">infografía</a>.</li><li>Consulten los <a href="#/m/${m.id}/videos">vídeos complementarios</a>.</li><li>Hagan los <a href="#/m/${m.id}/casos">casos</a> y la <a href="#/m/${m.id}/test">autoevaluación</a>.</li></ol>
     <p class="muted">Al final de cada pestaña, el botón «Siguiente» les lleva a la próxima.</p></div>
-   <div class="card" style="margin-top:14px"><h3>Vídeo de la sesión</h3>${loom(m.loom)}</div>`;
+   <div class="card mt"><h3>Vídeo de la sesión</h3>${loom(m.loom)}</div>`;
 }
 function loom(l){
-  if(l&&l.url){const id=(l.url.match(/loom\.com\/(?:share|embed)\/([a-z0-9]+)/i)||[])[1];if(id)return `<div class="embed"><iframe src="https://www.loom.com/embed/${id}" allowfullscreen title="${esc(l.title)}"></iframe></div><p><small>${esc(l.title)}</small></p>`;return `<p><a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">▶ ${esc(l.title)}</a></p>`;}
-  return `<div class="photo">🎬 <b>${esc(l.title)}</b><br>El vídeo de Loom se publicará aquí.</div>`;
+  if(l&&l.url){const id=(l.url.match(/loom\.com\/(?:share|embed)\/([a-z0-9]+)/i)||[])[1];if(id)return `<div class="embed"><iframe src="https://www.loom.com/embed/${id}" allowfullscreen title="${esc(l.title)}"></iframe></div><p><small>${esc(l.title)}</small></p>`;return `<p><a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-play"/></svg>${esc(l.title)}</a></p>`;}
+  return `<div class="photo"><svg class="ic"><use href="#i-video"/></svg><span><b>${esc(l.title)}</b><br>Vídeo pendiente de publicar</span></div>`;
 }
 async function tManual(m,T){
   T.innerHTML='<p class="muted">Cargando…</p>';
   try{if(!cache[m.manual]){const r=await fetch(m.manual);if(!r.ok)throw 0;cache[m.manual]=await r.text();}
-    T.innerHTML=`<div class="row" style="justify-content:flex-end;margin-bottom:8px"><button class="btn alt sm" type="button" onclick="window.print()">Imprimir o guardar en PDF</button></div>`+cache[m.manual];
+    T.innerHTML=`<div class="row end mb-s noprint"><button class="btn alt sm" type="button" onclick="window.print()"><svg class="ic"><use href="#i-print"/></svg>Imprimir o guardar en PDF</button></div>`+cache[m.manual];
     photos(T);
   }catch(e){T.innerHTML='<p>No se pudo cargar el manual. Comprueben la conexión.</p>';}
 }
@@ -95,10 +95,10 @@ function photos(T){ // si existe la foto real, sustituye el hueco
 function tPanel(m,T){
   const P=PANELS[m.panel];
   T.innerHTML=`<p>Toquen cualquier botón o zona del ${m.title} para ver qué hace. <small>Esquema didáctico de elaboración propia, no a escala, con la disposición del equipo real.${m.id==='lp12'?' Los botones con borde discontinuo dependen de las opciones del equipo.':''}</small></p>${P.acred?'<p class="pill r">Desfibrilación manual, cardioversión y marcapasos: solo personal acreditado, con orden médica y según protocolo</p>':''}
-   <div class="panelwrap"><div class="card" style="padding:10px"><div class="row" style="justify-content:flex-end;margin-bottom:6px"><button class="btn alt sm" type="button" id="pzoom" aria-pressed="false">🔍 Ampliar</button></div><div class="pscroll" id="pscroll">${drawPanel(P)}</div><div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}">📷 Aquí aparecerá la foto real de su equipo cuando la añadan.</div></div>
+   <div class="panelwrap"><div class="card pcard"><div class="row end mb-s"><button class="btn alt sm" type="button" id="pzoom" aria-pressed="false"><svg class="ic"><use href="#i-zoom"/></svg><span>Ampliar</span></button></div><div class="pscroll" id="pscroll">${drawPanel(P)}</div><div class="photo" data-photo="${m.id==='lp12'?'lp12-frontal':'save-frontal'}"><svg class="ic"><use href="#i-camera"/></svg><span>Aquí aparecerá la foto real de su equipo cuando la añadan.</span></div></div>
    <div class="card info" id="pinfo" aria-live="polite"><h3>${esc(P.title)}</h3><p>Seleccionen un elemento del panel.</p></div></div>`;
   const info=document.getElementById('pinfo'),zb=document.getElementById('pzoom'),ps=document.getElementById('pscroll');
-  zb.addEventListener('click',()=>{const on=ps.classList.toggle('zoom');zb.setAttribute('aria-pressed',on);zb.textContent=on?'🔍 Reducir':'🔍 Ampliar';});
+  zb.addEventListener('click',()=>{const on=ps.classList.toggle('zoom');zb.setAttribute('aria-pressed',on);zb.querySelector('span').textContent=on?'Reducir':'Ampliar';zb.querySelector('use').setAttribute('href',on?'#i-zoomout':'#i-zoom');});
   const show=(g)=>{T.querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const h=P.hot.find(x=>x.id===g.dataset.id);info.innerHTML=`<h3>${esc(h.n||h.l||'')}</h3><p>${h.i}</p>${(P.acred||[]).includes(h.id)?'<p class="pill r">Solo personal acreditado, con orden médica y según protocolo</p>':''}<p class="src">${h.src?esc(h.src):'Manual oficial, pág. '+h.p}</p>`;if(innerWidth<860)info.scrollIntoView({behavior:'smooth',block:'nearest'});};
   T.querySelectorAll('.hot').forEach(g=>{g.addEventListener('click',()=>show(g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(g);}});});
   photos(T);
@@ -107,31 +107,31 @@ function fitA4(a){const f=a.querySelector('iframe');if(f)f.style.transform=`scal
 addEventListener('resize',()=>{const a=document.getElementById('a4');if(a)fitA4(a);});
 function tInfo(m,T){
   T.innerHTML=`<p>Infografía A4 de consulta rápida: ${m.panel?`el panel del ${m.title} con lo que hace cada botón`:'lo esencial del módulo en una hoja'}. Imprímanla o guárdenla en PDF y llévenla en la ambulancia.</p><p class="muted only-narrow">En el celular la hoja se ve pequeña: ábranla en pantalla completa y amplíen con los dedos, o guárdenla en PDF.</p>
-   <div class="row" style="margin-bottom:12px"><button class="btn" type="button" id="iprint">Imprimir o guardar en PDF</button><a class="btn alt" href="${m.infoHtml}" target="_blank" rel="noopener">Abrir en pantalla completa</a></div>
-   <div class="card" style="padding:8px"><div class="a4" id="a4"><iframe src="${m.infoHtml}?embed" title="Infografía ${esc(m.title)}"></iframe></div></div>`;
+   <div class="row mb stackbtns"><button class="btn" type="button" id="iprint"><svg class="ic"><use href="#i-print"/></svg>Imprimir o guardar en PDF</button><a class="btn alt" href="${m.infoHtml}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-external"/></svg>Abrir en pantalla completa</a></div>
+   <div class="card pcard"><div class="a4" id="a4"><iframe src="${m.infoHtml}?embed" title="Infografía ${esc(m.title)}"></iframe></div></div>`;
   const a=document.getElementById('a4'),f=a.querySelector('iframe');fitA4(a);
   document.getElementById('iprint').onclick=()=>{try{f.contentWindow.print();}catch(e){open(m.infoHtml,'_blank');}};
 }
 function tVideos(m,T){
   const list=VIDEOS[m.id]||[];
-  T.innerHTML=`<div class="card" style="margin-bottom:14px"><h3>Vídeo de la sesión</h3>${loom(m.loom)}</div>
+  T.innerHTML=`<div class="card mb"><h3>Vídeo de la sesión</h3>${loom(m.loom)}</div>
   <h3>Vídeos complementarios</h3>
   <p class="muted">Material externo de consulta. Si no hay un vídeo concreto revisado, el enlace abre una búsqueda en YouTube: elijan vídeos de fuentes fiables (fabricante, sociedades científicas) y recuerden que <b>manda su protocolo</b>.</p>
   <div class="grid g2">${list.map(v=>{let link,body='';
     if(v.yt){body=`<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/${esc(v.yt)}" allowfullscreen loading="lazy" title="${esc(v.t)}"></iframe></div>`;link='';}
-    else if(v.url)link=`<a href="${esc(v.url)}" target="_blank" rel="noopener">Abrir →</a>`;
-    else link=`<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(v.q)}" target="_blank" rel="noopener">Buscar en YouTube →</a>`;
-    return `<div class="card"><div class="vid"><div class="play">▶</div><div><b>${esc(v.t)}</b><br><small>${esc(v.fuente||(v.yt?'YouTube':'Búsqueda en YouTube'))}</small><br>${link}</div></div>${body}</div>`;}).join('')}</div>`;
+    else if(v.url)link=`<a class="more" href="${esc(v.url)}" target="_blank" rel="noopener">Abrir<svg class="ic"><use href="#i-external"/></svg></a>`;
+    else link=`<a class="more" href="https://www.youtube.com/results?search_query=${encodeURIComponent(v.q)}" target="_blank" rel="noopener">Buscar en YouTube<svg class="ic"><use href="#i-external"/></svg></a>`;
+    return `<div class="card"><div class="vid"><div class="play" aria-hidden="true"><svg class="ic"><use href="#i-play"/></svg></div><div><b>${esc(v.t)}</b><br><small>${esc(v.fuente||(v.yt?'YouTube':'Búsqueda en YouTube'))}</small>${link?'<br>'+link:''}</div></div>${body}</div>`;}).join('')}</div>`;
 }
-function caseCard(c){return `<a class="card" href="#/caso/${c.id}"><div class="row" style="justify-content:space-between"><span class="pill ${c.mod==='save'?'o':''}">${c.tag}</span><small>${c.level} · ≈ ${c.min} min</small></div><h3 style="margin-top:8px">${esc(c.title)}</h3><p>${esc(c.summary)}</p><small>Equipos: ${c.devices.map(d=>d==='lp12'?'LIFEPAK 12':'SAVe II+').join(' + ')}</small></a>`;}
+function caseCard(c){return `<a class="card case" data-mod="${c.mod}" href="#/caso/${c.id}"><div class="row between"><span class="pill ${c.mod==='save'?'o':''}">${c.tag}</span><small class="meta"><svg class="ic"><use href="#i-clock"/></svg>${c.level} · ≈ ${c.min} min</small></div><h3>${esc(c.title)}</h3><p>${esc(c.summary)}</p><small>Equipos: ${c.devices.map(d=>d==='lp12'?'LIFEPAK 12':'SAVe II+').join(' + ')}</small></a>`;}
 function tCasos(m,T){const l=CASES.filter(c=>c.mod===m.id);T.innerHTML=`<p>En los casos manejan los equipos virtuales: botones del LIFEPAK 12, del SAVe II+ y acciones sobre el paciente. Si se atascan, pulsen <b>Pista</b>.</p><div class="grid g2">${l.map(caseCard).join('')}</div>`;}
 function tTest(m,T){
   const Q=QUIZ[m.id]||[];let ok=0,ans=0;
-  T.innerHTML=`<p>Autoevaluación: ${Q.length} preguntas. Las respuestas no se guardan ni se envían.</p><div id="qs"></div><div class="card" id="qres" style="display:none"></div>`;
+  T.innerHTML=`<p>Autoevaluación: ${Q.length} preguntas. Las respuestas no se guardan ni se envían.</p><div id="qs"></div><div class="card qres" id="qres" hidden></div>`;
   const qs=document.getElementById('qs');
   Q.forEach((q,i)=>{const d=document.createElement('div');d.className='q card';const ord=q.o.map((_,j)=>j).sort(()=>Math.random()-.5);d.innerHTML=`<b>${i+1}. ${q.q}</b><div class="opts">${ord.map(j=>`<label data-j="${j}"><input type="radio" name="q${i}" value="${j}"> <span>${q.o[j]}</span></label>`).join('')}</div><div class="why">${q.w}</div>`;qs.append(d);
     d.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{if(d.classList.contains('done'))return;d.classList.add('done');ans++;const j=+inp.value;const lab=k=>d.querySelector(`label[data-j="${k}"]`);lab(q.a).classList.add('good');if(j===q.a)ok++;else lab(j).classList.add('bad');d.querySelectorAll('input').forEach(x=>x.disabled=true);
-      if(ans===Q.length){const r=document.getElementById('qres');r.style.display='block';r.innerHTML=`<div class="score">${ok} / ${Q.length}</div><p>${ok===Q.length?'¡Perfecto!':ok>=Q.length*.8?'Muy bien. Repasen las que han fallado.':'Repasen el manual y vuelvan a intentarlo.'}</p><button class="btn sm" id="again">Repetir</button>`;document.getElementById('again').onclick=()=>tTest(m,T);}}));});
+      if(ans===Q.length){const r=document.getElementById('qres');r.hidden=false;r.innerHTML=`<div class="score">${ok} / ${Q.length}</div><p>${ok===Q.length?'¡Perfecto!':ok>=Q.length*.8?'Muy bien. Repasen las que han fallado.':'Repasen el manual y vuelvan a intentarlo.'}</p><button class="btn sm" id="again"><svg class="ic"><use href="#i-refresh"/></svg>Repetir</button>`;document.getElementById('again').onclick=()=>tTest(m,T);}}));});
 }
 
 /* ---------- Casos ---------- */
@@ -144,8 +144,8 @@ function caso(id){
   const c=CASES.find(x=>x.id===id);if(!c)return casos();
   document.title=c.title;
   const m=MODS.find(x=>x.id===c.mod);
-  app.innerHTML=`<div class="crumbs"><a href="#/">Inicio</a> › <a href="#/casos">Casos</a> › ${esc(c.title)}</div><div id="simroot"></div>
-   <details class="card" style="margin-top:14px"><summary><b>Cómo funciona el simulador</b></summary><ul>
+  app.innerHTML=`<div class="crumbs"><span><a href="#/">Inicio</a> › <a href="#/casos">Casos</a> › ${esc(c.title)}</span></div><div id="simroot"></div>
+   <details class="card mt help"><summary><b>Cómo funciona el simulador</b></summary><ul>
    <li>Lean el caso a la izquierda. Si hay opciones, elijan una; si hay un 🎯 objetivo, cúmplanlo con los botones de los equipos y las acciones.</li>
    <li><b>Acciones</b>: lo que hacen con las manos (parches, compresiones, "¡fuera todos!", mirar el tórax…). Las que tienen ○/✔ se activan y desactivan.</li>
    <li><b>Equipos:</b> los botones tienen la misma disposición que el equipo real. En el LIFEPAK, ENERGY SELECT, RATE y CURRENT tienen su ▼ y su ▲. En el SAVe, cada display (FR, VT, PIP y PEEP) tiene sus − + debajo, y nada se aplica sin CONFIRM.</li><li><b>Pista:</b> además del consejo, resalta con un borde naranja los botones y acciones que tocan.</li><li><b>En el celular</b>, el monitor queda fijo arriba y solo se abre el equipo que se usa en cada paso; el otro se puede abrir tocando su nombre.</li>
@@ -197,8 +197,8 @@ function checklist(){
   document.title='Checklist de inicio de guardia';
   const row=(r,lp)=>{const [n,q,a]=lp?r:['',r[0],r[1]];return `<tr><td class="cb"><label><input type="checkbox"><span class="vh">Hecho</span></label></td>${lp?`<td class="n">${n}</td>`:''}<td>${q}</td><td class="fx">${a}</td></tr>`;};
   const tbl=(rows,lp)=>`<table class="ckt"><tr><th class="cb">✔</th>${lp?'<th class="n">Paso</th>':''}<th>Comprobar</th><th class="fx">Si falla</th></tr>${rows.map(r=>row(r,lp)).join('')}</table>`;
-  app.innerHTML=`<div class="crumbs noprint"><a href="#/">Inicio</a> › Checklist de inicio de guardia</div>
-  <div class="row noprint" style="justify-content:space-between;align-items:center;margin-bottom:10px"><p class="lead" style="margin:0">Para revisar los equipos al empezar la guardia. Las casillas no se guardan: impriman la hoja o guárdenla en PDF.</p><button class="btn" type="button" onclick="window.print()">Imprimir o guardar en PDF</button></div>
+  app.innerHTML=`<div class="crumbs noprint"><span><a href="#/">Inicio</a> › Checklist de inicio de guardia</span></div>
+  <div class="row between noprint mb ckhead"><p class="lead">Para revisar los equipos al empezar la guardia. Las casillas no se guardan: impriman la hoja o guárdenla en PDF.</p><button class="btn" type="button" onclick="window.print()"><svg class="ic"><use href="#i-print"/></svg>Imprimir o guardar en PDF</button></div>
   <div class="cksheet">
    <h1>Checklist de inicio de guardia</h1>
    <div class="ckf"><span>Fecha: <i></i></span><span>Unidad: <i></i></span><span>Responsable: <i></i></span><span>N.º de serie del LP12: <i></i></span></div>
