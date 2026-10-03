@@ -80,6 +80,22 @@ Probar en local: `python3 -m http.server 8765` y abrir `http://localhost:8765`. 
 - **Icono de la app:** ECG y onda de ventilación sobre azul (`assets/img/icon.svg`; los PNG de 192 y 512 van a sangre y valen como *maskable*).
 - **Caché del navegador al probar en local:** `python3 -m http.server` deja recursos en caché; antes de comprobar, recargar con `fetch(url,{cache:'reload'})` o abrir con `?v=n`.
 
+## Criterio clínico del autor (decisiones del 03-10-2026, v3.19-v3.20)
+
+Son decisiones del autor, no del fabricante ni de la ERC: en la web van marcadas como «criterio del autor». Cualquier texto nuevo debe ser coherente con ellas.
+
+- **Reparto de papeles (integración, punto 2):**
+  - con 3 sanitarios, el **líder** aborda la vía aérea y, con ella asegurada, queda relativamente liberado para dar soporte y dirigir la reanimación;
+  - el **segundo** inicia las compresiones;
+  - el **tercero** canaliza la vía, se encarga de los fármacos e inicia la monitorización;
+  - el segundo y el tercero se relevan en las compresiones si hay fatiga; a otro interviniente se le pueden encargar las compresiones;
+  - con 2, uno comprime y el otro, que es el líder, lleva la vía aérea (mejor bolsa en lugar del SAVe).
+  - Ya no vale «el líder no toca».
+- **MANUAL TRIGGER en la RCP con mascarilla y SAVe (3 sanitarios):** lo pulsa **el tercero**, porque el líder sella la mascarilla con las dos manos. Está en el manual del SAVe (modo RCP), en `PANELS.save` (botón `trigger`), en la infografía del SAVe (`infografia.js`) y en la autoevaluación del módulo 3.
+- **Reevaluación (integración, punto 5):** se titula «Reevaluación continua y vigilancia clínica». No se fija un intervalo: un tiempo estático no tiene sentido ni lo marcan las guías. No escribir «ronda cada 5 minutos». El contenido del punto no cambia (tórax, SpO2, EtCO2, FC y PA, y CONFIRM sin cambios en el SAVe).
+  - Sí se mantiene, por decisión del autor, «ECG, SpO2 y PNI cada 5 min» en el punto 4 (conectar a un paciente ventilado).
+- El símbolo ♥ de los manuales y de las alarmas se deja como carácter: no cambiarlo por un icono SVG.
+
 ## Checklist antes de cada publicación
 
 - [ ] La consola no muestra errores en todas las rutas (`#/`, los 3 módulos con todas sus pestañas, `#/casos`, cada `#/caso/<id>` y `#/acerca`).
@@ -119,6 +135,7 @@ En la carpeta privada `~/Desktop/Formacion_Bomberos_UCV_LP12_SAVe/` hay 3 fotos 
 
 - v3 publicada en GitHub Pages (https://hipolitogarciam.github.io/formacion-bomberos-ucv/):
   - pulido visual «Panel de guardia» en 4 fases (v3.15-v3.18): navegación inferior, iconos SVG, tablas, simulador, icono de la app e impresión de manuales;
+  - ajustes clínicos del autor (v3.19-v3.20): reparto de papeles, MANUAL TRIGGER lo pulsa el tercero y «Reevaluación continua y vigilancia clínica» (ver «Criterio clínico del autor»);
   - tratamiento de "ustedes", navegación con «Siguiente», paneles y simulador con la disposición real, infografías A4 en HTML, checklist de inicio de guardia, paleta B;
   - auditoría independiente (`AUDITORIA_v3.md`) con todos sus hallazgos corregidos;
   - contenido de reanimación revisado frente a las guías ERC 2025 (`REVISION_ERC2025.md`, 33 temas, todo aplicado; v3.14). Corregido también un dato del LP12: energías del DEA 150-360 J [9-6], no 100-360 J;
